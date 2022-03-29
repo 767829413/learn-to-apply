@@ -6,9 +6,15 @@
 * [从Ftrace开始内核探索之旅](./docs/Linux/ftrace.md)
 * [使用GDB调试Linux内核](./docs/Linux/gdb-kernel-debugging.md)
 * [How to on starting processes](./docs/Linux/How-to-on-starting-processes.md)
+* [Linux TCP队列相关参数的总结](./docs/Linux/linux-tcp-queue.md)
+* [从开发角度看DNS](./docs/Linux/dns.md)
+* [应用关闭后占用端口时间过长的问题](./docs/Linux/time-wait.md)
+* [使用USE Method分析系统性能问题](./docs/Linux/use-method.md)
+* [Linux内核参数的配置方法](./docs/Linux/linux-kernel-parameter.md)
 
 ---
 ### 杂七杂八
+* [简单的想想递归和迭代](./docs/A-bit-of-everything/think-recursion-iteration.md)
 * [Consensus and Distributed Transactions](./docs/A-bit-of-everything/Consensus%20and%20Distributed%20Transactions.pdf)
 * [给程序员的健身锻炼指南](./docs/A-bit-of-everything/programmer-workout.md)
 * [HTTP/2 内部分享](./docs/A-bit-of-everything/http2.md)
@@ -31,34 +37,27 @@
 
 ---
 ### 看看数据库
-* [关系数据库查询处理基础知识扫盲](https://github.com/mz1999/Apusic-db-team/blob/master/docs/rdbms-fundamental.md)
-* [TiDBCursor功能实现总结](./docs/cursor-summary.pdf)
-* [关于MySQL XA事务的隔离级别](https://github.com/mz1999/Apusic-db-team/blob/master/docs/mysql-xa.md)
-* [从RadonDB看新型数据库中间件的特性](https://github.com/mz1999/Apusic-db-team/blob/master/docs/radondb.md)
-* [TiDB基于代价优化（CBO）实现代码导读](https://github.com/mz1999/Apusic-db-team/blob/master/docs/cbo-guide.md)
-* [TiDB Insert 执行流程图](https://github.com/mz1999/Apusic-db-team/blob/master/docs/insert-overview.md)
-* [TiDB SQL Parser 的实现](https://github.com/mz1999/Apusic-db-team/blob/master/docs/sql-parser.md)
-* [利用docker compose在单机上玩转TiDB](https://github.com/mz1999/Apusic-db-team/blob/master/docs/tidb-docker-compose.md)
-* [TiDB初探](https://github.com/mz1999/Apusic-db-team/blob/master/docs/tidb-glance.md)
+* [关系数据库查询处理基础知识扫盲](./docs/Databases/rdbms-fundamental.md)
+* [TiDBCursor功能实现总结](./media/Pdf/cursor-summary.pdf)
+* [关于MySQL XA事务的隔离级别](./docs/Databases/mysql-xa.md)
+* [从RadonDB看新型数据库中间件的特性](./docs/Databases/radondb.md)
+* [TiDB基于代价优化（CBO）实现代码导读](./docs/Databases/cbo-guide.md)
+* [TiDB Insert 执行流程图](./docs/Databases/insert-overview.md)
+* [TiDB SQL Parser 的实现](./docs/Databases/sql-parser.md)
+* [利用docker compose在单机上玩转TiDB](./docs/Databases/tidb-docker-compose.md)
+* [TiDB初探](./docs/Databases/tidb-glance.md)
 
 ---
 ### Golang
-* [浅尝golang之Cond和Once](https://github.com/mz1999/Apusic-db-team/blob/master/docs/github-workflow.md)
-* [Git Feature Branch Workflow](https://github.com/mz1999/Apusic-db-team/blob/master/docs/github-workflow.md)
-* [Golang error处理实践](https://github.com/mz1999/Apusic-db-team/blob/master/docs/golang-error-handling.md)
-* [Go语言的引用类型](https://github.com/mz1999/Apusic-db-team/blob/master/docs/go-reference-types.md)
-
----
-### 网络随笔
-* [Linux TCP队列相关参数的总结](https://github.com/mz1999/Apusic-db-team/blob/master/docs/linux-tcp-queue.md)
-* [使用NIO时慎用SO_LINGER选项](https://github.com/mz1999/Apusic-db-team/blob/master/docs/nio-so-linger.md)
-* [TCP `SO_LINGER` 选项对Socket.close的影响](https://github.com/mz1999/Apusic-db-team/blob/master/docs/so-linger.md)
-* [从开发角度看DNS](https://github.com/mz1999/Apusic-db-team/blob/master/docs/dns.md)
-* [应用关闭后占用端口时间过长的问题](https://github.com/mz1999/Apusic-db-team/blob/master/docs/time-wait.md)
-* [使用USE Method分析系统性能问题](https://github.com/mz1999/Apusic-db-team/blob/master/docs/use-method.md)
-* [Linux内核参数的配置方法](https://github.com/mz1999/Apusic-db-team/blob/master/docs/linux-kernel-parameter.md)
+* [简单看下异步编程的 Promise 方法论(Golang实现)](./docs/Golang/promise.md)
+* [浅尝golang之Mutex基础](./docs/Golang/mutex-base.md)
+* [浅尝golang之Mutex的扩展操作(重入,try lock,统计goroutine等待数)](./docs/Golang/mutex.md)
+* [浅尝golang之Cond和Once](./docs/Golang/cond-once.md)
+* [Golang error处理实践](./docs/Golang/golang-error-handling.md)
+* [Go语言的引用类型](./docs/Golang/go-reference-types.md)
 
 ---
 ### 生产力工具
 * [VS code快捷键](./docs/Productivity/vscode.md)
 * [如何让用户拥有sudo权限](./docs/Productivity/sudo.md)
+* [Git Feature Branch Workflow](./docs/Productivity/github-workflow.md)
