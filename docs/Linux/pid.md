@@ -61,7 +61,7 @@ enum pid_type
 
 用一幅图来总结 **PID/TGID/PGID/SID** ：
 
-![进程ID](../../media/pid/pid.png)
+![进程ID](../../media/Pictures/pid.png)
 
 ## 进程间关系
 
@@ -91,7 +91,7 @@ systemd(1)─┬─ModemManager(759)─┬─{ModemManager}(802)
 
 通常情况下，`real_parent` 和 `parent` 是一样的。如果在 `bash` 上使用 `GDB` 来 debug 一个进程，这时候进程的 `parent` 是  `GDB` ，进程的 `real_parent` 是 `bash`。
 
-![pstree](../../media/pid/pstree.png)
+![pstree](../../media/Pictures/pstree.png)
 
 当一个进程创建了子进程后，它应该通过系统调用 `wait()` 或者 `waitpid()` 等待子进程结束，回收子进程的资源。而子进程在结束时，会向它的父进程发送 `SIGCHLD` 信号。因此父进程还可以注册 `SIGCHLD` 信号的处理函数，异步回收资源。
 
@@ -149,7 +149,7 @@ Z    defunct ("zombie") process, terminated but not reaped by its parent
 
 会话有一个前台进程组，还可以有一个或多个后台进程组，只有前台作业可以从终端读写数据。示例的进程组关系如图：
 
-![session](../../media/pid/session.png)
+![session](../../media/Pictures/session.png)
 
 注意到上图中显示，终端设备可以向进程组发送信号。我们可以在终端输入特殊字符向前台进程发送信号：
 

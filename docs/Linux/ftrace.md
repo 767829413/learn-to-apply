@@ -90,7 +90,7 @@ kprobe_profile              snapshot                uprobe_profile
 
 `Ftrace` 可以跟踪几乎所有内核函数调用的详细信息，这是怎么做到的呢？简单来说，在编译内核的时候使用了 `gcc` 的 `-pg` 选项，编译器会在每个内核函数的入口处调用一个特殊的汇编函数“**mcount**” 或 “**\_\_fentry\_\_**”，如果跟踪功能被打开，`mcount/fentry` 会调用当前设置的 `tracer`，`tracer`将不同的数据写入**ring buffer**。
 
-![ftrace](../../media/ftrace/ftrace.png)
+![ftrace](../../media/Pictures/ftrace.png)
 
 从上图可以看出，`Ftrace` 提供的 `function hooks` 机制在内核函数入口处埋点，根据配置调用特定的 `tracer`， `tracer`将数据写入**ring buffer**。`Ftrace`实现了一个无锁的[ring buffer](https://www.kernel.org/doc/html/latest/trace/ring-buffer-design.html)，所有的跟踪信息都存储在**ring buffer**中。用户通过 `tracefs` 文件系统接口访问函数跟踪的输出结果。
 

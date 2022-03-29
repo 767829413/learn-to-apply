@@ -6,19 +6,19 @@
 
 在计算机诞生之前，人们发明了 [Teleprinter(电传打字机)](https://en.wikipedia.org/wiki/Teleprinter)，通过长长的电线点对点连接，发送和接收打印的信息，用于远距离传输电报信息。
 
-![Teleprinter](../../media/tty/WACsOperateTeletype.jpg)
+![Teleprinter](../../media/Pictures/WACsOperateTeletype.jpg)
 
 `Teleprinter` 也可以写成 `teletypewriter` 或 `teletype`。
 
 后来人们将 `Teleprinter` 连接到早期的大型计算机上，作为输入和输出设备，将输入的数据发送到计算机，并打印出响应。
 
-<img src="../../media/tty/ASR-33_at_CHM.agr.jpg" width = "70%" />
+<img src="../../media/Pictures/ASR-33_at_CHM.agr.jpg" width = "70%" />
 
 在今天你很难想象程序的运行结果需要等到打印出来才能看到，`Teleprinter` 设备已经进了计算机博物馆。现在我们用 **TTY** 代表计算机终端（**terminal**），只是沿用了历史习惯，电传打字机（**teletypewriter**）曾经是计算机的终端，它的缩写便是 **TTY**(**T**ele**TY**pewriter)。
 
 为了把不同型号的电传打字机接入计算机，需要在操作系统内核安装驱动，为上层应用屏蔽所有的低层细节。
 
-<img src="../../media/tty/1.png">
+<img src="../../media/Pictures/1.png">
 
 电传打字机通过两根电缆连接：一根用于向计算机发送指令，一根用于接收计算机的输出。这两根电缆插入 **UART** （Universal Asynchronous Receiver and Transmitter，通用异步接收和发送器）的串行接口连接到计算机。
 
@@ -30,7 +30,7 @@
 
 今天电传打字机已经进了博物馆，但 Linux/Unix 仍然保留了当初 TTY驱动和 **line discipline** 的设计和功能。终端不再是一个需要通过 UART 连接到计算机上物理设备。终端成为内核的一个模块，它可以直接向 TTY 驱动发送字符，并从 TTY 驱动读取响应然后打印到屏幕上。也就是说，用内核模块模拟物理终端设备，因此被称为**终端模拟器**(terminal emulator)。
 
-<img src="../../media/tty/2.png">
+<img src="../../media/Pictures/2.png">
 
 上图是一个典型的Linux桌面系统。终端模拟器就像过去的物理终端一样，它监听来自键盘的事件将其发送到 TTY 驱动，并从 TTY 驱动读取响应，通过显卡驱动将结果渲染到显示器上。TTY驱动 和 **line discipline**的行为与原先一样，但不再有 UART 和 物理终端参与。
 
@@ -81,7 +81,7 @@ lrwx------ 1 mazhen mazhen 64 7月  10 10:09 10 -> 'socket:[34615]'
 
 PTY 运行在用户区，更加安全和灵活，同时仍然保留了 TTY 驱动和 **line discipline** 的功能。常用的伪终端有 xterm，gnome-terminal，以及远程终端 ssh。我们以 Ubuntu 桌面版提供的 gnome-terminal 为例，介绍伪终端如何与 TTY 驱动交互。
 
-<img src="../../media/tty/3.png">
+<img src="../../media/Pictures/3.png">
 
 PTY 是通过打开特殊的设备文件 `/dev/ptmx` 创建，由一对双向的字符设备构成，称为 `PTY master` 和 `PTY slave`。
 
@@ -198,7 +198,7 @@ $ stty echo
 
 我们经常通过 ssh 连接到一个远程主机，这时候远程主机上的 `ssh server` 就是一个伪终端 PTY，它同样持有 `PTY master`，但 `ssh server` 不再监听键盘事件，以及在屏幕上绘制输出结果，而是通过 TCP 连接，向 `ssh client` 发送或接收字符。
 
-<img src="../../media/tty/4.png">
+<img src="../../media/Pictures/4.png">
 
 我们简单梳理一下远程终端是如何执行命令的。
 

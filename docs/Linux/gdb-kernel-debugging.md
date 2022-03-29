@@ -8,7 +8,7 @@
 
 使用**KGDB**需要两台机器，一台作为开发机，另一台是目标机器，要调试的内核在目标机器上运行。在开发机上使用`gdb`运行包含符号信息的`vmlinux`，然后通过指定网络地址和端口，连接到目标机器的**KGDB**。我们也可以使用[QEMU/KVM](https://www.qemu.org/)虚拟机作为目标机器，让待调试的内核运行在虚拟机中，然后在宿主机上运行`gdb`，连接到虚拟机中的**KGDB**。
 
-<img src="../../media/gdb-kernel-debugging/kgdb.png" width = "70%" />
+<img src="../../media/Pictures/kgdb.png" width = "70%" />
 
 本文将介绍如何在本机搭建Linux内核调试环境，步骤比较繁琐，还会涉及到编译内核。作为内核小白，我会尽量写的详细些，毕竟我折腾了很久才成功。
 
@@ -80,8 +80,8 @@ qemu-system-x86_64 -enable-kvm -name ubuntutest  -m 4096 -hda ubuntutest.img -cd
 
 我们使用`VNC`客户端连接进虚拟机，完成`Ubuntu`的安装。注意上面的命令通过`-vnc :19`设置了虚拟机的VNC监听端口为`5919`。
 
-<img src="../../media/gdb-kernel-debugging/vnc-connection.png" width = "70%" />
-<img src="../../media/gdb-kernel-debugging/vnc-viewer.png" width = "70%" />
+<img src="../../media/Pictures/vnc-connection.png" width = "70%" />
+<img src="../../media/Pictures/vnc-viewer.png" width = "70%" />
 
 我使用的`VNC`客户端是[VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/)，支持Windows、macOS和Linux等主流平台。按照正常步骤，完成Ubuntu在虚拟机上的安装。
 
@@ -95,7 +95,7 @@ qemu-system-x86_64 -enable-kvm -name ubuntutest  -m 4096 -hda ubuntutest.img -bo
 
 为了让虚拟机能访问外部网络，我们需要形成下面的结构：
 
-<img src="../../media/gdb-kernel-debugging/networking.png" width = "80%" />
+<img src="../../media/Pictures/networking.png" width = "80%" />
 
 在宿主机上创建网桥**br0**，并设置一个IP地址：
 
@@ -125,7 +125,7 @@ sudo iptables -t nat -A POSTROUTING -o wlp2s0 -j MASQUERADE
 
 注意上面命令中的 **-o** 参数，指定了数据包的出口设备为**wlp2s0**。你需要使用`ip link`命令在你的机器上查看具体设备的名称：
 
-<img src="../../media/gdb-kernel-debugging/ip_link.png" width = "100%" />
+<img src="../../media/Pictures/ip_link.png" width = "100%" />
 
 如果想进一步了解**iptables**，可以参见我的另一篇文章[《Docker单机网络模型动手实验》](./docker-network-bridge.md)。
 
@@ -262,7 +262,7 @@ $ sudo apt install libncurses5-dev libssl-dev bison flex libelf-dev gcc make ope
 $ sudo make menuconfig
 ```
 
-<img src="../../media/gdb-kernel-debugging/menuconfig.png" width = "100%" />
+<img src="../../media/Pictures/menuconfig.png" width = "100%" />
 
 为了构建能够调试的内核，我们需要配置以下几个参数。
 

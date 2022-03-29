@@ -200,11 +200,11 @@ p {
 
 ---
 ### HTTP/1.1 持久连接
-![tcp-connection1 w:850](../../media/http2/tcp-connection1.png)
+![tcp-connection1 w:850](../../media/Pictures/tcp-connection1.png)
 
 ---
 ### HTTP/1.1 持久连接
-![tcp-connection1 w:850](../../media/http2/tcp-connection2.png)
+![tcp-connection1 w:850](../../media/Pictures/tcp-connection2.png)
 
 ---
 ### HTTP/1.1 持久连接
@@ -217,13 +217,13 @@ p {
 ### HTTP/1.1 管道
 * 多次请求必须满足**先进先出**(FIFO)的顺序
 
-![keep-alive w:600](../../media/http2/http-keep-alive.png)
+![keep-alive w:600](../../media/Pictures/http-keep-alive.png)
 
 ---
 ### HTTP/1.1 管道
 * 尽早发送请求，不被每次响应阻塞
 
-![keep-alive w:750](../../media/http2/http-pipeline.png)
+![keep-alive w:750](../../media/Pictures/http-pipeline.png)
 
 ---
 <style scoped>
@@ -271,7 +271,7 @@ h3 {
 </style>
 ### `HTTP/1.1`性能优化建议
 * 使用多域名分区
-![connection-view w:800](../../media/http2/connection-view.png)
+![connection-view w:800](../../media/Pictures/connection-view.png)
 
 ---
 ### `HTTP/1.1`性能优化建议
@@ -297,7 +297,7 @@ h3 {
 * 引入新的二进制分帧数据层
 * 将传输的信息分割为消息和帧，并采用二进制格式的编码
 
-![binary-framing-layer w:800](../../media/http2/binary-framing-layer.png)
+![binary-framing-layer w:800](../../media/Pictures/binary-framing-layer.png)
 
 ---
 ### `HTTP/2` 的核心概念
@@ -313,7 +313,7 @@ h3 {
 ---
 ### `HTTP/2` 的核心概念
 
-![stream-message-frame w:750](../../media/http2/stream-message-frame.png)
+![stream-message-frame w:750](../../media/Pictures/stream-message-frame.png)
 
 ---
 ### `HTTP/2` 的核心概念
@@ -328,11 +328,11 @@ h3 {
 * `HTTP/1.x`中，如果客户端想发送多个并行的请求，那么必须使用多个`TCP`连接
 * `HTTP/2`中，客户端可以使用多个流发送请求，同时`HTTP`消息被分解为互不依赖的帧，交错传输，最后在另一端重新组装
 
-![http2-connection w:800](../../media/http2/http2-connection.png)
+![http2-connection w:800](../../media/Pictures/http2-connection.png)
 
 ---
 ### `HTTP/2` 帧格式
-![frame format](../../media/http2/frame-format.png)
+![frame format](../../media/Pictures/frame-format.png)
 
 * 详细说明请参考[HTTP/2规范](https://tools.ietf.org/html/rfc7540)
 
@@ -391,7 +391,7 @@ li {
 * 客户端可以使用`HTTP header`向服务器发送信号，列出它希望推送的资源
 * 服务器可以智能分析客户端的需求，自动推送关键资源
 
-![server-push w:800](../../media/http2/server-push.png)
+![server-push w:800](../../media/Pictures/server-push.png)
 
 ---
 ### `HTTP header`压缩
@@ -401,12 +401,12 @@ li {
 
 ---
 ### `HTTP header`压缩
-![http header w:700](../../media/http2/http-header.png)
+![http header w:700](../../media/Pictures/http-header.png)
 
 ---
 ### `HTTP/2` vs `HTTP/1.1`
 * https://http2.akamai.com/demo
-![http2 vs http1 w:700](../../media/http2/http2-vs-http1.gif)
+![http2 vs http1 w:700](../../media/Pictures/http2-vs-http1.gif)
 
 ---
 ### `HTTP/2`的升级与发现
@@ -429,7 +429,7 @@ li {
 * 基于`TLS`运行的`HTTP/2`被称为`h2`
 * 直接在`TCP`之上运行的`HTTP/2`被称为`h2c`
 
-![h2-h2c width:800](../../media/http2/h2-h2c.png)
+![h2-h2c width:800](../../media/Pictures/h2-h2c.png)
 
 --- 
 ### `h2c`演示环境
@@ -465,7 +465,7 @@ li {
 
 ---
 ### `HTTP/2`连接建立
-![start-http2-connection width:550](../../media/http2/start-http2-connection.png)
+![start-http2-connection width:550](../../media/Pictures/start-http2-connection.png)
 
 ---
 ### `HTTP/2`连接建立
@@ -476,25 +476,25 @@ li {
     * TLS 握手成功后
   * Preface 内容
 
-![magic-frame](../../media/http2/magic-frame.png)
+![magic-frame](../../media/Pictures/magic-frame.png)
 
 ---
 ### `HTTP/2`连接建立
 * 交换`settings`帧(client -> server)
 
-![setting-frame](../../media/http2/setting-frame1.png)
+![setting-frame](../../media/Pictures/setting-frame1.png)
 
 ---
 ### `HTTP/2`连接建立
 * 交换`settings`帧(server -> client)
 
-![setting-frame](../../media/http2/setting-frame2.png)
+![setting-frame](../../media/Pictures/setting-frame2.png)
 
 ---
 ### `HTTP/2`连接建立
 * `settings` ACK 帧 (client <-> server)
 
-![setting-frame](../../media/http2/setting-frame3.png)
+![setting-frame](../../media/Pictures/setting-frame3.png)
 
 ---
 ### `TLS`协议的设计目标
@@ -514,7 +514,7 @@ li {
 
 ---
 ### `TLS` 1.2 握手过程
-![bg right w:600](../../media/http2/tls-handshake.png)
+![bg right w:600](../../media/Pictures/tls-handshake.png)
 * 验证身份
 * 达成安全套件共识
 * 传递密钥
@@ -528,7 +528,7 @@ li {
 }
 </style>
 ### `TLS` 安全密码套件
-![cipher-suites width:800](../../media/http2/cipher-suites.png)
+![cipher-suites width:800](../../media/Pictures/cipher-suites.png)
 * 密钥交换算法
   * 双方在完全没有对方任何预先信息，通过不安全信道创建密钥
   * 1976年，Diffie–Hellman key exchange，简称 DH
@@ -543,13 +543,13 @@ li {
 ### `TLS`1.3的握手优化
 * [An Overview of TLS 1.3 – Faster and More Secure](https://www.thesslstore.com/blog/explaining-ssl-handshake/)
 
-![tls-1.3-handshake-performance width:700](../../media/http2/tls-1.3-handshake-performance.png)
+![tls-1.3-handshake-performance width:700](../../media/Pictures/tls-1.3-handshake-performance.png)
 
 ---
 ### 测试`TLS`的支持情况
 * https://www.ssllabs.com/ssltest/index.html
 
-![tlstest width:850](../../media/http2/tlstest.png)
+![tlstest width:850](../../media/Pictures/tlstest.png)
 
 ---
 ### Application-Layer Protocol Negotiation
@@ -562,7 +562,7 @@ li {
 ---
 ### ALPN
 
-![alpn width:1200](../../media/http2/alpn.png)
+![alpn width:1200](../../media/Pictures/alpn.png)
 
 ---
 ### `h2`演示环境
@@ -603,7 +603,7 @@ h3 {
 * `OpenSSL`性能比纯Java实现好很多；使用`TLS`可以不再需要`APR`
 * `Linux`上`NIO.2`是通过`epoll`来模拟实现的[EPollPort.java](https://github.com/openjdk/jdk/blob/6bab0f539fba8fb441697846347597b4a0ade428/src/java.base/linux/classes/sun/nio/ch/EPollPort.java)
 
-![jsse-openssl](../../media/http2/jsse-openssl.png)
+![jsse-openssl](../../media/Pictures/jsse-openssl.png)
 
 ---
 ### 使用`JSSE`
@@ -686,42 +686,42 @@ org.apache.coyote.AbstractProtocol.start 开始协议处理句柄
 ### `ALPN`协议协商
 * ClientHello
 
-![client-hello](../../media/http2/client-hello.png)
+![client-hello](../../media/Pictures/client-hello.png)
 
 ---
 ### `ALPN`协议协商
-![bg right width:700](../../media/http2/server-hello.png)
+![bg right width:700](../../media/Pictures/server-hello.png)
 
 * ServerHello
 
 ---
 ### 使用Chrome开发者工具观察
-![chrome width:1000](../../media/http2/chrome.png)
+![chrome width:1000](../../media/Pictures/chrome.png)
 
 ---
 ### HTTP/2的问题
 * `HTTP/2`消除了`HTTP`协议的队首阻塞现象，但`TCP`层面上仍然存在队首阻塞
 * `HTTP/2`多请求复用一个`TCP`连接，丢包可能会block住所有的`HTTP`请求
-![head-of-line width:1000](../../media/http2/head-of-line.png)
+![head-of-line width:1000](../../media/Pictures/head-of-line.png)
 
 ---
 ### HTTP/2的问题
 * `TCP`及`TCP+TLS`建立连接需要多次round trips
 
-![tcp-tls width:800](../../media/http2/tcp-tls.png)
+![tcp-tls width:800](../../media/Pictures/tcp-tls.png)
 
 ---
 ### QUIC
 * **Q**uick **U**DP **I**nternet **C**onnections
 * 由Goolge开发，并已经在Google部署使用
 
-![quic width:900](../../media/http2/quic.png)
+![quic width:900](../../media/Pictures/quic.png)
 
 ---
 ### QUIC
 [QUIC: next generation multiplexed transport over UDP](https://www.youtube.com/watch?v=hQZ-0mXFmk8)
 
-![google-live width:1000](../../media/http2/google-live.png)
+![google-live width:1000](../../media/Pictures/google-live.png)
 
 ---
 ### 参考资料
@@ -731,7 +731,7 @@ org.apache.coyote.AbstractProtocol.start 开始协议处理句柄
 * [HTTP/2协议](https://tools.ietf.org/html/rfc7540)
 
 ---
-![bg right](../../media/http2/ending.jpg)
+![bg right](../../media/Pictures/ending.jpg)
 # Thank You!
 
 <!-- footer: '[billie eilish](https://twitter.com/billieeilish)' -->

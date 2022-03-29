@@ -50,19 +50,19 @@ full avg10=0.00 avg60=0.00 avg300=0.00 total=34054
 
 **some** 指标说明一个或多个任务由于等待资源而被停顿的时间百分比。在下图的例子中，在最近的60秒内，任务A的运行没有停顿，而由于内存紧张，任务B在运行过程中花了30秒等待内存，则 some 的值为50%。
 
-![some](../../media/psi/someCrop.png)
+![some](../../media/Pictures/someCrop.png)
 
 some 表明了由于缺乏资源而造成至少一个任务的停顿。
 
 **full** 指标表示所有的任务由于等待资源而被停顿的时间百分比。在下图的例子中，在最近的60秒内，任务 B 等待了 30 秒的内存，任务 A 等待了 10 秒内存，并且和任务 B 的等待时间重合。在这个重合的时间段10秒内，任务 A 和 任务 B 都在等待内存，结果是 some 指标为 50%，full 指标为 **10/60 = 16.66%**。
 
-![full](../../media/psi/FullCrop.png)
+![full](../../media/Pictures/FullCrop.png)
 
 **full** 表明了总吞吐量的损失，在这种状态下，所有任务都在等待资源，CPU 周期将被浪费。
 
 请注意，**some** 和 **full** 的计算是用整个时间窗口内累计的等待时间，等待时间可以是连续的，也可能是离散的。
 
-![discontinuous](../../media/psi/DiscontinuousCrop.png)
+![discontinuous](../../media/Pictures/DiscontinuousCrop.png)
 
 理解了 **some** 和 **full** 的含义，就明白了 CPU 为什么没有 **full** 指标，因为不可能所有的任务都同时饿死在 CPU 上，CPU 总是在执行一个任务。
 
