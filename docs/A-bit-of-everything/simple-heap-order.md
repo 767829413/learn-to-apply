@@ -2,7 +2,8 @@
 # 写一个heap了解一下堆排序
 
 ## **演示Code**
-```
+
+```go
 package tree
 
 type Heap struct {
@@ -110,6 +111,3 @@ func IsBigTopHeap(arr []int, n int) bool {
    return true
 }
 ```
-
-
-

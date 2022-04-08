@@ -5,7 +5,7 @@
 
 在`macOS`上安装很简单：
 
-```
+```bash
 brew install kubernetes-helm
 ```
 
@@ -15,7 +15,7 @@ brew install kubernetes-helm
 
 定义`rbac-config.yaml`文件，创建`tiller`账号，并和`cluster-admin`绑定：
 
-```
+```yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -38,7 +38,7 @@ subjects:
 
 执行命令：
 
-```
+```bash
 $ kubectl create -f rbac-config.yaml
 serviceaccount "tiller" created
 clusterrolebinding "tiller" created
@@ -48,19 +48,18 @@ clusterrolebinding "tiller" created
 
 在强国环境内，需要参考[kubernetes-for-china](https://github.com/maguowei/kubernetes-for-china)，将`helm`服务端部分`Tiller`的镜像下载到集群节点上。
 
-
 ## 初始化helm
 
 执行初始化命令，注意指定上一步创建的`ServiceAccount`：
 
-```
+```bash
 helm init --service-account tiller --history-max 200
 ```
 
 命令执行成功，会在集群中安装`helm`的服务端部分`Tiller`。可以使用`kubectl get pods -n kube-system`命令查看：
 
-```
-$kubectl get pods -n kube-system
+```bash
+$ kubectl get pods -n kube-system
 
 NAME                                   READY   STATUS    RESTARTS   AGE
 ...
@@ -73,17 +72,17 @@ tiller-deploy-7fbf5fc745-lxzxl         1/1     Running   0          179m
 
 查看helm的`Chart Repository`：
 
-```
+```bash
 $ helm repo list
 
-NAME     	URL
-stable   	https://kubernetes-charts.storage.googleapis.com
-local    	http://127.0.0.1:8879/charts
+NAME      URL
+stable    https://kubernetes-charts.storage.googleapis.com
+local     http://127.0.0.1:8879/charts
 ```
 
 如果你所处的网络环境无法访问缺省的`Chart Repository`，可以更换为其他repo，例如微软提供的 helm 仓库的镜像：
 
-```
+```bash
 $ helm repo add stable http://mirror.azure.cn/kubernetes/charts/
 "stable" has been added to your repositories
 
@@ -93,19 +92,20 @@ $ helm repo add incubator http://mirror.azure.cn/kubernetes/charts-incubator/
 
 * 所有可用`chart`列表：
 
-```
+```bash
 helm repo update
 helm search
 ```
 
 * 搜索`tomcat chart`：
 
-```
+```bash
 helm search tomcat
 ```
 
 * 查看`stable/tomcat`的详细信息
-```
+
+```bash
 helm inspect stable/tomcat
 ```
 
@@ -115,13 +115,13 @@ helm inspect stable/tomcat
 
 如果是在私有化集群部署，设置`service.type`为`NodePort`：
 
-```
+```bash
 helm install --name my-web  --set service.type=NodePort  stable/tomcat
 ```
 
 * 测试安装效果
 
-```
+```bash
 export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services my-web-tomcat)
 export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
 echo http://$NODE_IP:$NODE_PORT
@@ -132,7 +132,7 @@ curl http://$NODE_IP:$NODE_PORT/sample/
 
 * 列表和删除
 
-```
+```bash
 helm list
 helm del --purge my-web
 ```

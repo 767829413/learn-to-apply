@@ -2,7 +2,8 @@
 # 浅尝golang之Cond和Once
 
 ## **演示Code**
-```
+
+```go
 type Queue struct {
    capacity int
    Data     []int
@@ -64,8 +65,10 @@ func ExampleOne() {
    log.Printf("Game start")
 }
 ```
+
 添加个测试用的code
-```
+
+```go
 func TestExampleOne(t *testing.T) {
    ExampleOne()
 }
@@ -84,9 +87,10 @@ func TestMyCondQueue(t *testing.T) {
    }
 }
 ```
+
 Once比较简单,单例模式惯用,配置初始化
 
-```
+```go
 type MyOnce struct {
    m    sync.Mutex
    done uint32

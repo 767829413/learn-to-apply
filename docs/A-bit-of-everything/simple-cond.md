@@ -2,7 +2,8 @@
 # 从代码简单看条件变量
 
 ## **演示Code**
-```
+
+```go
 package main
 
 import (
@@ -153,5 +154,3 @@ func (aq *ArrayQueue) Print() (format string) {
    return
 }
 ```
-
-

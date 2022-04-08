@@ -4,7 +4,8 @@
 ---
 
 ## **莱文斯坦距离的粗略实现 Code**
-```
+
+```go
 package dynamicprogramming
 
 /**
@@ -121,7 +122,7 @@ func (l *Levenshtein) min(a, b, c int) int {
 
 ## **莱文斯坦距离的粗略实现 测试Code**
 
-```
+```go
 package dynamicprogramming
 
 import "testing"
@@ -145,7 +146,7 @@ func TestLCS1(t *testing.T) {
 
 ## **最长公共子串粗略实现 Code**
 
-```
+```go
 package dynamicprogramming
 
 /**
@@ -259,7 +260,7 @@ func (l *LCS) max(i int, i2 int, i3 int) int {
 
 ## **最长公共子串粗略实现 测试Code**
 
-```
+```go
 package dynamicprogramming
 
 import "testing"

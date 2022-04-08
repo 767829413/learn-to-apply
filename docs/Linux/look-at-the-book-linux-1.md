@@ -1,6 +1,6 @@
 # 看看书本上的linux系列-1
 
-## **linux内核初始化**
+##  **linux内核初始化**
 
 linux内核初始化, 运行 `start_kernel()` 函数(位于 init/main.c)
 
@@ -19,6 +19,7 @@ linux内核初始化, 运行 `start_kernel()` 函数(位于 init/main.c)
 ---
 
 ### **创建管理/创建用户态进程的进程, 1号进程**
+
 1. `rest_init()` 通过 `kernel_thread(kernel_init,...)` 创建 1号进程(工作在用户态).
 2. 权限管理
     * -x86 提供 4个`Ring`分层权限
@@ -34,5 +35,6 @@ linux内核初始化, 运行 `start_kernel()` 函数(位于 init/main.c)
 ---
 
 ### **创建管理/创建内核态进程的进程, 2号进程**
+
 1. `rest_init()` 通过 `kernel_thread`(`kthreadd`,...) 创建 2号进程(工作在内核态).
 2. `kthreadd` 负责所有内核态线程的调度和管理

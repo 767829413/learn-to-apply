@@ -8,13 +8,13 @@
 
 * **安装 Minikube**
 
-```
+```bash
 curl -Lo minikube http://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/releases/v0.35.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
 ```
 
 * **启动Minikube**
 
-```
+```bash
 $ minikube start --registry-mirror=https://registry.docker-cn.com
 
 😄  minikube v0.35.0 on linux (amd64)
@@ -33,7 +33,7 @@ $ minikube start --registry-mirror=https://registry.docker-cn.com
 
 * 检查状态
 
-```
+```bash
 $ minikube status
 
 host: Running
@@ -44,7 +44,7 @@ kubectl: Correctly Configured: pointing to minikube-vm at 192.168.99.100
 
 `kubernetes`已经成功运行，可以使用`kubectl`访问集群：
 
-```
+```bash
 $ kubectl get pods -n kube-system
 
 NAME                                    READY   STATUS    RESTARTS   AGE
@@ -62,7 +62,7 @@ storage-provisioner                     1/1     Running   0          18m
 
 * **停止Minikube**
 
-```
+```bash
 $ minikube stop
 
 ✋  Stopping "minikube" in virtualbox ...
@@ -71,7 +71,7 @@ $ minikube stop
 
 * **删除本地集群**
 
-```
+```bash
 $ minikube delete
 
 🔥  Deleting "minikube" from virtualbox ...

@@ -2,7 +2,8 @@
 # 从背包开始慢慢扒开动态规划的底裤
 
 ## **演示Code**
-```
+
+```go
 package dynamicprogramming
 
 import "fmt"
@@ -226,7 +227,7 @@ func (b *bageg4) GetMax() int {
 
 ## **测试Code**
 
-```
+```go
 package dynamicprogramming
 
 import "testing"
@@ -270,4 +271,3 @@ func TestBageg4_GetMax(t *testing.T) {
    t.Log(b.GetMax())
 }
 ```
-

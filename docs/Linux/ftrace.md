@@ -6,15 +6,15 @@
 
 先用一个例子体验一下`Ftrace`的使用简单，且功能强大。使用 root 用户进入`/sys/kernel/debug/tracing`目录，执行 `echo` 和 `cat` 命令：
 
-<pre><code>
-# <b>echo _do_fork > set_graph_function</b>
-# <b>echo function_graph > current_tracer</b>
-# <b>cat trace | head -20</b>
+```bash
+echo _do_fork > set_graph_function
+echo function_graph > current_tracer
+cat trace | head -20
 # tracer: function_graph
 #
 # CPU  DURATION                  FUNCTION CALLS
 # |     |   |                     |   |   |   |
- 3)               |  _do_fork() {
+3)               |_do_fork() {
  3)               |    copy_process() {
  3)   0.895 us    |      _raw_spin_lock_irq();
  3)               |      recalc_sigpending() {
@@ -23,14 +23,14 @@
  3)               |      dup_task_struct() {
  3)   0.775 us    |        tsk_fork_get_node();
  3)               |        kmem_cache_alloc_node() {
- 3)               |          _cond_resched() {
+3)               |_cond_resched() {
  3)   0.740 us    |            rcu_all_qs();
  3)   2.117 us    |          }
  3)   0.701 us    |          should_failslab();
  3)   2.023 us    |          memcg_kmem_get_cache();
  3)   0.889 us    |          memcg_kmem_put_cache();
  3) + 12.206 us   |        }
-</code></pre>
+```
 
 我们使用`Ftrace`的`function_graph`功能显示了内核函数 `_do_fork()` 所有子函数调用。左边的第一列是执行函数的 CPU，第二列 `DURATION` 显示在相应函数中花费的时间。我们注意到最后一行的耗时之前有个 `+` 号，提示用户注意延迟高的函数。`+` 代表耗时大于 `10 μs`。如果耗时大于 `100 μs`，则显示 `!` 号。
 
@@ -38,9 +38,9 @@
 
 使用完后执行下面的命令关闭`function_graph`：
 
-```
-# echo nop > current_tracer
-# echo > set_graph_function
+```bash
+echo nop > current_tracer
+echo > set_graph_function
 ```
 
 使用 `Ftrace` 的 `function_graph` 功能，可以查看内核函数的子函数调用链，帮助我们理解复杂的代码流程，而这只是 `Ftrace` 的功能之一。这么强大的功能，我们不必安装额外的用户空间工具，只要使用 `echo` 和 `cat` 命令访问特定的文件就能实现。`Ftrace` 对用户的使用接口正是**tracefs**文件系统。
@@ -49,8 +49,8 @@
 
 用户通过**tracefs**文件系统使用`Ftrace`，这很符合一切皆文件的Linux哲学。**tracefs**文件系统一般挂载在`/sys/kernel/tracing`目录。由于`Ftrace`最初是`debugfs`文件系统的一部分，后来才被拆分为自己的`tracefs`。所以如果系统已经挂载了`debugfs`，那么仍然会保留原来的目录结构，将`tracefs`挂载到`debugfs`的子目录下。我们可以使用 `mount` 命令查看当前系统`debugfs`和`tracefs`挂载点：
 
-```
-# mount -t debugfs,tracefs
+```bash
+mount -t debugfs,tracefs
 debugfs on /sys/kernel/debug type debugfs (rw,nosuid,nodev,noexec,relatime)
 tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
 tracefs on /sys/kernel/debug/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
@@ -60,8 +60,8 @@ tracefs on /sys/kernel/debug/tracing type tracefs (rw,nosuid,nodev,noexec,relati
 
 `tracefs`下的文件主要分两类：控制文件和输出文件。这些文件的名字都很直观，像前面例子通过 `current_tracer` 设置当前要使用的 tracer，然后从 `trace`中读取结果。还有像 `available_tracers` 包含了当前内核可用的 tracer，可以设置 `trace_options` 自定义输出。
 
-<pre><code>
-# <b>ls -F /sys/kernel/tracing/</b>
+```bash
+ls -F /sys/kernel/tracing/
 available_events            max_graph_depth         stack_max_size
 available_filter_functions  options/                stack_trace
 available_tracers           per_cpu/                stack_trace_filter
@@ -80,7 +80,7 @@ hwlat_detector/             set_ftrace_pid          tracing_on
 instances/                  set_graph_function      tracing_thresh
 kprobe_events               set_graph_notrace       uprobe_events
 kprobe_profile              snapshot                uprobe_profile
-</code></pre>
+```
 
 本文后面的示例假定你已经处在了`/sys/kernel/tracing`或`/sys/kernel/debug/tracing`目录下。
 
@@ -98,17 +98,17 @@ kprobe_profile              snapshot                uprobe_profile
 
 启用函数追踪功能，只需要将 `current_tracer` 文件的内容设置为 "function"：
 
-<pre><code>
-# <b>echo function > current_tracer</b>
-# <b>cat trace | head -20</b>
+```bash
+echo function > current_tracer
+cat trace | head -20
 # tracer: function
 #
 # entries-in-buffer/entries-written: 204981/2728851   #P:4
 #
 #                                _-----=> irqs-off
-#                               / _----=> need-resched
+#                               /_----=> need-resched
 #                              | / _---=> hardirq/softirq
-#                              || / _--=> preempt-depth
+#                              || /_--=> preempt-depth
 #                              ||| /     delay
 #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
 #              | |         |   ||||      |         |
@@ -121,67 +121,68 @@ kprobe_profile              snapshot                uprobe_profile
             curl-7231    [001] .... 44389.399228: atime_needs_update <-touch_atime
             curl-7231    [001] .... 44389.399228: current_time <-atime_needs_update
 
-# <b> echo nop > current_tracer </b>
-</code></pre>
+echo nop > current_tracer
+```
 
 文件头已经很好的解释了每一列的含义。前两项是被追踪的任务名称和 PID，大括号内是执行跟踪的CPU。`TIMESTAMP` 是启动后的时间，后面是被追踪的函数，它的调用者在 `<-` 之后。
 
 我们可以设置 `set_ftrace_filter` 选择想要跟踪的函数：
 
-<pre><code>
-# <b>echo '*sleep' > set_ftrace_filter</b>
-# <b>echo function > current_tracer</b>
-# <b>cat trace_pipe</b>
+```bash
+echo '*sleep' > set_ftrace_filter
+echo function > current_tracer
+cat trace_pipe
 
 sleep-9445    [001] .... 45978.125872: common_nsleep <-__x64_sys_clock_nanosleep
 sleep-9445    [001] .... 45978.125873: hrtimer_nanosleep <-common_nsleep
 sleep-9445    [001] .... 45978.125873: do_nanosleep <-hrtimer_nanosleep
- cron-568     [002] .... 45978.504262: __x64_sys_clock_nanosleep <-do_syscall_64
+cron-568     [002] .... 45978.504262:__x64_sys_clock_nanosleep <-do_syscall_64
  cron-568     [002] .... 45978.504264: common_nsleep <-__x64_sys_clock_nanosleep
  cron-568     [002] .... 45978.504264: hrtimer_nanosleep <-common_nsleep
  cron-568     [002] .... 45978.504264: do_nanosleep <-hrtimer_nanosleep
-sleep-9448    [001] .... 45978.885085: __x64_sys_clock_nanosleep <-do_syscall_64
+sleep-9448    [001] .... 45978.885085:__x64_sys_clock_nanosleep <-do_syscall_64
 sleep-9448    [001] .... 45978.885087: common_nsleep <-__x64_sys_clock_nanosleep
 sleep-9448    [001] .... 45978.885087: hrtimer_nanosleep <-common_nsleep
 
-# <b>echo nop > current_tracer</b>
-# <b>echo > set_ftrace_filter</b>
-</code></pre>
+echo nop > current_tracer
+echo > set_ftrace_filter
+```
 
 `trace_pipe` 包含了与 `trace` 相同的输出，从这个文件的读取会返回一个无尽的事件流，它也会消耗事件，所以在读取一次后，它们就不再在跟踪缓冲区中了。
 
 也许你只想跟踪一个特定的进程，可以通过设置 `set_ftrace_pid` 内容为PID指定想追踪的特定进程。让 tracer 只追踪PID列在这个文件中的线程：
 
-<pre><code>
-# <b>echo [PID] > set_ftrace_pid</b>
-# <b>echo function > current_tracer</b>
-</code></pre>
+```bash
+  echo [PID] > set_ftrace_pid
+  echo function > current_tracer
+```
 
 如果设置了 `function-fork` 选项，那么当一个 PID 被列在 `set_ftrace_pid` 这个文件中时，其子任务的 PID 将被自动添加到这个文件中，并且子任务也将被 tracer 追踪。
 
-<pre><code>
-# <b>echo function-fork > trace_options</b>
-</code></pre>
+```bash
+echo function-fork > trace_options
+```
 
 取消`function-fork` 选项：
-<pre><code>
-# <b>echo nofunction-fork > trace_options</b>
-# <b>cat trace_options</b>
+
+```bash
+echo nofunction-fork > trace_options
+cat trace_options
 ...
 noevent-fork
 nopause-on-trace
 function-trace
-<b>nofunction-fork</b>
+<b>nofunction-fork
 nodisplay-graph
 nostacktrace
 ...
-</code></pre>
+```
 
 取消 `set_ftrace_pid` 的设置：
-<pre><code>
-# <b>echo > set_ftrace_pid</b>
-</code></pre>
 
+```bash
+echo > set_ftrace_pid
+```
 
 ## Ftrace function_graph
 
@@ -189,10 +190,10 @@ nostacktrace
 
 我们再看一个例子：
 
-<pre><code>
-# <b>echo try_to_wake_up > set_graph_function</b>
-# <b>echo function_graph > current_tracer</b>
-# <b>cat trace | head -20</b>
+```bash
+echo try_to_wake_up > set_graph_function
+echo function_graph > current_tracer
+cat trace | head -20
 # tracer: function_graph
 #
 # CPU  DURATION                  FUNCTION CALLS
@@ -214,9 +215,9 @@ nostacktrace
  0)               |      ttwu_do_wakeup() {
  0)               |        check_preempt_curr() {
 
-# <b>echo nop > current_tracer</b>
-# <b>echo > set_graph_function</b>
-</code></pre>
+echo nop > current_tracer
+echo > set_graph_function
+```
 
 前面提到过，函数耗时大于 10 μs，前面会有 + 号提醒用户注意，其他的符号还有：
 
@@ -231,27 +232,27 @@ nostacktrace
 
 函数Profiler提供了内核函数调用的统计数据，可以观察哪些内核函数正在被使用，并能发现哪些函数的执行耗时最长。
 
-<pre><code>
-# echo nop > current_tracer
-# echo 1 > function_profile_enabled
-# echo 0 > function_profile_enabled
-# echo > set_ftrace_filter
-</code></pre>
+```bash
+echo nop > current_tracer
+echo 1 > function_profile_enabled
+echo 0 > function_profile_enabled
+echo > set_ftrace_filter
+```
 
 这里有一个要注意的地方，确保使用的是 `0 >`，而不是 `0>`。这两者的含义不一样，`0>`是对文件描述符 `0` 的重定向。同样要避免使用 `1>`，因为这是对文件描述符 `1` 的重定向。
 
 现在可以从 `trace_stat` 目录中读取 profile 的统计数据。在这个目录中，profile 数据按照 CPU 保存在名为 function[n] 文件中。我使用的4核CPU，看一下profile 结果：
 
-<pre><code>
-# <b>ls  trace_stat/</b>
+```bash
+ls  trace_stat/
 function0  function1  function2  function3
-# <b>head trace_stat/function*</b>
+head trace_stat/function*
 ==> trace_stat/function0 <==
   Function                               Hit    Time            Avg             s^2
   --------                               ---    ----            ---             ---
   tcp_sendmsg                            202    3791.163 us     18.768 us       659.733 us  
   tcp_sendmsg_locked                     202    3521.863 us     17.434 us       638.307 us  
-  tcp_recvmsg                            125    2238.773 us     17.910 us       1062.699 us 
+  tcp_recvmsg                            125    2238.773 us     17.910 us       1062.699 us
   tcp_push                               202    2168.569 us     10.735 us       467.879 us  
   tcp_write_xmit                          47    2107.768 us     44.846 us       414.934 us  
   tcp_v4_do_rcv                           49    871.318 us      17.782 us       126.562 us  
@@ -268,7 +269,7 @@ function0  function1  function2  function3
   tcp_v4_do_rcv                           60    825.359 us      13.755 us       102.550 us  
   tcp_write_xmit                          28    807.609 us      28.843 us       336.106 us  
   tcp_push                                86    805.776 us      9.369 us        299.815 us  
-  tcp_rcv_established                     60    777.510 us      12.958 us       99.129 us   
+  tcp_rcv_established                     60    777.510 us      12.958 us       99.129 us
 
 ==> trace_stat/function2 <==
   Function                               Hit    Time            Avg             s^2
@@ -279,7 +280,7 @@ function0  function1  function2  function3
   tcp_send_ack                           487    7558.698 us     15.520 us       111.035 us  
   tcp_write_xmit                         328    6281.810 us     19.151 us       656.192 us  
   tcp_tasklet_func                       162    4258.312 us     26.285 us       797.278 us  
-  tcp_ack                                575    4148.714 us     7.215 us        27.061 us   
+  tcp_ack                                575    4148.714 us     7.215 us        27.061 us
   tcp_tsq_handler                        162    4123.507 us     25.453 us       791.961 us  
 
 ==> trace_stat/function3 <==
@@ -287,13 +288,13 @@ function0  function1  function2  function3
   --------                               ---    ----            ---             ---
   tcp_recvmsg                            567    5773.997 us     10.183 us       397.950 us  
   tcp_send_ack                           127    1881.700 us     14.816 us       133.317 us  
-  tcp_v4_do_rcv                          133    1783.527 us     13.409 us       86.122 us   
-  tcp_rcv_established                    133    1690.142 us     12.707 us       83.527 us   
+  tcp_v4_do_rcv                          133    1783.527 us     13.409 us       86.122 us
+  tcp_rcv_established                    133    1690.142 us     12.707 us       83.527 us
   tcp_sendmsg                             54    1652.290 us     30.597 us       698.120 us  
   tcp_sendmsg_locked                      54    1574.276 us     29.153 us       666.451 us  
   tcp_write_xmit                          40    1184.827 us     29.620 us       354.719 us  
   tcp_push                                54    1129.465 us     20.916 us       486.157 us  
-</code></pre>
+```
 
 第一行是每一列的名称，分别是函数名称（Function），调用次数（Hit），函数的总时间（Time）、平均函数时间（Avg）和标准差（s^2）。输出结果显示，`tcp_sendmsg()` 在3个 CPU 上都是最频繁的，`tcp_v4_rcv()` 在 CPU2 上被调用了1618次，平均延迟为 `17.218 us`。
 
@@ -309,8 +310,8 @@ function0  function1  function2  function3
 
 所有的 tracepoint events 的控制文件都在 events 目录下，按照类别以子目录形式组织：
 
-<pre><code>
-# <b>ls -F events/</b>
+```bash
+ls -F events/
 alarmtimer/    ftrace/          iwlwifi/        oom/             smbus/
 block/         gpio/            iwlwifi_data/   page_isolation/  sock/
 bpf_test_run/  gvt/             iwlwifi_io/     pagemap/         spi/
@@ -321,7 +322,7 @@ cgroup/        header_event     kmem/           printk/          task/
 clk/           header_page      kvm/            pwm/             tcp/
 
 ...
-</code></pre>
+```
 
 我们以 `events/sched/sched_process_fork` 事件为例，该事件是在 `include/trace/events/sched.h` 中由 `TRACE_EVENT` 宏所[定义](https://github.com/torvalds/linux/blob/bcf876870b95592b52519ed4aafcf9d95999bc9c/include/trace/events/sched.h#L287)：
 
@@ -331,9 +332,9 @@ clk/           header_page      kvm/            pwm/             tcp/
  */
 TRACE_EVENT(sched_process_fork,
 
-	TP_PROTO(struct task_struct *parent, struct task_struct *child),
+ TP_PROTO(struct task_struct *parent, struct task_struct *child),
 
-	TP_ARGS(parent, child),
+ TP_ARGS(parent, child),
     ...
 );
 ```
@@ -351,33 +352,34 @@ TRACE_EVENT(sched_process_fork,
  */
 long _do_fork(struct kernel_clone_args *args)
 {
-	...
+ ...
     p = copy_process(NULL, trace, NUMA_NO_NODE, args);
-	add_latent_entropy();
+ add_latent_entropy();
 
-	/*
-	 * Do this prior waking up the new thread - the thread pointer
-	 * might get invalid after that point, if the thread exits quickly.
-	 */
-	trace_sched_process_fork(current, p);
+ /*
+  * Do this prior waking up the new thread - the thread pointer
+  * might get invalid after that point, if the thread exits quickly.
+  */
+ trace_sched_process_fork(current, p);
 
-	pid = get_task_pid(p, PIDTYPE_PID);
+ pid = get_task_pid(p, PIDTYPE_PID);
 
     ...
 }
 ```
 
 在 `events/sched/sched_process_fork` 目录下，有这个事件的控制文件：
-<pre><code>
-# <b>ls events/sched/sched_process_fork</b>
+
+```bash
+ls events/sched/sched_process_fork
 enable  filter  format  hist  id  inject  trigger
-</code></pre>
+```
 
 我们演示如何通过 `enable` 文件开启和关闭这个 tracepoint 事件：
 
-<pre><code>
-# <b>echo 1 > events/sched/sched_process_fork/enable</b>
-# <b>cat trace_pipe</b>
+```bash
+echo 1 > events/sched/sched_process_fork/enable
+cat trace_pipe
    bash-14414   [000] .... 109721.823843: sched_process_fork: comm=bash pid=14414 child_comm=bash child_pid=24001
    bash-14468   [002] .... 109730.405810: sched_process_fork: comm=bash pid=14468 child_comm=bash child_pid=24002
    bash-14468   [002] .... 109737.925336: sched_process_fork: comm=bash pid=14468 child_comm=bash child_pid=24003
@@ -385,37 +387,37 @@ test.sh-24003   [000] .... 109737.968891: sched_process_fork: comm=test.sh pid=2
    curl-24004   [002] .... 109737.975038: sched_process_fork: comm=curl pid=24004 child_comm=curl child_pid=24005
    ...
 
-# <b>echo 0 > events/sched/sched_process_fork/enable</b>
-</code></pre>
+echo 0 > events/sched/sched_process_fork/enable
+```
 
 前五列分别是进程名称，PID，CPU ID，irqs-off 等标志位，timestamp 和 tracepoint 事件名称。其余部分是 tracepoint 格式字符串，包含当前这个 tracepoint 记录的重要信息。格式字符串可以在 `events/sched/sched_process_fork/format` 文件中查看：
 
-<pre><code>
-# <b>cat events/sched/sched_process_fork/format</b>
+```bash
+cat events/sched/sched_process_fork/format
 name: sched_process_fork
 ID: 315
 format:
-	field:unsigned short common_type;	offset:0;	size:2;	signed:0;
-	field:unsigned char common_flags;	offset:2;	size:1;	signed:0;
-	field:unsigned char common_preempt_count;	offset:3;	size:1;	signed:0;
-	field:int common_pid;	offset:4;	size:4;	signed:1;
+ field:unsigned short common_type; offset:0; size:2; signed:0;
+ field:unsigned char common_flags; offset:2; size:1; signed:0;
+ field:unsigned char common_preempt_count; offset:3; size:1; signed:0;
+ field:int common_pid; offset:4; size:4; signed:1;
 
-	field:char parent_comm[16];	offset:8;	size:16;	signed:1;
-	field:pid_t parent_pid;	offset:24;	size:4;	signed:1;
-	field:char child_comm[16];	offset:28;	size:16;	signed:1;
-	field:pid_t child_pid;	offset:44;	size:4;	signed:1;
+ field:char parent_comm[16]; offset:8; size:16; signed:1;
+ field:pid_t parent_pid; offset:24; size:4; signed:1;
+ field:char child_comm[16]; offset:28; size:16; signed:1;
+ field:pid_t child_pid; offset:44; size:4; signed:1;
 
 print fmt: "comm=%s pid=%d child_comm=%s child_pid=%d", REC->parent_comm, REC->parent_pid, REC->child_comm, REC->child_pid
-</code></pre>
+```
 
 通过这个 format 文件，我们可以了解这个 tracepoint 事件每个字段的含义。
 
 我们再演示一个使用 `trigger` 控制文件的例子：
 
-<pre><code>
-# <b>echo 'hist:key=parent_pid' > events/sched/sched_process_fork/trigger</b>
+```bash
+echo 'hist:key=parent_pid' > events/sched/sched_process_fork/trigger
 # [do some working]
-# <b>cat events/sched/sched_process_fork/hist</b>
+cat events/sched/sched_process_fork/hist
 # event histogram
 #
 # trigger info: hist:keys=parent_pid:vals=hitcount:sort=hitcount:size=2048 [active]
@@ -439,8 +441,8 @@ Totals:
     Dropped: 0
 
 # remove triger
-# <b>echo '!hist:key=parent_pid' > events/sched/sched_process_fork/trigger</b>
-</code></pre>
+echo '!hist:key=parent_pid' > events/sched/sched_process_fork/trigger
+```
 
 这个例子使用了 hist triggers，通过 sched_process_fork 事件来统计 _do_fork 的次数，并按照进程ID生成直方图。输出显示了 PID 24493 在追踪期间 fork 了24个子进程，最后几行显示了统计数据。
 
@@ -448,8 +450,8 @@ Totals:
 
 我的系统内核版本是 `5.8.0-59-generic`，当前可用的 tracepoints events 有2547个：
 
-<pre><code>
-# <b>cat available_events</b>
+```bash
+cat available_events
 btrfs:btrfs_transaction_commit
 btrfs:btrfs_inode_new
 btrfs:btrfs_inode_request
@@ -461,9 +463,9 @@ btrfs:btrfs_truncate_show_fi_regular
 btrfs:btrfs_get_extent_show_fi_inline
 ...
 
-# <b>cat available_events | wc -l</b>
+cat available_events | wc -l
 2547
-</code></pre>
+```
 
 [Event Tracing](https://www.kernel.org/doc/html/latest/trace/events.html) 基础设施应该是 Ftrace 的另一大贡献，它提供的 `TRACE_EVENT` 宏统一了内核 tracepoint 的实现方式，为 tracepoint events 提供了基础支持。[perf](https://perf.wiki.kernel.org/index.php/Main_Page) 的 tracepoint events 也是基于 Ftrace 实现的。
 
@@ -477,11 +479,11 @@ btrfs:btrfs_get_extent_show_fi_inline
  */
 TRACE_EVENT(sched_switch,
 
-	TP_PROTO(bool preempt,
-		 struct task_struct *prev,
-		 struct task_struct *next),
+ TP_PROTO(bool preempt,
+   struct task_struct *prev,
+   struct task_struct *next),
 
-	TP_ARGS(preempt, prev, next),
+ TP_ARGS(preempt, prev, next),
 ```
 
 `TRACE_EVENT` 宏会根据事件名称 `sched_switch` 生成 tracepoint 方法 `trace_sched_switch()`，在源码中查找该方法，发现在 `kernel/sched/core.c` 的 [__schedule()](https://github.com/torvalds/linux/blob/bcf876870b95592b52519ed4aafcf9d95999bc9c/kernel/sched/core.c#L4216)中调用了`trace_sched_switch()` ：
@@ -495,14 +497,14 @@ static void __sched notrace __schedule(bool preempt)
 {
     ...
     if (likely(prev != next)) {
-		rq->nr_switches++;
+  rq->nr_switches++;
         ...
         trace_sched_switch(preempt, prev, next);
         ...
     else {
-		...
-	}
-	balance_callback(rq);
+  ...
+ }
+ balance_callback(rq);
 }
 ```
 

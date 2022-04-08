@@ -2,7 +2,8 @@
 # 来来来,新鲜出炉的AC自动机了解一下
 
 ## **演示Code**
-```
+
+```go
 package string
 
 import "fmt"
@@ -138,7 +139,7 @@ func (q *arr) isEmpty() bool {
 
 ## **测试Code**
 
-```
+```go
 package string
 
 import "testing"
@@ -153,4 +154,3 @@ func TestAcTrie(t *testing.T) {
    ac.match([]rune("你告诉我什么叫他妈的惊喜?还是这就叫这他妈的惊喜"))
 }
 ```
-

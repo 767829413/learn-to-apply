@@ -4,7 +4,8 @@
 ---
 
 ## **八皇后 Code**
-```
+
+```go
 package backtrack
 
 import "fmt"
@@ -64,7 +65,7 @@ func printQueen() {
 
 ## **八皇后 测试Code**
 
-```
+```go
 package greedy
 
 import (
@@ -81,7 +82,8 @@ func TestNewHuffManTree(t *testing.T) {
 ---
 
 ## **01背包 Code**
-```
+
+```go
 package backtrack
 
 var max int
@@ -111,7 +113,7 @@ func GetMax() int {
 
 ## **01背包 测试Code**
 
-```
+```go
 package backtrack
 
 import "testing"
@@ -129,7 +131,7 @@ func TestBagQuestion(t *testing.T) {
 
 ## **简单小正则 匹配(0~n)或者?匹配(0~1) Code**
 
-```
+```go
 package backtrack
 
 type Pattern struct {
@@ -175,7 +177,7 @@ func (p *Pattern) rematch(pIndex, tIndex int, text []rune, tlen int) {
 
 ## **简单小正则 匹配(0~n)或者?匹配(0~1) 测试Code**
 
-```
+```go
 package backtrack
 
 import "testing"

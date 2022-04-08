@@ -10,7 +10,7 @@ Zion项目我们采用[Feature Branch Workflow](https://www.atlassian.com/git/tu
 
 * **从远程clone respository**
 
-```
+```bash
 git clone https://github.com/apusic/zion.git
 ```
 
@@ -18,7 +18,7 @@ git clone https://github.com/apusic/zion.git
 
 首先让本地的master处于最新状态：
 
-```
+```bash
 git fetch
 git checkout master
 git rebase origin/master
@@ -26,13 +26,13 @@ git rebase origin/master
 
 创建分支
 
-```
+```bash
 git checkout -b myfeature
 ```
 
 * **在分支上进行开发**
 
-```
+```bash
 git status # View the state of the repo
 git add # Stage a file
 git commit # Commit a file
@@ -42,7 +42,7 @@ git commit # Commit a file
 
 * **开发过程中，保持分支和最新代码同步**
 
-```
+```bash
 # While on your myfeature branch.
 git fetch
 git rebase origin/master
@@ -56,7 +56,7 @@ git rebase origin/master
 
 所有改动都提交后，执行：
 
-```
+```bash
 git push -f origin myfeature
 ```
 
@@ -96,5 +96,3 @@ git push -f origin myfeature
 在`Merge pull requests`过程中也可能产生冲突，可以在GitHub的界面上解决冲突，详细的操作轻参考[Addressing merge conflicts](https://help.github.com/articles/addressing-merge-conflicts/)。
 
 如果冲突较多，建议先在客户端执行rebase，按照上面的步骤解决完冲突，再进行`Merge pull requests`。
-
-

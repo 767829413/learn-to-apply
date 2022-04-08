@@ -3,8 +3,8 @@
 
 `kubectl`会使用`$HOME/.kube`目录下的`config`文件作为缺省的配置文件。我们可以使用`kubectl config view`查看配置信息：
 
-```
-$kubectl config view
+```bash
+$ kubectl config view
 
 apiVersion: v1
 clusters:
@@ -37,8 +37,8 @@ users:
 
 在不了解`context`的概念之前，想访问不同的集群，每次都要把集群对应的`config`文件copy到`$HOME/.kube`目录下，同时要记得使用`kubectl cluster-info`确认当前访问的集群：
 
-```
-$kubectl cluster-info
+```bash
+$ kubectl cluster-info
 
 Kubernetes master is running at https://172.18.100.90:6443
 KubeDNS is running at https://172.18.100.90:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -48,13 +48,13 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 在看了[这篇文档](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/)后，才知道`kubectl`可以切换`context`来管理多个集群。如果你有多个集群的`config`文件，可以在系统环境变量`KUBECONFIG`中指定每个`config`文件的路径，例如：
 
-```
+```bash
 export  KUBECONFIG=/home/mazhen/kube-config/config-cluster-1:/home/mazhen/kube-config/config-cluster-1
 ```
 
 再使用`kubectl config view`查看集群配置时，`kubectl`会自动合并多个`config`的信息：
 
-```
+```bash
 $ kubectl config view
 
 apiVersion: v1
@@ -92,7 +92,7 @@ users:
 
 可以看到，配置中包含了两个集群，两个用户，以及两个`context`。我们可以使用`kubectl config get-contexts`查看配置中所有的`context`：
 
-```
+```bash
 $ kubectl config get-contexts
 
 CURRENT   NAME                         CLUSTER      AUTHINFO           NAMESPACE
@@ -102,7 +102,7 @@ CURRENT   NAME                         CLUSTER      AUTHINFO           NAMESPACE
 
 星号`*`标识了当前的工作集群。如果想访问另一个集群，使用`kubectl config use-context`进行切换：
 
-```
+```bash
 $ kubectl config use-context cluster-2-admin@cluster-2
 
 Switched to context "cluster-2-admin@cluster-2".
@@ -110,7 +110,7 @@ Switched to context "cluster-2-admin@cluster-2".
 
 我们可以再次确认切换的结果：
 
-```
+```bash
 $ kubectl config get-contexts
 
 CURRENT   NAME                         CLUSTER      AUTHINFO           NAMESPACE

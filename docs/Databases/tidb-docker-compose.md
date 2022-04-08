@@ -6,20 +6,19 @@ TiDB提供了`docker compose`的部署方式，可以很方便的在单机上搭
 
 * 下载`tidb-docker-compose`项目
 
-```
+```bash
 git clone https://github.com/pingcap/tidb-docker-compose.git
 ```
 
 * 使用`docker compose`启动TiDB集群
 
-```
+```bash
 cd tidb-docker-compose && sudo docker-compose up -d
 ```
 
 就这么简单，集群启动成功了。使用`docker ps`查看：
 
 ![docker-ps](../../media/Pictures/docker-ps.png)
-
 
 可以看到，已经启动了三个`tikv`实例，一个`tidb`实例，三个`pd`实例，还有监控和`tidb-vision`。
 
@@ -31,7 +30,7 @@ tidb-vision 的访问地址是 [http://localhost:8010](http://localhost:8010)
 
 如果本机有`MySQL`客户端，可以直接连接：
 
-```
+```bash
 mysql -h 127.0.0.1 -P 4000 -u root
 ```
 
@@ -39,30 +38,24 @@ mysql -h 127.0.0.1 -P 4000 -u root
 
 ![docker-network](../../media/Pictures/docker-network.png)
 
-
 然后启动MySQL容器，注意要加入`TiDB`集群的`docker`网络：
 
-```
+```bash
 sudo docker run --network=tidbdockercompose_default --rm -it mysql /bin/bash
 ```
 
 因为和`TiDB`集群在同一个docker网络，在MySQL容器内，可以使用`tidb`名称访问到`TiDB`：
 
-```
+```bash
 mysql -h tidb -P 4000 -u root
 ```
 
 * 停止集群
 
-```
+```bash
 sudo docker-compose down
 ```
-
 
 如果自己build了`TiDB`版本想在本机run集群，[文档](https://github.com/pingcap/tidb-docker-compose)写的很清楚，告诉你镜像应该放在什么位置。
 
 Have fun!
-
-
-
-

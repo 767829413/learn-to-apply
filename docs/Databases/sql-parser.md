@@ -8,13 +8,13 @@ PingCAP发布了TiDB的[源码阅读系列文章](https://pingcap.com/blog-cn/#%
 
 TiDB是使用[goyacc](https://github.com/cznic/goyacc)根据预定义的SQL语法规则文件[parser.y](https://github.com/pingcap/tidb/blob/master/parser/parser.y)生成SQL语法解析器。我们可以在TiDB的[Makefile](https://github.com/pingcap/tidb/blob/50e98f427e7943396dbe38d23178b9f9dc5398b7/Makefile#L50)文件中看到这个过程，先build `goyacc`工具，然后使用`goyacc`根据`parser.y`生成解析器`parser.go`：
 
-```
+```bash
 goyacc:
-	$(GOBUILD) -o bin/goyacc parser/goyacc/main.go
+ $(GOBUILD) -o bin/goyacc parser/goyacc/main.go
 
 parser: goyacc
-	bin/goyacc -o /dev/null parser/parser.y
-	bin/goyacc -o parser/parser.go parser/parser.y 2>&1 ...
+ bin/goyacc -o /dev/null parser/parser.y
+ bin/goyacc -o parser/parser.go parser/parser.y 2>&1 ...
 ```
 
 [goyacc](https://github.com/cznic/goyacc)是[yacc](http://dinosaur.compilertools.net/)的Golang版，所以要想看懂语法规则定义文件[parser.y](https://github.com/pingcap/tidb/blob/master/parser/parser.y)，了解解析器是如何工作的，先要对[Lex & Yacc](http://dinosaur.compilertools.net/)有些了解。
@@ -25,12 +25,11 @@ parser: goyacc
 
 ![lex-yac](../../media/Pictures/lex-yacc-1.png)
 
-
 上图描述了使用`Lex & Yacc`构建编译器的流程。`Lex`根据用户定义的`patterns`生成词法分析器。词法分析器读取源代码，根据`patterns`将源代码转换成`tokens`输出。`Yacc`根据用户定义的语法规则生成语法分析器。语法分析器以词法分析器输出的`tokens`作为输入，根据语法规则创建出语法树。最后对语法树遍历生成输出结果，结果可以是产生机器代码，或者是边遍历 `AST` 边解释执行。
 
 从上面的流程可以看出，用户需要分别为`Lex`提供`patterns`的定义，为 `Yacc` 提供语法规则文件，`Lex & Yacc` 根据用户提供的输入文件，生成符合他们需求的词法分析器和语法分析器。这两种配置都是文本文件，并且结构相同：
 
-```
+```bash
 ... definitions ...
 %%
 ... rules ...
@@ -40,7 +39,7 @@ parser: goyacc
 
 文件内容由 `%%` 分割成三部分，我们重点关注中间规则定义部分。对于上面的例子，`Lex` 的输入文件如下：
 
-```
+```bash
 ...
 %%
 /* 变量 */
@@ -65,18 +64,18 @@ parser: goyacc
 
 上面只列出了规则定义部分，可以看出该规则使用正则表达式定义了变量、整数和操作符等几种`token`。例如整数`token`的定义如下：
 
-```
+```text
 [0-9]+  {
             yylval = atoi(yytext);
             return INTEGER; 
         }
 ```
 
-当输入字符串匹配这个正则表达式，大括号内的动作会被执行：将整数值存储在变量 `yylval` 中，并返回 `token` 类型 `INTEGER` 给 `Yacc`。 
+当输入字符串匹配这个正则表达式，大括号内的动作会被执行：将整数值存储在变量 `yylval` 中，并返回 `token` 类型 `INTEGER` 给 `Yacc`。
 
 再来看看 `Yacc` 语法规则定义文件：
 
-```
+```text
 %token INTEGER VARIABLE
 %left '+' '-'
 %left '*' '/'
@@ -111,7 +110,7 @@ expr:
 
 语法规则使用了`BNF`定义。`BNF` 可以用来表达上下文无关（*context-free*）语言，大部分的现代编程语言都可以使用 `BNF` 表示。上面的规则定义了三个**产生式**。**产生式**冒号左边的项（例如 `statement`）被称为**非终结符**， `INTEGER` 和 `VARIABLE` 被称为**终结符**,它们是由 `Lex` 返回的 `token` 。**终结符**只能出现在**产生式**的右侧。可以使用**产生式**定义的语法生成表达式：
 
-```
+```text
 expr -> expr * expr
      -> expr * INTEGER
      -> expr + expr * INTEGER
@@ -121,7 +120,7 @@ expr -> expr * expr
 
 解析表达式是生成表达式的逆向操作，我们需要归约表达式到一个**非终结符**。`Yacc` 生成的语法分析器使用**自底向上**的归约（*shift-reduce*）方式进行语法解析，同时使用堆栈保存中间状态。还是看例子，表达式`x + y * z`的解析过程：
 
-```
+```text
 1    . x + y * z
 2    x . + y * z
 3    expr . + y * z
@@ -141,7 +140,7 @@ expr -> expr * expr
 
 产生式右侧的大括号中定义了该规则关联的动作，例如：
 
-```
+```text
 expr:  expr '*' expr         { $$ = $1 * $3; }
 ```
 
@@ -149,7 +148,7 @@ expr:  expr '*' expr         { $$ = $1 * $3; }
 
 上面例子中语法规则关联的动作，在完成语法解析的同时，也完成了表达式求值。一般我们希望语法解析的结果是一棵抽象语法树（`AST`），可以这么定义语法规则关联的动作：
 
-```
+```text
 ...
 %%
 ...
@@ -182,39 +181,39 @@ nodeType *opr(int oper, int nops, ...) {
 
 [goyacc](https://github.com/cznic/goyacc) 是golang版的 `Yacc`。和 `Yacc`的功能一样，`goyacc` 根据输入的语法规则文件，生成该语法规则的go语言版解析器。`goyacc` 生成的解析器 `yyParse` 要求词法分析器符合下面的接口：
 
-```
+```go
 type yyLexer interface {
-	Lex(lval *yySymType) int
-	Error(e string)
+ Lex(lval *yySymType) int
+ Error(e string)
 }
 ```
 
 或者
 
-```
+```go
 type yyLexerEx interface {
-	yyLexer
-	// Hook for recording a reduction.
-	Reduced(rule, state int, lval *yySymType) (stop bool) // Client should copy *lval.
+ yyLexer
+ // Hook for recording a reduction.
+ Reduced(rule, state int, lval *yySymType) (stop bool) // Client should copy *lval.
 }
 ```
 
 TiDB没有使用类似 `Lex` 的工具生成词法分析器，而是纯手工打造，词法分析器对应的代码是 [parser/lexer.go](https://github.com/pingcap/tidb/blob/master/parser/lexer.go)， 它实现了 `goyacc` 要求的接口：
 
-```
+```go
 ...
 // Scanner implements the yyLexer interface.
 type Scanner struct {
-	r   reader
-	buf bytes.Buffer
+ r   reader
+ buf bytes.Buffer
 
-	errs         []error
-	stmtStartPos int
+ errs         []error
+ stmtStartPos int
 
-	// For scanning such kind of comment: /*! MySQL-specific code */ or /*+ optimizer hint */
-	specialComment specialCommentScanner
+ // For scanning such kind of comment: /*! MySQL-specific code */ or /*+ optimizer hint */
+ specialComment specialCommentScanner
 
-	sqlMode mysql.SQLMode
+ sqlMode mysql.SQLMode
 }
 // Lex returns a token and store the token value in v.
 // Scanner satisfies yyLexer interface.
@@ -222,17 +221,16 @@ type Scanner struct {
 // return 0 tells parser that scanner meets EOF,
 // return invalid tells parser that scanner meets illegal character.
 func (s *Scanner) Lex(v *yySymType) int {
-	tok, pos, lit := s.scan()
-	v.offset = pos.Offset
-	v.ident = lit
-	...
+ tok, pos, lit := s.scan()
+ v.offset = pos.Offset
+ v.ident = lit
+ ...
 }
 // Errors returns the errors during a scan.
 func (s *Scanner) Errors() []error {
-	return s.errs
+ return s.errs
 }
 ```
-
 
 另外`lexer` 使用了`字典树`技术进行 `token` 识别，具体的实现代码在[parser/misc.go](https://github.com/pingcap/tidb/blob/master/parser/misc.go)
 
@@ -242,7 +240,7 @@ func (s *Scanner) Errors() []error {
 
 `parser.y` 有6500多行，第一次打开可能会被吓到，其实这个文件仍然符合我们上面介绍过的结构：
 
-```
+```text
 ... definitions ...
 %%
 ... rules ...
@@ -254,13 +252,13 @@ func (s *Scanner) Errors() []error {
 
 第一部分主要是定义`token`的类型、优先级、结合性等。注意 `union` 这个联合体结构体：
 
-```
+```text
 %union {
-	offset int // offset
-	item interface{}
-	ident string
-	expr ast.ExprNode
-	statement ast.StmtNode
+ offset int // offset
+ item interface{}
+ ident string
+ expr ast.ExprNode
+ statement ast.StmtNode
 }
 ```
 
@@ -272,36 +270,36 @@ func (s *Scanner) Errors() []error {
 
 `goyacc` 根据这个 `union` 在解析器里生成对应的 `struct` 是：
 
-```
+```go
 type yySymType struct {
-	yys       int
-	offset    int // offset
-	item      interface{}
-	ident     string
-	expr      ast.ExprNode
-	statement ast.StmtNode
+ yys       int
+ offset    int // offset
+ item      interface{}
+ ident     string
+ expr      ast.ExprNode
+ statement ast.StmtNode
 }
 ```
 
 在语法解析过程中，`非终结符`会被构造成抽象语法树（`AST`）的节点 [ast.ExprNode](https://github.com/pingcap/tidb/blob/73900c4890dc9708fe4de39021001ca554bc8374/ast/ast.go#L60) 或 [ast.StmtNode](https://github.com/pingcap/tidb/blob/73900c4890dc9708fe4de39021001ca554bc8374/ast/ast.go#L94)。抽象语法树相关的数据结构都定义在 [ast](https://github.com/pingcap/tidb/tree/master/ast) 包中，它们大都实现了 [ast.Node](https://github.com/pingcap/tidb/blob/73900c4890dc9708fe4de39021001ca554bc8374/ast/ast.go#L29) 接口：
 
-```
+```go
 // Node is the basic element of the AST.
 // Interfaces embed Node should have 'Node' name suffix.
 type Node interface {
-	Accept(v Visitor) (node Node, ok bool)
-	Text() string
-	SetText(text string)
+ Accept(v Visitor) (node Node, ok bool)
+ Text() string
+ SetText(text string)
 }
 ```
 
 这个接口有一个 `Accept` 方法，接受 `Visitor` 参数，后续对 `AST` 的处理，主要依赖这个 `Accept` 方法，以 `Visitor` 模式遍历所有的节点以及对 `AST` 做结构转换。
 
-```
+```go
 // Visitor visits a Node.
 type Visitor interface {
-	Enter(n Node) (node Node, skipChildren bool)
-	Leave(n Node) (node Node, ok bool)
+ Enter(n Node) (node Node, skipChildren bool)
+ Leave(n Node) (node Node, ok bool)
 }
 ```
 
@@ -309,67 +307,67 @@ type Visitor interface {
 
 `union` 后面是对 `token` 和 `非终结符` 按照类型分别定义：
 
-```
+```text
 /* 这部分的token是 ident类型 */
-%token	<ident>
+%token <ident>
     ...
-	add			"ADD"
-	all 			"ALL"
-	alter			"ALTER"
-	analyze			"ANALYZE"
-	and			"AND"
-	as			"AS"
-	asc			"ASC"
-	between			"BETWEEN"
-	bigIntType		"BIGINT"
+ add   "ADD"
+ all    "ALL"
+ alter   "ALTER"
+ analyze   "ANALYZE"
+ and   "AND"
+ as   "AS"
+ asc   "ASC"
+ between   "BETWEEN"
+ bigIntType  "BIGINT"
     ...
 
 /* 这部分的token是 item 类型 */   
-%token	<item>
-    /*yy:token "1.%d"   */	floatLit        "floating-point literal"
-	/*yy:token "1.%d"   */	decLit          "decimal literal"
-	/*yy:token "%d"     */	intLit          "integer literal"
-	/*yy:token "%x"     */	hexLit          "hexadecimal literal"
-	/*yy:token "%b"     */	bitLit          "bit literal"
+%token <item>
+    /*yy:token "1.%d"   */ floatLit        "floating-point literal"
+ /*yy:token "1.%d"   */ decLit          "decimal literal"
+ /*yy:token "%d"     */ intLit          "integer literal"
+ /*yy:token "%x"     */ hexLit          "hexadecimal literal"
+ /*yy:token "%b"     */ bitLit          "bit literal"
 
-	andnot		"&^"
-	assignmentEq	":="
-	eq		"="
-	ge		">="
+ andnot  "&^"
+ assignmentEq ":="
+ eq  "="
+ ge  ">="
     ...
 
 /* 非终结符按照类型分别定义 */
-%type	<expr>
-    Expression			"expression"
-	BoolPri				"boolean primary expression"
-	ExprOrDefault			"expression or default"
-	PredicateExpr			"Predicate expression factor"
-	SetExpr				"Set variable statement value's expression"
+%type <expr>
+    Expression   "expression"
+ BoolPri    "boolean primary expression"
+ ExprOrDefault   "expression or default"
+ PredicateExpr   "Predicate expression factor"
+ SetExpr    "Set variable statement value's expression"
     ...
 
-%type	<statement>
-	AdminStmt			"Check table statement or show ddl statement"
-	AlterTableStmt			"Alter table statement"
-	AlterUserStmt			"Alter user statement"
-	AnalyzeTableStmt		"Analyze table statement"
-	BeginTransactionStmt		"BEGIN TRANSACTION statement"
-	BinlogStmt			"Binlog base64 statement"
+%type <statement>
+ AdminStmt   "Check table statement or show ddl statement"
+ AlterTableStmt   "Alter table statement"
+ AlterUserStmt   "Alter user statement"
+ AnalyzeTableStmt  "Analyze table statement"
+ BeginTransactionStmt  "BEGIN TRANSACTION statement"
+ BinlogStmt   "Binlog base64 statement"
     ...
-	
+ 
 %type   <item>
-	AlterTableOptionListOpt		"alter table option list opt"
-	AlterTableSpec			"Alter table specification"
-	AlterTableSpecList		"Alter table specification list"
-	AnyOrAll			"Any or All for subquery"
-	Assignment			"assignment"
+ AlterTableOptionListOpt  "alter table option list opt"
+ AlterTableSpec   "Alter table specification"
+ AlterTableSpecList  "Alter table specification list"
+ AnyOrAll   "Any or All for subquery"
+ Assignment   "assignment"
     ...
 
-%type	<ident>
-	KeyOrIndex		"{KEY|INDEX}"
-	ColumnKeywordOpt	"Column keyword or empty"
-	PrimaryOpt		"Optional primary keyword"
-	NowSym			"CURRENT_TIMESTAMP/LOCALTIME/LOCALTIMESTAMP"
-	NowSymFunc		"CURRENT_TIMESTAMP/LOCALTIME/LOCALTIMESTAMP/NOW"
+%type <ident>
+ KeyOrIndex  "{KEY|INDEX}"
+ ColumnKeywordOpt "Column keyword or empty"
+ PrimaryOpt  "Optional primary keyword"
+ NowSym   "CURRENT_TIMESTAMP/LOCALTIME/LOCALTIMESTAMP"
+ NowSymFunc  "CURRENT_TIMESTAMP/LOCALTIME/LOCALTIMESTAMP/NOW"
     ...
 ```
 
@@ -384,10 +382,10 @@ type Visitor interface {
 %precedence stringLit
 ...
 %right   assignmentEq
-%left 	pipes or pipesAsOr
-%left 	xor
-%left 	andand and
-%left 	between
+%left  pipes or pipesAsOr
+%left  xor
+%left  andand and
+%left  between
 ...
 ```
 
@@ -395,7 +393,7 @@ type Visitor interface {
 
 `SQL` 语法可以参照MySQL参考手册的[SQL Statement Syntax](https://dev.mysql.com/doc/refman/5.7/en/sql-syntax.html) 部分，例如 [SELECT](https://dev.mysql.com/doc/refman/5.7/en/select.html) 语法的定义如下：
 
-```
+```sql
 SELECT
     [ALL | DISTINCT | DISTINCTROW ]
       [HIGH_PRIORITY]
@@ -423,15 +421,15 @@ SELECT
 
 我们可以在 `parser.y` 中找到 `SELECT` 语句的产生式：
 
-```
+```text
 SelectStmt:
-	"SELECT" SelectStmtOpts SelectStmtFieldList OrderByOptional SelectStmtLimit SelectLockOpt
+ "SELECT" SelectStmtOpts SelectStmtFieldList OrderByOptional SelectStmtLimit SelectLockOpt
     { ... }
 |   "SELECT" SelectStmtOpts SelectStmtFieldList FromDual WhereClauseOptional SelectStmtLimit SelectLockOpt
     { ... }  
 |   "SELECT" SelectStmtOpts SelectStmtFieldList "FROM"
-	TableRefsClause WhereClauseOptional SelectStmtGroup HavingClause OrderByOptional
-	SelectStmtLimit SelectLockOpt
+ TableRefsClause WhereClauseOptional SelectStmtGroup HavingClause OrderByOptional
+ SelectStmtLimit SelectLockOpt
     { ... } 
 ```
 
@@ -439,49 +437,49 @@ SelectStmt:
 
 我省略了大括号中的 `action` ，这部分代码会构建出 `AST` 的 [ast.SelectStmt](https://github.com/pingcap/tidb/blob/3ac2b34a3491e809a96db358ee2ce8d11a66abb6/ast/dml.go#L451) 节点：
 
-```
+```go
 type SelectStmt struct {
-	dmlNode
-	resultSetNode
+ dmlNode
+ resultSetNode
 
-	// SelectStmtOpts wraps around select hints and switches.
-	*SelectStmtOpts
-	// Distinct represents whether the select has distinct option.
-	Distinct bool
-	// From is the from clause of the query.
-	From *TableRefsClause
-	// Where is the where clause in select statement.
-	Where ExprNode
-	// Fields is the select expression list.
-	Fields *FieldList
-	// GroupBy is the group by expression list.
-	GroupBy *GroupByClause
-	// Having is the having condition.
-	Having *HavingClause
-	// OrderBy is the ordering expression list.
-	OrderBy *OrderByClause
-	// Limit is the limit clause.
-	Limit *Limit
-	// LockTp is the lock type
-	LockTp SelectLockType
-	// TableHints represents the level Optimizer Hint
-	TableHints []*TableOptimizerHint
+ // SelectStmtOpts wraps around select hints and switches.
+ *SelectStmtOpts
+ // Distinct represents whether the select has distinct option.
+ Distinct bool
+ // From is the from clause of the query.
+ From *TableRefsClause
+ // Where is the where clause in select statement.
+ Where ExprNode
+ // Fields is the select expression list.
+ Fields *FieldList
+ // GroupBy is the group by expression list.
+ GroupBy *GroupByClause
+ // Having is the having condition.
+ Having *HavingClause
+ // OrderBy is the ordering expression list.
+ OrderBy *OrderByClause
+ // Limit is the limit clause.
+ Limit *Limit
+ // LockTp is the lock type
+ LockTp SelectLockType
+ // TableHints represents the level Optimizer Hint
+ TableHints []*TableOptimizerHint
 }
 ```
 
-可以看出，`ast.SelectStmt` 结构体内包含的内容和 `SELECT`  语法也是一一对应的。 
+可以看出，`ast.SelectStmt` 结构体内包含的内容和 `SELECT`  语法也是一一对应的。
 
 其他的产生式也都是根据对应的 `SQL` 语法来编写的。从 `parser.y` 的注释看到，这个文件最初是用[工具](https://github.com/cznic/ebnf2y)从 `BNF` 转化生成的，从头手写这个规则文件，工作量会非常大。
 
 完成了语法规则文件 `parser.y` 的定义，就可以使用 `goyacc` 生成语法解析器：
 
-```
+```bash
 bin/goyacc -o parser/parser.go parser/parser.y 2>&1
 ```
 
 TiDB对 `lexer` 和 `parser.go` 进行了封装，对外提供 [parser.yy_parser](https://github.com/pingcap/tidb/blob/master/parser/yy_parser.go)  进行SQL语句的解析：
 
-```
+```go
 // Parse parses a query string to raw ast.StmtNode.
 func (parser *Parser) Parse(sql, charset, collation string) ([]ast.StmtNode, error) {
     ...
@@ -490,48 +488,48 @@ func (parser *Parser) Parse(sql, charset, collation string) ([]ast.StmtNode, err
 
 最后，我写了一个简单的例子，使用TiDB的 `SQL Parser` 进行SQL语法解析，构建出 `AST`，然后利用 `visitor` 遍历 `AST` ：
 
-```
+```go
 package main
 
 import (
-	"fmt"
-	"github.com/pingcap/tidb/parser"
-	"github.com/pingcap/tidb/ast"
+ "fmt"
+ "github.com/pingcap/tidb/parser"
+ "github.com/pingcap/tidb/ast"
 )
 
 type visitor struct{}
 
 func (v *visitor) Enter(in ast.Node) (out ast.Node, skipChildren bool) {
-	fmt.Printf("%T\n", in)
-	return in, false
+ fmt.Printf("%T\n", in)
+ return in, false
 }
 
 func (v *visitor) Leave(in ast.Node) (out ast.Node, ok bool) {
-	return in, true
+ return in, true
 }
 
 func main() {
 
-	sql := "SELECT /*+ TIDB_SMJ(employees) */ emp_no, first_name, last_name " +
-		"FROM employees USE INDEX (last_name) " +
-		"where last_name='Aamodt' and gender='F' and birth_date > '1960-01-01'"
+ sql := "SELECT /*+ TIDB_SMJ(employees) */ emp_no, first_name, last_name " +
+  "FROM employees USE INDEX (last_name) " +
+  "where last_name='Aamodt' and gender='F' and birth_date > '1960-01-01'"
 
-	sqlParser := parser.New()
-	stmtNodes, err := sqlParser.Parse(sql, "", "")
-	if err != nil {
-		fmt.Printf("parse error:\n%v\n%s", err, sql)
-		return
-	}
-	for _, stmtNode := range stmtNodes {
-		v := visitor{}
-		stmtNode.Accept(&v)
-	}
+ sqlParser := parser.New()
+ stmtNodes, err := sqlParser.Parse(sql, "", "")
+ if err != nil {
+  fmt.Printf("parse error:\n%v\n%s", err, sql)
+  return
+ }
+ for _, stmtNode := range stmtNodes {
+  v := visitor{}
+  stmtNode.Accept(&v)
+ }
 }
 ```
 
 我实现的 `visitor` 什么也没干，只是输出了节点的类型。 这段代码的运行结果如下，依次输出遍历过程中遇到的节点类型：
 
-```
+```go
 *ast.SelectStmt
 *ast.TableOptimizerHint
 *ast.TableRefsClause
@@ -565,4 +563,3 @@ func main() {
 ```
 
 了解了TiDB `SQL Parser` 的实现，我们就有可能实现TiDB当前不支持的语法，例如添加内置函数，也为我们学习查询计划以及优化打下了基础。希望这篇文章对你能有所帮助。
-

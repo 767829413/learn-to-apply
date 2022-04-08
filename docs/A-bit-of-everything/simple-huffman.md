@@ -2,7 +2,8 @@
 # 贪心算法指导下的应用Huffman(霍夫曼)编码,构建霍夫曼树
 
 ## **演示Code**
-```
+
+```go
 package greedy
 
 import "fmt"
@@ -172,7 +173,7 @@ func countCharNum(str []rune, n int) (result map[rune]int) {
 
 ## **测试Code**
 
-```
+```go
 package greedy
 
 import (
@@ -185,4 +186,3 @@ func TestNewHuffManTree(t *testing.T) {
    h.Print()
 }
 ```
-

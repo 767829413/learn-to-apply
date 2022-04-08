@@ -4,18 +4,18 @@ Go中的引用类型不是指针，而是对指针的包装，在它的内部通
 
 看一个例子比较直观：
 
-```
+```go
 s := []string{"a","b", "c"}
 fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
 ```
 
 简单解释一下这段代码。先初始化一个`slice`，然后使用`unsafe.Pointer(&s)`把`slice`的指针转换为通用指针`Pointer`。[Pointer](https://golang.org/pkg/unsafe/#Pointer)是可以代表任何数据类型的指针。最后把`Pointer`强制转换为`*reflect.SliceHeader`。[SliceHeader](https://golang.org/pkg/reflect/#SliceHeader)代表的是`slice`运行时数据结构，定义如下：
 
-```
+```go
 type SliceHeader struct {
-	Data uintptr
-	Len  int
-	Cap  int
+ Data uintptr
+ Len  int
+ Cap  int
 }
 ```
 
@@ -23,12 +23,11 @@ type SliceHeader struct {
 
 上面的代码运行结果如下：
 
-`&reflect.SliceHeader{Data:0xc420078180, Len:3, Cap:3} `
-
+`&reflect.SliceHeader{Data:0xc420078180, Len:3, Cap:3}`
 
 `slice`可以自动扩容，当底层数组容量不够时，会自动创建一个新的数组替换。让我们做个实验：
 
-```
+```go
 s := []string{"a","b", "c"}
 fmt.Printf("%#v \n", s)
 fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
@@ -53,31 +52,31 @@ fmt.Println()
 
 在Go中进行函数调用时，参数都是按值传递的。对于引用类型也是按值传递，会复制引用本身，但不会复制引用指向的底层数据结构。还是看代码：
 
-```
+```go
 func foo(s []string) {
-	fmt.Println("======= func foo =======")
-	s = append(s, "f")
-	fmt.Printf("%#v \n", s)
-	fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
-	fmt.Printf("&s: %p \n", &s)
-	fmt.Println("========================\n")
+ fmt.Println("======= func foo =======")
+ s = append(s, "f")
+ fmt.Printf("%#v \n", s)
+ fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
+ fmt.Printf("&s: %p \n", &s)
+ fmt.Println("========================\n")
 }
 
 func main() {
 
    ......
    
-	s = append(s, "e")
-	fmt.Printf("%#v \n", s)
-	fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
-	fmt.Printf("&s: %p \n", &s)
-	fmt.Println()
+ s = append(s, "e")
+ fmt.Printf("%#v \n", s)
+ fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
+ fmt.Printf("&s: %p \n", &s)
+ fmt.Println()
 
-	foo(s)
+ foo(s)
 
-	fmt.Printf("%#v \n", s)
-	fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
-	fmt.Printf("&s: %p \n", &s)
+ fmt.Printf("%#v \n", s)
+ fmt.Printf("%#v \n", (*reflect.SliceHeader)(unsafe.Pointer(&s)))
+ fmt.Printf("&s: %p \n", &s)
 }
 ```
 
@@ -91,7 +90,7 @@ func main() {
 
 Go语言的引用类型有`slice`, `map`, `channel`, `interface`和`function`。技术上，[string](https://golang.org/pkg/reflect/#StringHeader)也是引用类型：
 
-```
+```go
 type StringHeader struct {
         Data uintptr
         Len  int
@@ -100,29 +99,29 @@ type StringHeader struct {
 
 有时候为了性能优化，可以利用`[]byte`和`string`头部结构的“部分相同”，以非安全的指针类型转换来实现类型变更，避免底层数组的复制。例如 `TiDB` 中就使用了这个[技巧](https://github.com/pingcap/tidb/blob/master/util/hack/hack.go)：
 
-```
+```go
 // String converts slice to string without copy.
 // Use at your own risk.
 func String(b []byte) (s string) {
-	if len(b) == 0 {
-		return ""
-	}
-	pbytes := (*reflect.SliceHeader)(unsafe.Pointer(&b))
-	pstring := (*reflect.StringHeader)(unsafe.Pointer(&s))
-	pstring.Data = pbytes.Data
-	pstring.Len = pbytes.Len
-	return
+ if len(b) == 0 {
+  return ""
+ }
+ pbytes := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+ pstring := (*reflect.StringHeader)(unsafe.Pointer(&s))
+ pstring.Data = pbytes.Data
+ pstring.Len = pbytes.Len
+ return
 }
 
 // Slice converts string to slice without copy.
 // Use at your own risk.
 func Slice(s string) (b []byte) {
-	pbytes := (*reflect.SliceHeader)(unsafe.Pointer(&b))
-	pstring := (*reflect.StringHeader)(unsafe.Pointer(&s))
-	pbytes.Data = pstring.Data
-	pbytes.Len = pstring.Len
-	pbytes.Cap = pstring.Len
-	return
+ pbytes := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+ pstring := (*reflect.StringHeader)(unsafe.Pointer(&s))
+ pbytes.Data = pstring.Data
+ pbytes.Len = pstring.Len
+ pbytes.Cap = pstring.Len
+ return
 }
 ```
 

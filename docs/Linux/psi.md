@@ -10,7 +10,6 @@
 
 于是，Facebook的工程师 Johannes Weiner 发明了一个新的指标 [PSI(Pressure Stall Information)](https://www.kernel.org/doc/html/latest/accounting/psi.html)，并向内核提交了这个[patch](https://lwn.net/Articles/763629/)。
 
-
 ## PSI 概览
 
 当 CPU、内存或 IO 设备争夺激烈的时候，系统会出现负载的延迟峰值、吞吐量下降，并可能触发内核的 `OOM Killer`。**PSI(Pressure Stall Information)** 字面意思就是由于资源（CPU、内存和 IO）压力造成的任务执行停顿。**PSI** 量化了由于硬件资源紧张造成的任务执行中断，统计了系统中任务等待硬件资源的时间。我们可以用 **PSI** 作为指标，来衡量硬件资源的压力情况。停顿的时间越长，说明资源面临的压力越大。
@@ -23,7 +22,7 @@
 
 CPU、内存和 IO 的压力信息导出到了 `/proc/pressure/` 目录下对应的文件，你可以使用 `cat` 命令查询资源的压力统计信息：
 
-```
+```bash
 $ cat /proc/pressure/cpu 
 some avg10=0.03 avg60=0.07 avg300=0.06 total=8723835
 
@@ -43,8 +42,6 @@ full avg10=0.00 avg60=0.00 avg300=0.00 total=34054
 例如上面 `/proc/pressure/cpu` 的输出，**avg10=0.03** 意思是任务因为CPU资源的不可用，在最近的10秒内，有0.03%的时间停顿等待 CPU。如果 avg 大于 40 ，也就是有 40% 时间在等待硬件资源，就说明这种资源的压力已经比较大了。
 
 **total** 是任务停顿的总时间，以微秒（microseconds）为单位。通过 total 可以检测出停顿持续太短而无法影响平均值的情况。
-
-
 
 ## some 和 full 的定义
 
@@ -72,7 +69,7 @@ some 表明了由于缺乏资源而造成至少一个任务的停顿。
 
 如何向 PSI 注册触发器呢？打开 `/proc/pressure/` 目录下资源对应的 PSI 接口文件，写入想要的阈值和时间窗口，然后在打开的文件描述符上使用 `select()`、`poll()` 或 `epoll()` 方法等待通知事件。写入 PSI 接口文件的数据格式为：
 
-```
+```text
 <some|full> <停顿阈值> <时间窗口>
 ```
 
@@ -136,20 +133,20 @@ int main() {
 
 在服务器上编译并运行该程序，如果当前服务器比较空闲，我们会看到程序一直在等待 IO 压力超过阈值的通知：
 
-```
+```bash
 $ sudo ./monitor 
 waiting for events...
 ```
 
 我们为服务器制造点 IO 压力，生成一个5G大小的文件：
 
-```
-$ dd if=/dev/zero of=/home/mazhen/testfile bs=4096 count=1310720
+```bash
+dd if=/dev/zero of=/home/mazhen/testfile bs=4096 count=1310720
 ```
 
 再回到示例程序的运行窗口，会发现已经收到事件触发的通知：
 
-```
+```bash
 $ sudo ./monitor 
 waiting for events...
 event triggered!

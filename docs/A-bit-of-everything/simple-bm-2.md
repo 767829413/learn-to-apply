@@ -4,7 +4,8 @@
     由BM算法(好后缀,坏字符原则)到KMP(好前缀原则)算法,主串不动,模式串多滑动
 
 ## **演示Code**
-```
+
+```go
 package string
 
 func KnuthMorrisPrattMatch(a, b []rune, n, m int) int {
@@ -43,7 +44,7 @@ func getNext(b []rune, m int) []int {
 
 ## **测试Code**
 
-```
+```go
 package string
 
 import "testing"

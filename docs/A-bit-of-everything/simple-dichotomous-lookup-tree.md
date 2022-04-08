@@ -2,7 +2,8 @@
 # 写个简易的二分查找树玩玩
 
 ## **演示Code**
-```
+
+```go
 package tree
 
 import "fmt"
@@ -167,4 +168,3 @@ func (bst *BinarySearchTree) midOrderTraverse(node *node) {
    bst.midOrderTraverse(node.Right)
 }
 ```
-

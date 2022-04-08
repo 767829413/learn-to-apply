@@ -33,12 +33,11 @@
 
 ![2018-11-11 20.35.36](media/docker/2018-11-11%2020.35.36.png)
 
-
 * **配置内核参数，允许IP forwarding**
 
 分别在`Node-1`、`Node-2`上执行：
 
-```
+```bash
 sudo sysctl net.ipv4.conf.all.forwarding=1
 ```
 
@@ -46,13 +45,13 @@ sudo sysctl net.ipv4.conf.all.forwarding=1
 
 在`Node-1`上执行：
 
-```
+```bash
 sudo ip netns add docker1
 ```
 
 在`Node-2`上执行：
 
-```
+```bash
 sudo ip netns add docker2
 ```
 
@@ -62,7 +61,7 @@ sudo ip netns add docker2
 
 分别在`Node-1`、`Node-2`上执行：
 
-```
+```bash
 sudo ip link add veth0 type veth peer name veth1
 ```
 
@@ -70,13 +69,13 @@ sudo ip link add veth0 type veth peer name veth1
 
 在`Node-1`上执行：
 
-```
+```bash
 sudo ip link set veth0 netns docker1
 ```
 
 在`Node-2`上执行：
 
-```
+```bash
 sudo ip link set veth0 netns docker2
 ```
 
@@ -84,7 +83,7 @@ sudo ip link set veth0 netns docker2
 
 分别在`Node-1`、`Node-2`上创建bridge `br0`：
 
-```
+```bash
 sudo brctl addbr br0
 ```
 
@@ -92,7 +91,7 @@ sudo brctl addbr br0
 
 分别在`Node-1`、`Node-2`上执行：
 
-```
+```bash
 sudo brctl addif br0 veth1
 ```
 
@@ -100,14 +99,14 @@ sudo brctl addif br0 veth1
 
 在`Node-1`上执行：
 
-```
+```bash
 sudo ip netns exec docker1 ip addr add 172.18.10.2/24 dev veth0
 sudo ip netns exec docker1 ip link set veth0 up
 ```
 
 在`Node-2`上执行：
 
-```
+```bash
 sudo ip netns exec docker2 ip addr add 172.18.20.2/24 dev veth0
 sudo ip netns exec docker2 ip link set veth0 up
 ```
@@ -116,7 +115,7 @@ sudo ip netns exec docker2 ip link set veth0 up
 
 分别在`Node-1`、`Node-2`上执行：
 
-```
+```bash
 sudo ip link set veth1 up
 ```
 
@@ -124,14 +123,14 @@ sudo ip link set veth1 up
 
 在`Node-1`上执行：
 
-```
+```bash
 sudo ip addr add 172.18.10.1/24 dev br0
 sudo ip link set br0 up
 ```
 
 在`Node-2`上执行：
 
-```
+```bash
 sudo ip addr add 172.18.20.1/24 dev br0
 sudo ip link set br0 up
 ```
@@ -140,13 +139,13 @@ sudo ip link set br0 up
 
 在`Node-1`上执行：
 
-```
+```bash
 sudo ip netns exec docker1 route add default gw 172.18.10.1 veth0
 ```
 
 在`Node-2`上执行：
 
-```
+```bash
 sudo ip netns exec docker2 route add default gw 172.18.20.1 veth0
 ```
 
@@ -156,7 +155,7 @@ sudo ip netns exec docker2 route add default gw 172.18.20.1 veth0
 
 在`Node-1`创建`vxlan100`：
 
-```
+```bash
 sudo ip link add vxlan100 type vxlan \
     id 100 \
     local 192.168.31.183 \
@@ -167,20 +166,20 @@ sudo ip link add vxlan100 type vxlan \
 
 为`vxlan100`分配IP地址，然后激活：
 
-```
+```bash
 sudo ip addr add 172.18.10.0/32 dev vxlan100
 sudo ip link set vxlan100 up
 ```
 
 为了让`Node-1`上访问`172.18.20.0/24`网段的数据包能进入“隧道”，我们需要增加如下的路由规则：
 
-```
+```bash
 sudo ip route add 172.18.20.0/24 dev vxlan100
 ```
 
 在`Node-2`上执行相应的命令：
 
-```
+```bash
 sudo ip link add vxlan100 type vxlan \
     id 100 \
     local 192.168.31.192 \
@@ -211,7 +210,7 @@ sudo ip route add 172.18.10.0/24 dev vxlan100 scope global
 
 然后在`Node-1`上增加ARP和FDB的记录：
 
-```
+```bash
 sudo ip neighbor add 172.18.20.2 lladdr 0e:e6:e6:5d:c2:da dev vxlan100
 sudo bridge fdb append 0e:e6:e6:5d:c2:da dev vxlan100 dst 192.168.31.192
 ```
@@ -228,7 +227,7 @@ sudo bridge fdb append 0e:e6:e6:5d:c2:da dev vxlan100 dst 192.168.31.192
 
 类似的，在`Node-2`上执行下面的命令：
 
-```
+```bash
 sudo ip neighbor add 172.18.10.2 lladdr 3a:8d:b8:69:10:3e dev vxlan100
 sudo bridge fdb append 3a:8d:b8:69:10:3e dev vxlan100 dst 192.168.31.183
 ```
@@ -239,19 +238,19 @@ sudo bridge fdb append 3a:8d:b8:69:10:3e dev vxlan100 dst 192.168.31.183
 
 我们从`docker1`访问`docker2`，在`Node-1`上执行：
 
-```
+```bash
 sudo ip netns exec docker1 ping -c 3 172.18.20.2
 ```
 
 同样可以从`docker2`访问`docker1`，在`Node-2`上执行：
 
-```
+```bash
 sudo ip netns exec docker2 ping -c 3 172.18.10.2
 ```
 
 在测试过程中如果需要troubleshooting，可以使用`tcpdump`在`veth1`、`br0`、`vxlan100`等虚拟设备上抓包，确认网络包是按照预定路线在转发：
 
-```
+```bash
 sudo tcpdump -i vxlan100 -n
 ```
 
@@ -259,7 +258,7 @@ sudo tcpdump -i vxlan100 -n
 
 在两个节点上删除我们创建的虚拟设备：
 
-```
+```bash
 sudo ip link set br0 down
 sudo brctl delbr br0
 sudo ip link  del veth1
@@ -276,7 +275,7 @@ Docker原生的[overlay driver](https://docs.docker.com/network/overlay/)底层�
 
 执行的命令略有差异，我不再赘述过程，直接提供了命令，大家自己实验吧：
 
-```
+```bash
 # 在Node-1上执行
 sudo sysctl net.ipv4.conf.all.forwarding=1
 
@@ -355,5 +354,3 @@ sudo bridge fdb append [docker1的MAC地址]  dev vxlan100 dst 192.168.31.183
 相信通过亲自动手实验，容器网络对你来说不再神秘。希望本文对你理解容器网络有所帮助。
 
 下一篇我将动手实验容器跨主机通信的[路由模式](./docker-route-networks.md)。
-
-

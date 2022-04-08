@@ -9,15 +9,15 @@
 
 ### PID
 
-*  进程总是会被分配一个唯一标识它们的进程ID号，简称 **PID**。
+* 进程总是会被分配一个唯一标识它们的进程ID号，简称 **PID**。
 
-*  用 `fork` 或 `clone` 产生的每个进程都由内核自动地分配了一个唯一的 **PID** 。
+* 用 `fork` 或 `clone` 产生的每个进程都由内核自动地分配了一个唯一的 **PID** 。
 
 * **PID** 保存在 [task_struct->pid](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L943)中。
 
 ### TGID
 
-*  进程以 `CLONE_THREAD` 标志调用 `clone` 方法，创建与该进程共享资源的线程。线程有独立的[task_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L723)，但它 `task_struct`内的 [files_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1070)、[fs_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1067) 、[sighand_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1081)、[signal_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1080)和[mm_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L857) 等数据结构仅仅是对进程相应数据结构的引用。
+* 进程以 `CLONE_THREAD` 标志调用 `clone` 方法，创建与该进程共享资源的线程。线程有独立的[task_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L723)，但它 `task_struct`内的 [files_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1070)、[fs_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1067) 、[sighand_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1081)、[signal_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L1080)和[mm_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L857) 等数据结构仅仅是对进程相应数据结构的引用。
 
 * 由进程创建的所有线程都有相同的线程组ID(**TGID**)。线程有自己的 **PID**，它的**TGID** 就是进程的主线程的 **PID**。如果进程没有使用线程，则其 **PID** 和 **TGID** 相同。
 
@@ -40,16 +40,15 @@
 ```c
 enum pid_type
 {
-	PIDTYPE_PID,
-	PIDTYPE_TGID,
-	PIDTYPE_PGID,
-	PIDTYPE_SID,
-	PIDTYPE_MAX,
+ PIDTYPE_PID,
+ PIDTYPE_TGID,
+ PIDTYPE_PGID,
+ PIDTYPE_SID,
+ PIDTYPE_MAX,
 };
 ```
 
 * `task_struce->signal` 是 [signal_struct](https://github.com/torvalds/linux/blob/8bb7eca972ad531c9b149c0a51ab43a417385813/include/linux/sched/signal.h?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L82) 类型，维护了进程收到的信号，`task_struce->signal` 被该进程的所有线程共享。从 **PGID** 保存在 `task_struct->signal->pids[PIDTYPE_PGID]`中可以看出进程组和信号处理相关。
-
 
 ### SID
 
@@ -71,7 +70,7 @@ enum pid_type
 
 进程通过 `fork()` 创建出一个子进程，就形成来父子关系，如果创建出多个子进程，那么这些子进程间属于兄弟关系。可以用 `pstree` 命令查看当前系统的进程树。
 
-```
+```bash
 $ pstree -p
 systemd(1)─┬─ModemManager(759)─┬─{ModemManager}(802)
            │                   └─{ModemManager}(806)
@@ -107,7 +106,7 @@ Linux 系统中可以有多个会话（**session**），每个会话可以包含
 
 我们来看一个会话和进程组的例子。
 
-```
+```bash
 $ cat | head
 hello
 hello
@@ -122,11 +121,11 @@ $ ps j | more
    1532    1763    1762    1532 pts/0       1762 S+    1000   0:00 more
 ```
 
-上面的命令通过 `cat | head` 创建了第一个进程组，包含 `cat` 和 `head `两个进程。这时这个作业是前台任务，可以控制终端。当我们按下 **Ctrl + z**，会发送信号 **SIGTSTP** 给前台进程组的所有进程，该信号的缺省行为是暂停作业执行。暂停的作业会让出终端，并且进程不会再被调度，直到它们收到 **SIGCONT** 信号恢复执行。
+上面的命令通过 `cat | head` 创建了第一个进程组，包含 `cat` 和 `head`两个进程。这时这个作业是前台任务，可以控制终端。当我们按下 **Ctrl + z**，会发送信号 **SIGTSTP** 给前台进程组的所有进程，该信号的缺省行为是暂停作业执行。暂停的作业会让出终端，并且进程不会再被调度，直到它们收到 **SIGCONT** 信号恢复执行。
 
 然后我们通过 `ps j | more` 创建了另一个进程组，包含 `ps` 和 `more` 两个进程。`ps` 的参数 `j` 表示用任务格式显示进程。输出中的 **STAT** 列是进程的状态码，前面的大写字母表示进程状态，我们可以从 `ps` 的 [man page](https://man7.org/linux/man-pages/man1/ps.1.html) 查看其含义：
 
-```
+```text
 D    uninterruptible sleep (usually IO)
 I    Idle kernel thread
 R    running or runnable (on run queue)
@@ -161,9 +160,8 @@ Z    defunct ("zombie") process, terminated but not reaped by its parent
 
 当终端关闭时，会向整个会话发送 **SIGHUP** 信号，通常情况下，这个会话的所有进程都会被终止。如果想让运用在后台的进程不随着 **session** 的结束而退出，可以使用 **nohup** 命令忽略 **SIGHUP** 信号：
 
-```
-$ nohup command >cmd.log 2>&1 &
+```bash
+nohup command >cmd.log 2>&1 &
 ```
 
 即使 `shell` 结束，运行于后台的进程也能无视  **SIGHUP**  信号继续执行。另外一个方法是可以让进程运行在  `screen` 或 `tmux` 这种终端多路复用器（[terminal multiplexer](https://en.wikipedia.org/wiki/Terminal_multiplexer)）中。
-

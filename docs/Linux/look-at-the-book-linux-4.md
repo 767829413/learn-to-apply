@@ -1,13 +1,13 @@
 # 看看书本上的linux系列-4
 
-## **调度, 切换运行进程, 有两种方式**
+##  **调度, 切换运行进程, 有两种方式**
 
 1. 进程调用`sleep`或等待`I/O`, 主动让出`CPU`
 2. 进程运行一段时间, 被动让出`CPU`
     * 主动让出`CPU`的方式, 调用`schedule()`,`schedule()`调用`__schedule()`
     * `__schedule()`取出`rq`; 取出当前运行进程的`task_struct`
     * 调用`pick_next_task`取下一个进程
-    * 依次调用调度类(优化: 大部分都是普通进程), 因此大多数情况调用`fair_sched_class`.` pick_next_task`
+    * 依次调用调度类(优化: 大部分都是普通进程), 因此大多数情况调用`fair_sched_class`.`pick_next_task`
     * `pick_next_task_fair`先取出`cfs_rq`队列, 取出当前运行进程调度实体, 更新 vruntime
     * `pick_next_entity`取最左节点, 并得到`task_struct`, 若与当前进程不一样, 则更新红黑树`cfs_rq`
     * 进程上下文切换: 切换进程内存空间, 切换寄存器和`CPU`上下文(运行`context_switch`)

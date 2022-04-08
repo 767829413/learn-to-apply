@@ -2,7 +2,8 @@
 # 简单Trie树的实现
 
 ## **演示Code**
-```
+
+```go
 package string
 
 type trieNode struct {
@@ -58,7 +59,7 @@ func (t *Trie) Find(text []rune) bool {
 
 ## **测试Code**
 
-```
+```go
 package string
 
 import (
@@ -81,4 +82,3 @@ func TestTrie(t *testing.T) {
    }
 }
 ```
-

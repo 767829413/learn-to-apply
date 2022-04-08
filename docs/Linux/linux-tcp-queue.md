@@ -19,7 +19,7 @@
     #include <sys/socket.h>
     int listen(int sockfd, int backlog);
     ```
-    
+
 如果我们设置的`backlog`大于`net.core.somaxconn`，`accept`队列的长度将被设置为`net.core.somaxconn`
 
 另外，为了应对`SYN flooding`（即客户端只发送SYN包发起握手而不回应ACK完成连接建立，填满server端的半连接队列，让它无法处理正常的握手请求），Linux实现了一种称为`SYN cookie`的机制，通过`net.ipv4.tcp_syncookies`控制，设置为1表示开启。简单说`SYN cookie`就是将连接信息编码在`ISN`(initial sequence number)中返回给客户端，这时server不需要将半连接保存在队列中，而是利用客户端随后发来的ACK带回的`ISN`还原连接信息，以完成连接的建立，避免了半连接队列被攻击`SYN`包填满。对于一去不复返的客户端握手，不理它就是了。
@@ -29,7 +29,6 @@
 先看看接收数据包经过的路径：
 
 ![4aa1d34d-46a7-4e38-a4b5-b78805eb6d8e](../../media/Pictures/4aa1d34d-46a7-4e38-a4b5-b78805eb6d8e.png)
-
 
 数据包的接收，从下往上经过了三层：网卡驱动、系统内核空间，最后到用户态空间的应用。Linux内核使用`sk_buff`([socket kernel buffers](http://vger.kernel.org/~davem/skb.html))数据结构描述一个数据包。当一个新的数据包到达，`NIC`（network interface controller）调用`DMA engine`，通过`Ring Buffer`将数据包放置到内核内存区。`Ring Buffer`的大小固定，它不包含实际的数据包，而是包含了指向`sk_buff`的描述符。当`Ring Buffer`满的时候，新来的数据包将给丢弃。一旦数据包被成功接收，`NIC`发起中断，由内核的中断处理程序将数据包传递给IP层。经过IP层的处理，数据包被放入队列等待TCP层处理。每个数据包经过TCP层一系列复杂的步骤，更新TCP状态机，最终到达`recv Buffer`，等待被应用接收处理。有一点需要注意，数据包到达`recv Buffer`，TCP就会回`ACK`确认，既TCP的`ACK`表示数据包已经被操作系统内核收到，但并不确保应用层一定收到数据（例如这个时候系统crash），因此一般建议应用协议层也要设计自己的`ACK`确认机制。
 
@@ -51,7 +50,6 @@
 
 ![c6befaca-1744-4634-8f87-b52ef278798](../../media/Pictures/c6befaca-1744-4634-8f87-b52ef278798c.png)
 
-
   一般很少需要开发去设置网卡Bonding模式，自己实验的话可以参考[这篇文档](http://linux.cloudibee.com/2009/10/linux-network-bonding-setup-guide/)
 
 2. **网卡多队列及中断绑定**
@@ -62,16 +60,14 @@
 
 ![23faa6cb-9d41-4660-9e2a-5042d9](../../media/Pictures/23faa6cb-9d41-4660-9e2a-5042d9c81848.png)
 
-  
   如果有MSI-X， Enable+ 并且Count > 1，则该网卡是多队列网卡。
   
   然后查看是否打开了网卡多队列。使用命令`cat /proc/interrupts`，如果看到eth0-TxRx-0表明多队列支持已经打开：
   
 ![239598e2-8b96-44ea-8441-1874a9bd9a79](../../media/Pictures/239598e2-8b96-44ea-8441-1874a9bd9a79.png)
 
-  
   最后确认每个队列是否绑定到不同的CPU。`cat /proc/interrupts`查询到每个队列的中断号，对应的文件`/proc/irq/${IRQ_NUM}/smp_affinity`为中断号`IRQ_NUM`绑定的CPU核的情况。以十六进制表示，每一位代表一个CPU核：
-   
+
     ```
     （00000001）代表CPU0
     （00000010）代表CPU1
@@ -94,7 +90,7 @@
 3. **Ring Buffer**
 
    `Ring Buffer`位于NIC和IP层之间，是一个典型的FIFO（先进先出）[环形队列](http://en.wikipedia.org/wiki/Circular_buffer)。`Ring Buffer`没有包含数据本身，而是包含了指向`sk_buff`（[socket kernel buffers](http://vger.kernel.org/~davem/skb.html)）的描述符。
-   
+
   可以使用`ethtool -g eth0`查看当前`Ring Buffer`的设置：
   
   ![f7a03e81-2826-48fe-89f5-c0f902b57bdd](../../media/Pictures/f7a03e81-2826-48fe-89f5-c0f902b57bdd.png)
@@ -103,16 +99,16 @@
   
   ![f59615d9-fb7f-49c9-860e-42c712fea6ba](../../media/Pictures/f59615d9-fb7f-49c9-860e-42c712fea6ba.png)
 
-  - **RX errors**：收包总的错误数
-  - **RX dropped**: 表示数据包已经进入了`Ring Buffer`，但是由于内存不够等系统原因，导致在拷贝到内存的过程中被丢弃。
-  - **RX overruns**: `overruns`意味着数据包没到`Ring Buffer`就被网卡物理层给丢弃了，而CPU无法及时的处理中断是造成`Ring Buffer`满的原因之一，例如中断分配的不均匀。   
+- **RX errors**：收包总的错误数
+- **RX dropped**: 表示数据包已经进入了`Ring Buffer`，但是由于内存不够等系统原因，导致在拷贝到内存的过程中被丢弃。
+- **RX overruns**: `overruns`意味着数据包没到`Ring Buffer`就被网卡物理层给丢弃了，而CPU无法及时的处理中断是造成`Ring Buffer`满的原因之一，例如中断分配的不均匀。
   
   当`dropped`数量持续增加，建议增大`Ring Buffer`，使用`ethtool -G`进行设置。
 
 4. **Input Packet Queue(数据包接收队列)**
 
   当接收数据包的速率大于内核TCP处理包的速率，数据包将会缓冲在TCP层之前的队列中。接收队列的长度由参数`net.core.netdev_max_backlog`设置。
- 
+
 5. **recv Buffer**
 
   `recv buffer`是调节TCP性能的关键参数。`BDP`(Bandwidth-delay product，带宽延迟积) 是网络的带宽和与`RTT`(round trip time)的乘积，`BDP`的含义是任意时刻处于在途未确认的最大数据量。`RTT`使用`ping`命令可以很容易的得到。为了达到最大的吞吐量，`recv Buffer`的设置应该大于`BDP`，即`recv Buffer >= bandwidth * RTT`。假设带宽是100Mbps，`RTT`是100ms，那么`BDP`的计算如下：
@@ -145,9 +141,7 @@
 
 发送数据包经过的路径：
 
-
 ![5fc64e4e-1694-4aef-babb-a8038c6b6443](../../media/Pictures/5fc64e4e-1694-4aef-babb-a8038c6b6443.png)
-
 
 和接收数据的路径相反，数据包的发送从上往下也经过了三层：用户态空间的应用、系统内核空间、最后到网卡驱动。应用先将数据写入TCP `send buffer`，TCP层将`send buffer`中的数据构建成数据包转交给IP层。IP层会将待发送的数据包放入队列`QDisc`(queueing discipline)。数据包成功放入`QDisc`后，指向数据包的描述符`sk_buff`被放入`Ring Buffer`输出队列，随后网卡驱动调用`DMA engine`将数据发送到网络链路上。
 
@@ -217,8 +211,7 @@
 
 **参考文档**
 
-* [Queueing in the Linux Network Stack](http://www.linuxjournal.com/content/queueing-linux-network-stack)
-* [TCP Implementation in Linux: A Brief Tutorial](http://www.ece.virginia.edu/cheetah/documents/papers/TCPlinux.pdf)
-* [Impact of Bandwidth Delay Product on TCP Throughput](http://sandilands.info/sgordon/impact-of-bandwidth-delay-product-on-tcp-throughput)
-* [Java程序员也应该知道的系统知识系列之网卡](http://hellojava.info/?p=292)
-
+- [Queueing in the Linux Network Stack](http://www.linuxjournal.com/content/queueing-linux-network-stack)
+- [TCP Implementation in Linux: A Brief Tutorial](http://www.ece.virginia.edu/cheetah/documents/papers/TCPlinux.pdf)
+- [Impact of Bandwidth Delay Product on TCP Throughput](http://sandilands.info/sgordon/impact-of-bandwidth-delay-product-on-tcp-throughput)
+- [Java程序员也应该知道的系统知识系列之网卡](http://hellojava.info/?p=292)

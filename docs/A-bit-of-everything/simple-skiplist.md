@@ -2,7 +2,8 @@
 # 构建一个跳表玩玩
 
 ## **演示Code**
-```
+
+```go
 package skiplist
 
 import (

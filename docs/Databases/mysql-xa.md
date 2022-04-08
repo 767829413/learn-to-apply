@@ -12,14 +12,14 @@ MySQL旧版本的[文档](https://docs.oracle.com/cd/E17952_01/mysql-5.0-en/xa.h
 
 > However, for a distributed transaction, you must use the `SERIALIZABLE` isolation level to achieve ACID properties. It is enough to use REPEATABLE READ for a nondistributed transaction, but not for a distributed transaction.
 
-怎么理解呢？举个简单的例子：假设MySQL使用的是`REPEATABLE READ` 隔离级别，XA事务 `T1 ` 修改的数据涉及两个节点 `A` 和 `B`，当事务 `T1` 在 `A` 上完成commit，而在 `B` 上还没commit之前，也就是说这时事务 `T1` 并没有真正结束，另一个XA事务 `T2` 已经可以访问到 `T1` 在 `A` 上提交后数据，这不是出现脏读了吗？
+怎么理解呢？举个简单的例子：假设MySQL使用的是`REPEATABLE READ` 隔离级别，XA事务 `T1` 修改的数据涉及两个节点 `A` 和 `B`，当事务 `T1` 在 `A` 上完成commit，而在 `B` 上还没commit之前，也就是说这时事务 `T1` 并没有真正结束，另一个XA事务 `T2` 已经可以访问到 `T1` 在 `A` 上提交后数据，这不是出现脏读了吗？
 
 那么使用`SERIALIZABLE`就能保证吗？还是看例子：事务 `T1` 修改节点 `A` 上的数据 `a -> a'`，修改 `B` 上的数据 `b -> b'`，在提交阶段，可能被其他事务 `T2` 读取到了 `a'`， 因为使用了`SERIALIZABLE`隔离级别， MySQL 会对所有读加锁，那么 `T2` 在 `B` 上读取 `b` 时会被一直阻塞，直到 `T1` 在 `B` 上完成commit，这时 `T2` 在 `B` 读取到的就是 `b'`。 也就是说，`SERIALIZABLE`隔离级别保证了读到 `a'` 的事务，不会读到 `b` ，而是读到 `b'`，确保了事务ACID的要求。
 
 更加详细的描述可以参考[鹅厂 TDSQL XA 事务隔离级别的奥秘](https://cloud.tencent.com/developer/article/1005380)，他们的结论是：
 
 > 如果某个并发事务调度机制可以让具有依赖关系的事务构成一个有向无环图(DAG)，那么这个调度就是可串行化的调度。由于每个后端DB都在使用serializable隔离级别，所以每个后端DB上面并发执行的事务分支构成的依赖关系图一定是DAG。
-> 
+>
 > 只要所有连接都是用serializable隔离级别，那么TDSQL XA执行的事务仍然可以达到可串行化隔离级别。
 
 ## SERIALIZABLE性能差，有更好的实现方式吗

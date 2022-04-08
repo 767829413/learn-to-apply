@@ -87,8 +87,8 @@
 
 当我们使用`kubeadm`安装`Kubernetes`时，`kubeadm`会为我们生成上述的一系列私钥和证书，放在`/etc/kubernetes/`目录下：
 
-```
-# tree --dirsfirst /etc/kubernetes/
+```bash
+tree --dirsfirst /etc/kubernetes/
 /etc/kubernetes/
 ├── manifests                         组件的配置文件，以Pod方式运行在集群中
 │   ├── etcd.yaml
@@ -129,8 +129,8 @@
 
 `kubelet`运行在每个工作节点，无法提前预知 `node` 的 `IP` 信息，所以 `kubelet` 一般不会明确指定服务端证书, 而是只指定 `CA` 根证书, 让 `kubelet` 根据本机信息自动生成服务端证书，保存到配置参数指定的[--cert-dir](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/)目录中。`cert-dir`的缺省值是`/var/lib/kubelet/pki`。
 
-```
-# tree /var/lib/kubelet/pki
+```bash
+tree /var/lib/kubelet/pki
 
 /var/lib/kubelet/pki
 ├── kubelet-client-2019-04-28-10-48-13.pem
@@ -145,11 +145,11 @@
 
 前面提到，当用户使用`kubectl`访问`API server`时，需要以某种方式进行身份验证，最常用的方式就是使用客户端证书。`Kubernetes`是没有 `user` 这种 API 对象，`kubectl`的用户身份信息就包含在客户端证书中。`API server`验证了客户端证书，也就可以从证书中获得用户名和所属的`group`。
 
-我们以`/etc/kubernetes/admin.conf` 为例，看看客户端证书中提供了那些信息。 
+我们以`/etc/kubernetes/admin.conf` 为例，看看客户端证书中提供了那些信息。
 
 先查看`admin.conf`文件的内容：
 
-```
+```bash
 $ kubectl --kubeconfig /etc/kubernetes/admin.conf  config view
 
 apiVersion: v1
@@ -181,9 +181,9 @@ users:
 
 客户端证书是以`base64`编码的方式保存在`client-certificate-data`字段中，我们将证书提取出来：
 
-```
-# cat /etc/kubernetes/admin.conf | grep client-certificate-data | cut -d " " -f 6 | base64 -d > admin.crt
-# cat admin.crt
+```bash
+cat /etc/kubernetes/admin.conf | grep client-certificate-data | cut -d " " -f 6 | base64 -d > admin.crt
+cat admin.crt
 
 -----BEGIN CERTIFICATE-----
 MIIC8jCCAdqgAwIBAgIIaBuxevPYGaswDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
@@ -207,8 +207,8 @@ Ngeod/C4piq+OAdyrPPFEINdLi404EYHyod0CgiD6uhoX5W06O4=
 
 使用`openssl`查看证书内容：
 
-```
-# openssl x509 -in ./admin.crt -text
+```bash
+openssl x509 -in ./admin.crt -text
 
 Certificate:
     Data:
@@ -228,7 +228,7 @@ Certificate:
 
 注意这一行：
 
-```
+```text
 Subject: O=system:masters, CN=kubernetes-admin
 ```
 
@@ -236,8 +236,8 @@ Subject: O=system:masters, CN=kubernetes-admin
 
 下一步是授权检查，也就是检查用户有没有权限执行这个操作。这是另外一个[话题](https://kubernetes.io/docs/reference/access-authn-authz/authorization/)，本文不做详细讨论，只是简单介绍一下。根据[官方文档](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)，`Kubernetes`提供了缺省的 `ClusterRole - group` 绑定关系，已经将`system:masters` group 和 角色 `cluster-admin`绑定到了一起：
 
-```
-# kubectl get clusterrolebindings  cluster-admin -o yaml
+```bash
+kubectl get clusterrolebindings  cluster-admin -o yaml
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -263,8 +263,8 @@ subjects:
 
 这个绑定关系的意思是，属于`system:masters`group的用户，都拥有`cluster-admin`角色包含的权限。我们再看看角色`cluster-admin`的具体权限信息：
 
-```
-# kubectl get clusterrole cluster-admin -o yaml
+```bash
+kubectl get clusterrole cluster-admin -o yaml
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -299,8 +299,8 @@ rules:
 
 我们自己创建`service account`对象非常简单：
 
-```
-//serviceaccount.yaml
+```bash
+cat serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -312,8 +312,8 @@ serviceaccount/nginx-example created
 
 查看刚刚创建的`service account`：
 
-```
-# kubectl describe serviceaccounts nginx-example
+```bash
+kubectl describe serviceaccounts nginx-example
 
 Name:                nginx-example
 Namespace:           default
@@ -330,8 +330,8 @@ Events:              <none>
 
 我们来看看`token`的内容：
 
-```
-# kubectl get secrets nginx-example-token-r2cv6 -o yaml
+```bash
+kubectl get secrets nginx-example-token-r2cv6 -o yaml
 
 apiVersion: v1
 data:
@@ -349,13 +349,13 @@ type: kubernetes.io/service-account-token
 * `ca.crt`： `API Server`的`CA`证书，用于`Pod`中的进程访问`API Server`时对服务端证书进行校验
 * `namespace`： `secret`所在`namespace`，使用了`base64`编码
 * `token`：`JWT Tokens`
- 
+
 `JWT Tokens` 是 `controller-manager` 用 `service account`私钥`sa.key`签发的，其中包含了用户的身份信息，`API Server`可以用`sa.pub`验证`token`，拿到用户身份信息，从而完成身份验证。
 
 如果是使用`kubeadm`安装的`Kubernetes`，我们可以在`/etc/kubernetes/manifests/`目录中的配置文件确认`sa.key`和`sa.pub`的作用：
 
-```
-# cat /etc/kubernetes/manifests/kube-controller-manager.yaml
+```bash
+cat /etc/kubernetes/manifests/kube-controller-manager.yaml
 ...
 spec:
   containers:
@@ -380,7 +380,7 @@ spec:
 
 运行在`Pod`中的进程在向`API server`发起`HTTP`请求时，`HTTP header`中会携带`token`，`API server`从`header`中拿到`token`，进行身份验证：
 
-```
+```text
 Authorization: Bearer [token]
 ```
 
@@ -392,13 +392,13 @@ Authorization: Bearer [token]
 
 因此，一个`JWT Tokens`看起来是这样的：
 
-```
+```text
 xxxxxxx.yyyyyyyy.zzzzzzz
 ```
 
 `Header`和`Payload`都是`base64`编码的`JSON`，以上面`nginx-example`关联的`token`为例，看看`Header`和`Payload`的内容：
 
-```
+```bash
 $ kubectl describe secrets nginx-example-token-r2cv6 | grep token: | cut -d " " -f 7
 eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6Im5naW54LWV4YW1wbGUtdG9rZW4tcjJjdjYiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoibmdpbngtZXhhbXBsZSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjBmZWRlOWM1LTc2YjUtMTFlOS05MWNhLTAwNTA1NmFjMWMxYyIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0Om5naW54LWV4YW1wbGUifQ.VOjVQBr5PKg1WyZYtIW0Fos5fxFN4cYE3Mz9p1eWbQP6rQRQGDEiGX-LBuM6ECI9cpSL-F4nYQAL9vmIlA4vbAgS4OFgC4nwu8SzLu2FVeE7RDpguvsdAsj-4T_LxEGX1RPljGTpvlt8HRjTnp9K8W4dy7PyJQEB5XvCf-IVNAs3zESgmuJ7wJwO7mXQe5WdeqhI5vXjcZiXP97oH0VRYT1vTKVP-GooC5YfaNhU7rHoJ0gmR10xNqZjwKGsHKkq5maC5BOrXFLlHRqVRwm9-hRn-ZLgAoCwujCIpLvPaFUR8HaatzX4GQ_HWev2soJnk1qcav0smxfjC-fu540vZA
 
@@ -423,7 +423,7 @@ $ kubectl describe secrets nginx-example-token-r2cv6 | grep token: | cut -d " " 
 
 第三部分`Signature`的构造方式如下，如果加密算法选择了PKCS SHA：
 
-```
+```text
 PKCSSHA256(
   base64UrlEncode(header) + "." +
   base64UrlEncode(payload),
@@ -438,8 +438,8 @@ PKCSSHA256(
 
 创建`Pod`：
 
-```
-// simple.yaml
+```bash
+cat simple.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -453,9 +453,10 @@ spec:
 $ kubectl apply -f simple.yaml
 pod/firstpod created
 ```
+
 查看`Pod`内`/var/run/secrets/kubernetes.io/serviceaccount`目录的内容：
 
-```
+```bash
 $ kubectl exec firstpod -- ls  /var/run/secrets/kubernetes.io/serviceaccount
 ca.crt
 namespace
@@ -465,7 +466,7 @@ token
 
 查看`Pod`内文件`/var/run/secrets/kubernetes.io/serviceaccount/token`的内容：
 
-```
+```bash
 $ kubectl exec firstpod -- cat  /var/run/secrets/kubernetes.io/serviceaccount/token | cut -d "." -f 2 | base64 -d | python -mjson.tool
 {
     "iss": "kubernetes/serviceaccount",
@@ -483,8 +484,8 @@ $ kubectl exec firstpod -- cat  /var/run/secrets/kubernetes.io/serviceaccount/to
 
 创建`role`：
 
-```
-// example-role.yaml
+```bash
+cat example-role.yaml
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -502,8 +503,8 @@ role.rbac.authorization.k8s.io/example-role created
 
 下一步就是将`service account`和`role`进行绑定：
 
-```
-//example-rolebinding.yaml
+```bash
+cat example-rolebinding.yaml
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:

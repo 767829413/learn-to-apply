@@ -6,7 +6,6 @@ TCP的基本知识，主动关闭连接的一方会处于`TIME_WAIT`状态，并
 
 ![6fa8a81e-b153-4800-8515-344e739aefb1](../../media/Pictures/6fa8a81e-b153-4800-8515-344e739aefb1.png)
 
-
 那就检查一下MSL的设置。网上有很多文章说，可以通过设置`net.ipv4.tcp_fin_timeout`来控制MSL。其实这有点误导人。查看[Linux kernel的文档](https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt) ，发现tcp_fin_timeout是指停留在FIN_WAIT_2状态的时间：
 
 > tcp_fin_timeout - INTEGER
@@ -23,15 +22,15 @@ define TCP_FIN_TIMEOUT TCP_TIMEWAIT_LEN
 而阿里内核支持修改`TIME_WAIT`时间：
 
     net.ipv4.tcp_tw_timeout
-    
+
 然后找了两台机器做对比，用`sysctl`命令查看。杭州机房的机器：
 
     sudo sysctl -a | grep net.ipv4.tcp_tw_timeout
     net.ipv4.tcp_tw_timeout = 3
-    
+
 上海机房的机器：
 
     $sudo sysctl -a | grep net.ipv4.tcp_tw_timeout
     net.ipv4.tcp_tw_timeout = 60
-    
+
 原因很明显，上海机器的设置为60S。

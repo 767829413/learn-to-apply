@@ -15,19 +15,19 @@
 
 * `macOS`
 
-```
+```bash
 brew install shadowsocks-libev
 ```
 
 * `Ubuntu`
 
-```
+```bash
 sudo apt install shadowsocks-libev
 ```
 
 接下来填写`shadowsocks client`配置文件，`JSON`格式，简单易懂：
 
-```
+```json
 {
     "server":"ss服务器IP",
     "server_port":443, // ss服务器port
@@ -37,14 +37,14 @@ sudo apt install shadowsocks-libev
     "method":"aes-256-cfb" // ss服务器加密方法
 }
 ```
+
 至于`shadowsocks`服务器端，可以租用强国网络外的云主机自己搭建，也可以购买现成的[机场服务](https://www.emptyus.com/aff.php?uid=16723)，本文就不讨论了。
 
 然后启动`shadowsocks client`：
 
-```
+```bash
 nohup ss-local -c ss-client.conf &
 ```
-
 
 ## 安装配置HTTP代理
 
@@ -52,13 +52,13 @@ nohup ss-local -c ss-client.conf &
 
 * `macOS`下安装`polipo`
 
-```
+```bash
 brew install polipo
 ```
 
 * `Ubuntu`下安装`polipo`
 
-```
+```bash
 sudo apt install polipo
 
 # 建议停掉polipo服务，需要的时候自己启动
@@ -68,7 +68,7 @@ sudo systemctl disable  polipo.service
 
 启动`HTTP`代理
 
-```
+```bash
 sudo polipo socksParentProxy=127.0.0.1:1080 proxyPort=1087
 ```
 
@@ -76,10 +76,10 @@ sudo polipo socksParentProxy=127.0.0.1:1080 proxyPort=1087
 
 我们可以在命令行终端测试`HTTP`代理的效果：
 
-```
-$ export http_proxy=http://localhost:1087
-$ export https_proxy=http://localhost:1087
-$ curl https://www.google.com
+```bash
+export http_proxy=http://localhost:1087
+export https_proxy=http://localhost:1087
+curl https://www.google.com
 ```
 
 应该可以正常访问到Google。
@@ -104,7 +104,7 @@ $ curl https://www.google.com
 
 在本机从`gcr.io`下载镜像，我们以镜像`pause:3.1`为例：
 
-```
+```bash
 docker pull k8s.gcr.io/pause:3.1
 ```
 
@@ -112,13 +112,13 @@ docker pull k8s.gcr.io/pause:3.1
 
 根据前面在阿里云创建的命名空间，给镜像标记新的`tag`：
 
-```
+```bash
 docker tag k8s.gcr.io/pause:3.1 registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause:3.1
 ```
 
 `mz-k8s`是在前面创建的命名空间。 查看tag结果：
 
-```
+```bash
 $ docker images
 
 REPOSITORY                                       TAG                 IMAGE ID            CREATED             SIZE
@@ -132,15 +132,15 @@ registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause   3.1                 da86e6ba6ca
 
 登录阿里云镜像仓库：
 
-```
-$ docker login --username=(阿里云账号) registry.cn-shenzhen.aliyuncs.com
+```bash
+docker login --username=(阿里云账号) registry.cn-shenzhen.aliyuncs.com
 ```
 
 根据提示输入password，登录成功后，显示Login Succeeded。
 
 上传镜像：
 
-```
+```bash
 docker push registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause:3.1
 ```
 
@@ -148,14 +148,14 @@ docker push registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause:3.1
 
 现在可以在其他机器上从阿里云下载`pause:3.1`镜像，这时候已经不需要科学上网了：
 
-```
-$ docker pull registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause:3.1
+```bash
+docker pull registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause:3.1
 ```
 
 给镜像打上原来的tag，这样`kubeadm`等工具就可以使用本地仓库中的`pause:3.1`镜像了：
 
-```
-$ docker tag registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause:3.1 k8s.gcr.io/pause:3.1
+```bash
+docker tag registry.cn-shenzhen.aliyuncs.com/mz-k8s/pause:3.1 k8s.gcr.io/pause:3.1
 ```
 
 至此，我们跨越长城，将一个docker镜像从`gcr.io`搬到了`Aliyun`。

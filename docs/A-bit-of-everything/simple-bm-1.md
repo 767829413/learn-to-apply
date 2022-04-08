@@ -2,7 +2,8 @@
 # 了解下字符串匹配,初尝BM算法-1
 
 ## **演示Code**
-```
+
+```go
 package string
 
 import (
@@ -94,7 +95,7 @@ func moveByPre(j, m int, suffix []int, prefix []bool) int {
 
 ## **测试Code**
 
-```
+```go
 package string
 
 import (

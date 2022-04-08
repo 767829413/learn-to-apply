@@ -2,7 +2,8 @@
 # 由dijkstra(戴克斯特拉算法)引发的最短路径问题粗糙的实现方法
 
 ## **演示Code**
-```
+
+```go
 package advancedapplications
 
 import (
@@ -203,7 +204,7 @@ func (p *PriorityQueue) isEmpty() bool {
 
 ## **测试Code**
 
-```
+```go
 package advancedapplications
 
 import "testing"
@@ -221,4 +222,3 @@ func TestSpaGraph_Dijkstra(t *testing.T) {
    s.Dijkstra(0, 5)//0->1->3->2->5
 }
 ```
-

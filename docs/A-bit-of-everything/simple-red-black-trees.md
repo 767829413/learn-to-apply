@@ -4,7 +4,8 @@
 [作业来源知乎](https://zhuanlan.zhihu.com/p/124127284)
 
 ## **演示Code**
-```
+
+```go
 package tree
 
 import "fmt"
@@ -283,5 +284,3 @@ func (t *LLRBTree) midTraverse(node *llrbNode) {
 
 }
 ```
-
-

@@ -10,25 +10,24 @@
 
 ![542677-e5281340c82c](../../media/Pictures/542677-e5281340c82cc499.png)
 
-
 * 有些物理算子会根据参与运算的属性、属性的顺序等因素，生成多种物理执行计划，例如`Join`的物理算子会根据参与连接的表的顺序，生成多种可能的执行计划。
 
 CBO核心流程的代码在`plan/optimizer.go`中的`physicalOptimize`：
 
-```
+```go
 func physicalOptimize(logic LogicalPlan) (PhysicalPlan, error) {
-	logic.preparePossibleProperties()
-	_, err := logic.deriveStats()
-	if err != nil {
-		return nil, errors.Trace(err)
-	}
-	t, err := logic.findBestTask(&requiredProp{taskTp: rootTaskType, expectedCnt: math.MaxFloat64})
-	if err != nil {
-		return nil, errors.Trace(err)
-	}
-	p := t.plan()
-	p.ResolveIndices()
-	return p, nil
+ logic.preparePossibleProperties()
+ _, err := logic.deriveStats()
+ if err != nil {
+  return nil, errors.Trace(err)
+ }
+ t, err := logic.findBestTask(&requiredProp{taskTp: rootTaskType, expectedCnt: math.MaxFloat64})
+ if err != nil {
+  return nil, errors.Trace(err)
+ }
+ p := t.plan()
+ p.ResolveIndices()
+ return p, nil
 }
 ```
 
@@ -39,43 +38,37 @@ func physicalOptimize(logic LogicalPlan) (PhysicalPlan, error) {
 
 ![logic-plan3](../../media/Pictures/logic-plan3.png)
 
-
-
 * `logic.findBestTask`：生成执行代价最小的`task`
 
 `findBestTask`的核心逻辑：
 
-```
+```go
 for _, pp := range p.self.exhaustPhysicalPlans(prop) {
-	// find best child tasks firstly.
-	childTasks = childTasks[:0]
-	for i, child := range p.children {
-		childTask, err := child.findBestTask(pp.getChildReqProps(i))
-		if err != nil {
-			return nil, errors.Trace(err)
-		}
-		childTasks = append(childTasks, childTask)
-	}
+ // find best child tasks firstly.
+ childTasks = childTasks[:0]
+ for i, child := range p.children {
+  childTask, err := child.findBestTask(pp.getChildReqProps(i))
+  if err != nil {
+   return nil, errors.Trace(err)
+  }
+  childTasks = append(childTasks, childTask)
+ }
 
-	// combine best child tasks with parent physical plan.
-	curTask := pp.attach2Task(childTasks...)
+ // combine best child tasks with parent physical plan.
+ curTask := pp.attach2Task(childTasks...)
 
-	// get the most efficient one.
-	if curTask.cost() < bestTask.cost() {
-		bestTask = curTask
-	}
+ // get the most efficient one.
+ if curTask.cost() < bestTask.cost() {
+  bestTask = curTask
+ }
 }
 ```
 
-首先枚举可能的物理执行计划`p.self.exhaustPhysicalPlans`，然后遍历每种候选计划，找到代价最小的`task`。这是个递归的过程，当前节点的代价是由所有子节点的代价组成的，所以在遍历的过程中，又会调用` child.findBestTask(pp.getChildReqProps(i))`找到子节点的最佳`task`。
+首先枚举可能的物理执行计划`p.self.exhaustPhysicalPlans`，然后遍历每种候选计划，找到代价最小的`task`。这是个递归的过程，当前节点的代价是由所有子节点的代价组成的，所以在遍历的过程中，又会调用`child.findBestTask(pp.getChildReqProps(i))`找到子节点的最佳`task`。
 
 ![find-best-task](../../media/Pictures/find-best-task.png)
-
-
 
 如何评估物理执行计划的代价呢？根据参与运算的关系（表）的统计信息进行评估。代价评估相关逻辑涉及的代码：
 
 * 计算关系的统计信息：`plan/stats.go`
 * 计算task的代价：`plan/task.go`中的`attach2Task`系列方法。
-
-

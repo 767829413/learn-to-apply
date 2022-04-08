@@ -28,12 +28,10 @@
 
 ![protection_rings](media/container/protection_rings.png)
 
-
-
  `Intel` 的 `CPU` 提供了4种特权级别， `Linux` 只使用了 `Ring0` 和 `Ring3` 两个级别。`Ring 0` 拥有最多的特权，它可以直接和CPU、内存等物理硬件交互。 `Ring 0` 被称为`内核态`，操作系统内核正是运行在`Ring 0`。`Ring 3`被称为`用户态`，应用程序运行在`用户态`。
- 
+
 ### 系统调用
- 
+
 在`用户态`禁止直接访问`内核态`，也就是说不同通过普通的函数调用方式调用内核代码，而必须使用**系统调用**陷入（`trap`）内核，完成从`用户态`到`内核态`的切换。内核首先检查进程是否允许执行想要的操作，然后代表进程执行所需的操作，完成后再返回到`用户态`。
 
 ![2018-12-15 17.41.10](media/container/2018-12-15%2017.41.10.png)
@@ -70,8 +68,7 @@
 
 ![2018-12-15 22.22.49](media/container/2018-12-15%2022.22.49.png)
 
-
-### KVM & QEMU 
+### KVM & QEMU
 
 实际上`Type-1`和`Type-2`并没有严格的区分，像最常见的虚拟化软件 [KVM](https://www.linux-kvm.org/)（Kernel-based Virtual Machine）是一个`Linux`内核模块，加载`KVM`后`Linux`内核就转换成了`Type-1 hypervisor`。同时，`Linux`还是一个通用的操作系统，也可以认为`KVM`是运行在`Linux`之上的`Type-2 hypervisor`。
 
@@ -147,7 +144,6 @@ amazon最近开源的[Firecracker](https://firecracker-microvm.github.io/)也是
 其实Google早就没有使用`QEMU`，而且对`KVM`进行了深度定制。我们可以从这篇介绍看出端倪：[7 ways we harden our KVM hypervisor at Google Cloud: security in plaintext](https://cloud.google.com/blog/products/gcp/7-ways-we-harden-our-kvm-hypervisor-at-google-cloud-security-in-plaintext)
 
 > Non-QEMU implementation: Google does not use QEMU, the user-space virtual machine monitor and hardware emulation. Instead, we wrote our own user-space virtual machine monitor that has the following security advantages over QEMU
-
 > ...
 
 ## gVisor
@@ -159,7 +155,6 @@ Google 开源的[gVisor](https://github.com/google/gvisor)为了实现安全容�
 虽然 `gVisor` 今年才开源，但它已经在[Google App Engine](https://cloud.google.com/appengine/) 和 [Google Cloud Functions](https://cloud.google.com/functions/docs/)运行了多年。
 
 ![2018-12-16 19.35.38](media/container/2018-12-16%2019.35.38.png)
-
 
 `gVisor`作为运行应用的安全沙箱，扮演着`Virtual kernel`的角色。同时`gVisor` 包含了一个兼容[Open Container Initiative (OCI)](https://www.opencontainers.org/) 的运行时`runsc`，因此可以用它替换掉 Docker 的 `runc`，整合进`Kubernetes`生态圈，为`Kubernetes`带来另一种安全容器的实现方案。
 
@@ -177,5 +172,3 @@ Google 开源的[gVisor](https://github.com/google/gvisor)为了实现安全容�
 ![2018-12-16 19.01.12](media/container/2018-12-16%2019.01.12-1.png)
 
 希望下次能分享`gVisor`深入研究系列。保持好奇心，Stay hungry. Stay foolish.
-
-

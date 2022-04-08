@@ -22,20 +22,20 @@
 
 在安装之前，首先要确认你的`CPU`是否支持虚拟化技术。使用`grep`查看`cpuinfo`是否有"**vmx**"(Intel-VT 技术)或"**svm**"(AMD-V 支持)输出：
 
-```
+```bash
 egrep "(svm|vmx)" /proc/cpuinfo
 ```
 
 某些`CPU`型号在默认情况下，`BIOS`中可能禁用了`VT`支持。我们需要再检查`BIOS`设置是否启用了`VT`的支持。使用**kvm-ok**命令进行检查：
 
-```
-$ sudo apt install cpu-checker
-$ kvm-ok
+```bash
+sudo apt install cpu-checker
+kvm-ok
 ```
 
 如果输出为：
 
-```
+```text
 INFO: /dev/kvm exists
 KVM acceleration can be used
 ```
@@ -44,29 +44,29 @@ KVM acceleration can be used
 
 运行下面的命令安装**QEMU/KVM**和**Virsh**：
 
-```
-$ sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
+```bash
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
 ```
 
 检查`libvirt`守护程序是否已经启动：
 
-```
+```bash
 $ sudo systemctl is-active libvirtd
 active
 ```
 
 如果没有输出**active**，运行下面的命令启动`libvertd`服务：
 
-```
-$ sudo systemctl enable libvirtd
-$ sudo systemctl start libvirtd
+```bash
+sudo systemctl enable libvirtd
+sudo systemctl start libvirtd
 ```
 
 ## 创建虚拟机镜像
 
 创建一个虚拟机镜像，大小为40G，**qcow2** 格式为动态分配磁盘占用空间。
 
-```
+```bash
 qemu-img create -f qcow2 ubuntutest.img 40G
 ```
 
@@ -74,20 +74,20 @@ qemu-img create -f qcow2 ubuntutest.img 40G
 
 使用下面的命令启动虚拟机，**-cdrom**参数为虚拟机挂载了`Ubuntu`的安装光盘：
 
-```
+```bash
 qemu-system-x86_64 -enable-kvm -name ubuntutest  -m 4096 -hda ubuntutest.img -cdrom ubuntu-20.04.2-live-server-amd64.iso -boot d -vnc :19
 ```
 
 我们使用`VNC`客户端连接进虚拟机，完成`Ubuntu`的安装。注意上面的命令通过`-vnc :19`设置了虚拟机的VNC监听端口为`5919`。
 
-<img src="../../media/Pictures/vnc-connection.png" width = "70%" />
-<img src="../../media/Pictures/vnc-viewer.png" width = "70%" />
+![vnc-connection](../../media/Pictures/vnc-connection.png)
+![vnc-viewer](../../media/Pictures/vnc-viewer.png)
 
 我使用的`VNC`客户端是[VNC Viewer](https://www.realvnc.com/en/connect/download/viewer/)，支持Windows、macOS和Linux等主流平台。按照正常步骤，完成Ubuntu在虚拟机上的安装。
 
 安装完成后，可以用`ctrl+c`退出`qemu-system-x86_64`命令的执行来停止虚拟机。再次启动虚拟机，需要把 **-cdrom** 参数去掉。
 
-```
+```bash
 qemu-system-x86_64 -enable-kvm -name ubuntutest  -m 4096 -hda ubuntutest.img -boot d -vnc :19
 ```
 
@@ -95,19 +95,19 @@ qemu-system-x86_64 -enable-kvm -name ubuntutest  -m 4096 -hda ubuntutest.img -bo
 
 为了让虚拟机能访问外部网络，我们需要形成下面的结构：
 
-<img src="../../media/Pictures/networking.png" width = "80%" />
+![networking](../../media/Pictures/networking.png)
 
 在宿主机上创建网桥**br0**，并设置一个IP地址：
 
-```
-$ sudo brctl addbr br0
-$ sudo ip link set br0 up
-$ sudo ifconfig br0 192.168.57.1/24
+```bash
+sudo brctl addbr br0
+sudo ip link set br0 up
+sudo ifconfig br0 192.168.57.1/24
 ```
 
 编辑宿主机的`/etc/sysctl.conf`文件，设置IP转发生效：
 
-```
+```bash
 net.ipv4.ip_forward=1
 ```
 
@@ -115,7 +115,7 @@ net.ipv4.ip_forward=1
 
 在宿主机上增加**SNAT**规则。
 
-```
+```bash
 sudo iptables -t nat -A POSTROUTING -o wlp2s0 -j MASQUERADE
 ```
 
@@ -125,13 +125,13 @@ sudo iptables -t nat -A POSTROUTING -o wlp2s0 -j MASQUERADE
 
 注意上面命令中的 **-o** 参数，指定了数据包的出口设备为**wlp2s0**。你需要使用`ip link`命令在你的机器上查看具体设备的名称：
 
-<img src="../../media/Pictures/ip_link.png" width = "100%" />
+![ip_link](../../media/Pictures/ip_link.png)
 
 如果想进一步了解**iptables**，可以参见我的另一篇文章[《Docker单机网络模型动手实验》](./docker-network-bridge.md)。
 
 接着我们需要将虚拟机的网卡连接到网桥**br0**。后面我们使用**libvirt**来管理**QEMU/KVM**虚拟机，这样可以把虚拟机的配置参数记录在XML文件中，易于维护。
 
-```
+```xml
 <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
   <name>ubuntutest</name>
   <uuid>0f0806ab-531d-6134-5def-c5b4955292aa</uuid>
@@ -188,13 +188,13 @@ sudo iptables -t nat -A POSTROUTING -o wlp2s0 -j MASQUERADE
 
 将`XML`文件保存为`domain.xml`，然后在`libvirt`定义虚拟机：
 
-```
-$ virsh define domain.xml
+```bash
+virsh define domain.xml
 ```
 
 接着我们可以使用`virsh list --all`查看虚拟机列表：
 
-```
+```bash
 $ virsh list --all
  Id   Name         State
 -----------------------------
@@ -203,7 +203,7 @@ $ virsh list --all
 
 使用命令`virsh start ubuntutest`启动虚拟机：
 
-```
+```bash
 $ virsh start ubuntutest
 Domain ubuntutest started
 
@@ -215,7 +215,7 @@ $ virsh list
 
 这时我们使用**VNC Viewer**连接进行虚拟机，为虚拟机配置IP地址。虚拟机安装的是`ubuntu-20.04.2`，编辑`/etc/netplan/00-installer-config.yaml`文件配置`IP`地址。
 
-```
+```text
 network:
   ethernets:
     ens3:
@@ -234,15 +234,15 @@ network:
 
 在虚拟机上下载Linux内核源码：
 
-```
-$ sudo apt install linux-source-5.4.0
+```bash
+sudo apt install linux-source-5.4.0
 ```
 
 `ubuntu-20.04.2`对应的内核版本是`5.4`。可以使用`uname -srm`查看内核版本。
 
 源码被下载到来`/usr/src/`目录下，使用下面的命令解压缩：
 
-```
+```bash
 sudo tar vjxkf linux-source-5.4.0.tar.bz2 
 ```
 
@@ -252,17 +252,17 @@ sudo tar vjxkf linux-source-5.4.0.tar.bz2
 
 首先我们需要安装编译内核用到的依赖包：
 
-```
-$ sudo apt install libncurses5-dev libssl-dev bison flex libelf-dev gcc make openssl libc6-dev
+```bash
+sudo apt install libncurses5-dev libssl-dev bison flex libelf-dev gcc make openssl libc6-dev
 ```
 
 编译前要定义内核编译选项。进入`/usr/src/linux-source-5.4.0`目录，运行下面的命令，会进入内核参数配置界面：
 
-```
-$ sudo make menuconfig
+```bash
+sudo make menuconfig
 ```
 
-<img src="../../media/Pictures/menuconfig.png" width = "100%" />
+![menuconfig](../../media/Pictures/menuconfig.png)
 
 为了构建能够调试的内核，我们需要配置以下几个参数。
 
@@ -270,7 +270,7 @@ $ sudo make menuconfig
 
 这个选项的菜单路径为：
 
-```
+```text
 Kernel hacking  --->
 Compile-time checks and compiler options  ---> 
  [*] Compile the kernel with debug info   
@@ -278,7 +278,7 @@ Compile-time checks and compiler options  --->
 
 实际上通过菜单进行设置比较麻烦。我们保存设置退出后，配置会保存在`.config`文件中。直接编辑这个文件会更方便一些。在`.config`中确认`CONFIG_DEBUG_INFO`的设置正确。
 
-```
+```text
 CONFIG_DEBUG_INFO=y
 ```
 
@@ -286,26 +286,26 @@ CONFIG_DEBUG_INFO=y
 
 在`.config`中设置：
 
-```
+```text
 CONFIG_FRAME_POINTER=y
 ```
 
 * 启用**CONFIG_GDB_SCRIPTS**，但要关闭**CONFIG_DEBUG_INFO_REDUCED**。
 
-```
+```text
 CONFIG_GDB_SCRIPTS=y
 CONFIG_DEBUG_INFO_REDUCED=n
 ```
 
 * **CONFIG_KGDB** 启用内置的内核调试器，该调试器允许进行远程调试。
 
-```
+```text
 CONFIG_KGDB=y
 ```
 
 * 关闭**CONFIG_RANDOMIZE_BASE**设置
 
-```
+```text
 CONFIG_RANDOMIZE_BASE=n
 ```
 
@@ -313,7 +313,7 @@ CONFIG_RANDOMIZE_BASE=n
 
 设置完必要的内核参数后，我们开始编译内核：
 
-```
+```bash
 sudo make -j8 
 sudo make modules_install
 sudo make install
@@ -321,7 +321,7 @@ sudo make install
 
 编译的过程很漫长，可能需要数小时。当编译完毕之后，新内核的选项已经增加到了`grub`的配置中。我们可以查看配置文件`/boot/grub/grub.cfg`确认：
 
-```
+```text
 submenu 'Advanced options for Ubuntu' $menuentry_id_option 'gnulinux-advanced-5506d28f-c9e7-46d4-a12e-42555d491eec' {
         menuentry 'Ubuntu, with Linux 5.4.106' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-5.4.106-advanced-5506d28f-c9e7-46d4-a12e-42555d491eec' {
                 recordfail
@@ -353,7 +353,7 @@ submenu 'Advanced options for Ubuntu' $menuentry_id_option 'gnulinux-advanced-55
 
 实际上在前面的`domain.xml`中我们已经为**QEMU**加了`-s`参数。
 
-```
+```xml
 <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
 ...
   <qemu:commandline>
@@ -368,15 +368,15 @@ submenu 'Advanced options for Ubuntu' $menuentry_id_option 'gnulinux-advanced-55
 
 在宿主机上运行`gdb`需要内核的二进制文件，这个文件就是在虚拟机`GRUB`里配置的`/boot/vmlinuz-5.4.106`。为了方便在调试过程中查看源代码，我们可以将虚拟机的`/usr/src/linux-source-5.4.0`整个目录都拷贝到宿主机上来。
 
-```
-$ scp -r mazhen@virtual-node:/usr/src/linux-source-5.4.0 ./
+```bash
+scp -r mazhen@virtual-node:/usr/src/linux-source-5.4.0 ./
 ```
 
 在`/usr/src/linux-source-5.4.0`目录下面的**vmlinux**文件也是内核的二进制文件。
 
 为了能让`gdb`在启动时能够加载`Linux helper脚本`，需要在`~/.gdbinit`文件中添加如下内容：
 
-```
+```bash
 add-auto-load-safe-path /path/to/linux-build
 ```
 
@@ -388,7 +388,7 @@ add-auto-load-safe-path /path/to/linux-build
 
 然后在gdb的交互环境下使用`target remote :1234`命令attach到虚拟机的内核。
 
-```
+```bash
 $ gdb vmlinux
 ...
 Reading symbols from vmlinux...
@@ -399,70 +399,70 @@ Remote debugging using :1234
 
 如果我们想调试进程`fork`的过程，可以用`b _do_fork`设置断点：
 
-```
+```bash
 (gdb) b _do_fork
 Breakpoint 1 at 0xffffffff81098450: file kernel/fork.c, line 2362.
 ```
 
 我们可以看到，断点设置成功。如果你不确认fork的具体方法名，可以使用`info functions`命令搜索符号表：
 
-```
+```bash
 (gdb) info function do_fork
 All functions matching regular expression "do_fork":
 
 File kernel/fork.c:
-2361:	long _do_fork(struct kernel_clone_args *);
+2361: long _do_fork(struct kernel_clone_args *);
 ```
 
 使用命令`c`让内核继续执行：
 
-```
+```bash
 (gdb) c
 Continuing.
 ```
 
 这时在虚拟机里执行任意命令，例如`ls`，断点将被触发：
 
-```
+```bash
 (gdb) c
 Continuing.
 
 Thread 1 hit Breakpoint 1, _do_fork (args=0xffffc9000095fee0) at kernel/fork.c:2362
-2362	{
+2362 {
 (gdb) 
 ```
 
 我们可以使用`n`执行下一条语句：
 
-```
+```bash
 (gdb) n
-2376		if (!(clone_flags & CLONE_UNTRACED)) {
+2376  if (!(clone_flags & CLONE_UNTRACED)) {
 (gdb) n
-2377			if (clone_flags & CLONE_VFORK)
+2377   if (clone_flags & CLONE_VFORK)
 (gdb) n
-2379			else if (args->exit_signal != SIGCHLD)
+2379   else if (args->exit_signal != SIGCHLD)
 (gdb) 
 ```
 
 `l`显示多行源码：
 
-```
+```bash
 (gdb) l
-2374		 * for the type of forking is enabled.
-2375		 */
-2376		if (!(clone_flags & CLONE_UNTRACED)) {
-2377			if (clone_flags & CLONE_VFORK)
-2378				trace = PTRACE_EVENT_VFORK;
-2379			else if (args->exit_signal != SIGCHLD)
-2380				trace = PTRACE_EVENT_CLONE;
-2381			else
-2382				trace = PTRACE_EVENT_FORK;
-2383	
+2374   * for the type of forking is enabled.
+2375   */
+2376  if (!(clone_flags & CLONE_UNTRACED)) {
+2377   if (clone_flags & CLONE_VFORK)
+2378    trace = PTRACE_EVENT_VFORK;
+2379   else if (args->exit_signal != SIGCHLD)
+2380    trace = PTRACE_EVENT_CLONE;
+2381   else
+2382    trace = PTRACE_EVENT_FORK;
+2383 
 ```
 
 `bt`查看函数调用信息：
 
-```
+```bash
 (gdb) bt
 #0  _do_fork (args=0xffffc9000095fee0) at kernel/fork.c:2379
 #1  0xffffffff810989f4 in __do_sys_clone (tls=<optimized out>, child_tidptr=<optimized out>, parent_tidptr=<optimized out>, newsp=<optimized out>, 
@@ -480,7 +480,7 @@ Thread 1 hit Breakpoint 1, _do_fork (args=0xffffc9000095fee0) at kernel/fork.c:2
 
 `p`用于打印内部变量值：
 
-```
+```bash
 (gdb) p clone_flags
 $1 = 18874368
 ```

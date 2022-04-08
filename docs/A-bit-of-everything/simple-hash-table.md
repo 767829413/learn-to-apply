@@ -2,7 +2,8 @@
 # 构建个hash table 玩玩
 
 ## **演示Code**
-```
+
+```go
 package hashtable
 
 import (
@@ -163,4 +164,3 @@ func (ht *HashTable) resize() {
    }
 }
 ```
-

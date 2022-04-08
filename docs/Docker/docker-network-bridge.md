@@ -28,7 +28,6 @@
 
 ![2018-11-10 22.56.04](media/docker/2018-11-10%2022.56.04.png)
 
-
 在开始动手实验之前，先简单介绍一下`bridge网络模型`会用到的Linux虚拟化网络技术。
 
 ### Veth Pairs
@@ -86,14 +85,14 @@
 
 从前面的背景知识了解到，容器的本质是 `Namespace + Cgroups + rootfs`。因此本实验我们可以仅仅创建出`Namespace`网络隔离环境来模拟容器行为：
 
-```
+```bash
 sudo ip netns add docker0
 sudo ip netns add docker1
 ```
 
 查看创建出的网络`Namesapce`：
 
-```
+```bash
 $ ls -l /var/run/netns
 -r--r--r-- 1 root root 0 Nov 11 03:52 docker0
 -r--r--r-- 1 root root 0 Nov 11 03:52 docker1
@@ -101,14 +100,14 @@ $ ls -l /var/run/netns
 
 * **创建Veth pairs**
 
-```
+```bash
 sudo ip link add veth0 type veth peer name veth1
 sudo ip link add veth2 type veth peer name veth3
 ```
 
 查看创建出的`Veth pairs`：
 
-```
+```bash
 $ip addr show
 ...
 3: veth1@veth0: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN group default qlen 1000
@@ -125,14 +124,14 @@ $ip addr show
 
 设置`Veth`一端的虚拟网卡的`Namespace`，相当于将这张网卡放入“容器”内：
 
-```
+```bash
 sudo ip link set veth0 netns docker0
 sudo ip link set veth2 netns docker1
 ```
 
 查看“容器” docker0 内的网卡：
 
-```
+```bash
 $ sudo ip netns exec docker0 ip addr show
 1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -150,26 +149,26 @@ $ sudo ip netns exec docker0 ip addr show
 
 安装`bridge`管理工具`brctl`
 
-```
+```bash
 sudo apt-get install bridge-utils
 ```
 
 创建bridge `br0`：
 
-```
+```bash
 sudo brctl addbr br0
 ```
 
 * **将Veth的另一端接入bridge**
 
-```
+```bash
 sudo brctl addif br0 veth1
 sudo brctl addif br0 veth3
 ```
 
 查看接入效果：
 
-```
+```bash
 sudo brctl show
 ```
 
@@ -181,28 +180,28 @@ sudo brctl show
 
 docker0容器：
 
-```
+```bash
 sudo ip netns exec docker0 ip addr add 172.18.0.2/24 dev veth0
 sudo ip netns exec docker0 ip link set veth0 up
 ```
 
 docker1容器：
 
-```
+```bash
 sudo ip netns exec docker1 ip addr add 172.18.0.3/24 dev veth2
 sudo ip netns exec docker1 ip link set veth2 up
 ```
 
 * **Veth另一端的网卡激活上线**
 
-```
+```bash
 sudo ip link set veth1 up
 sudo ip link set veth3 up
 ```
 
 * **为bridge分配IP地址，激活上线**
 
-```
+```bash
 sudo ip addr add 172.18.0.1/24 dev br0
 sudo ip link set br0 up
 ```
@@ -211,19 +210,19 @@ sudo ip link set br0 up
 
 我们可以先设置监听`br0`：
 
-```
+```bash
 sudo tcpdump -i br0 -n
 ```
 
 从容器`docker0` `ping` 容器`docker1`：
 
-```
+```bash
 sudo ip netns exec docker0 ping -c 3 172.18.0.3
 ```
 
 `br0`上监控到的网络流量：
 
-```
+```text
 05:53:10.859956 ARP, Request who-has 172.18.0.3 tell 172.18.0.2, length 28
 05:53:10.859973 ARP, Reply 172.18.0.3 is-at 06:f4:01:c2:dd:6e, length 28
 05:53:10.860030 IP 172.18.0.2 > 172.18.0.3: ICMP echo request, id 1310, seq 1, length 64
@@ -240,7 +239,7 @@ sudo ip netns exec docker0 ping -c 3 172.18.0.3
 
 同样，从容器`docker1` `ping` 容器`docker0`也是通的：
 
-```
+```bash
 sudo ip netns exec docker1 ping -c 3 172.18.0.2
 ```
 
@@ -248,13 +247,13 @@ sudo ip netns exec docker1 ping -c 3 172.18.0.2
 
 在“容器”`docker0`内启动服务，监听80端口：
 
-```
+```bash
 sudo ip netns exec docker0 nc -lp 80
 ```
 
 在宿主机上执行telnet，可以连接到`docker0`的80端口：
 
-```
+```bash
 telnet 172.18.0.2 80
 ```
 
@@ -262,7 +261,7 @@ telnet 172.18.0.2 80
 
 * **配置内核参数，允许IP forwarding**
 
-```
+```bash
 sudo sysctl net.ipv4.conf.all.forwarding=1
 ```
 
@@ -270,7 +269,7 @@ sudo sysctl net.ipv4.conf.all.forwarding=1
 
 首先确认`iptables FORWARD`的缺省策略：
 
-```
+```bash
 sudo iptables -L
 ```
 
@@ -278,7 +277,7 @@ sudo iptables -L
 
 如果缺省策略是`DROP`，需要设置为`ACCEPT`：
 
-```
+```bash
 sudo iptables -P FORWARD ACCEPT
 ```
 
@@ -286,15 +285,15 @@ sudo iptables -P FORWARD ACCEPT
 
 * **将bridge设置为“容器”的缺省网关**
 
-```
+```bash
 sudo ip netns exec docker0 route add default gw 172.18.0.1 veth0
 sudo ip netns exec docker1 route add default gw 172.18.0.1 veth2
 ```
 
 查看“容器”内的路由表：
 
-```
-$sudo ip netns exec docker0  route -n
+```bash
+$ sudo ip netns exec docker0  route -n
 
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
@@ -310,7 +309,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 
 另外一个需要注意的问题，内核`netfilter`会追踪记录连接，我们在增加了SNAT规则时，系统会自动增加一个隐式的反向规则，这样返回的包会自动将宿主机的IP替换为容器IP。
 
-```
+```bash
 sudo iptables -t nat -A POSTROUTING -s 172.18.0.0/24 ! -o br0 -j MASQUERADE
 ```
 
@@ -320,7 +319,7 @@ sudo iptables -t nat -A POSTROUTING -s 172.18.0.0/24 ! -o br0 -j MASQUERADE
 
 * **从“容器”内访问外部地址**
 
-```
+```bash
 sudo ip netns exec docker0 ping -c 3 123.125.115.110
 sudo ip netns exec docker1 ping -c 3 123.125.115.110
 ```
@@ -333,7 +332,7 @@ sudo ip netns exec docker1 ping -c 3 123.125.115.110
 
 当外部通过宿主机的IP和端口访问容器内启动的服务时，在数据包进入`PREROUTING`阶段就要进行目的地址转换，将宿主机IP转换为容器IP。同样，系统会为我们自动增加一个隐式的反向规则，数据包在离开宿主机时自动做反向转换。
 
-```
+```bash
 sudo iptables -t nat -A PREROUTING  ! -i br0 -p tcp -m tcp --dport 80 -j DNAT --to-destination 172.18.0.2:80
 ```
 
@@ -343,13 +342,13 @@ sudo iptables -t nat -A PREROUTING  ! -i br0 -p tcp -m tcp --dport 80 -j DNAT --
 
 在“容器”docker0内启动服务：
 
-```
+```bash
 sudo ip netns exec docker0 nc -lp 80
 ```
 
 在和宿主机同一个局域网的远程主机访问宿主机IP:80
 
-```
+```bash
 telnet 192.168.31.183 80
 ```
 
@@ -359,7 +358,7 @@ telnet 192.168.31.183 80
 
 删除虚拟网络设备
 
-```
+```bash
 sudo ip link set br0 down
 sudo brctl delbr br0
 sudo ip link  del veth1
@@ -373,6 +372,3 @@ sudo ip link  del veth3
 本文我们在介绍了`veth`、`Linux bridge`、`iptables`等概念后，亲自动手模拟出了[docker bridge网络模型](https://docs.docker.com/network/bridge/)，并测试了几种场景的网络互通。实际上`docker network` 就是使用了上述技术，帮我们创建和维护网络。通过动手实验，相信你对docker bridge网络理解的更加深入。
 
 下一篇我将动手实验容器如何[利用`Overlay 网络`进行跨主机通信](./docker-overlay-networks.md)。
-
-
-

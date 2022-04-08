@@ -1,6 +1,6 @@
 # 看看书本上的linux系列-8
 
-## **创建进程相关**
+##  **创建进程相关**
 
 1. `fork -> sys_call_table`转换为`sys_fork()->_do_fork`
 2. 创建进程做两件事: 复制初始化`task_struct`; 唤醒新进程
@@ -20,4 +20,3 @@
     * `enqueue_entiry`中会调用`update_curr`更新运行统计量, 再加入队列
     * 调用`check_preempt_curr`看是否能抢占, 若`task_fork_fair`中已设置`sysctl_sched_child_runs_first`, 直接返回, 否则进一步比较并调用`resched_curr`做抢占标记
     * 若父进程被标记会被抢占, 则系统调用`fork`返回过程会调度子进程
-

@@ -22,9 +22,10 @@
 比如，Mirantis 公司的[VIRTLET](https://github.com/Mirantis/virtlet)项目就在干这个事情。甚至还可以去实现一个带有 Init 进程的容器项目，来模拟传统应用的运行方式。这些工作，在[Kubernetes](https://kubernetes.io/)中都是非常轻松的，特别是现在使用的[CRI](https://kubernetes.io/blog/2016/12/container-runtime-interface-cri-in-kubernetes/)(Container Runtime Interface)。
 6. 不要强行把整个应用塞到一个容器里，甚至不惜在生产环境使用Docker In Docker这种糟糕的方案,带来的隐患是令人难以接受的.
 
-
 ## **备注:**
+
 Linux 支持7种namespace:
+
 1. **cgroup用于隔离cgroup根目录**
 2. **IPC用于隔离系统消息队列**
 3. **Network隔离网络**
@@ -32,6 +33,3 @@ Linux 支持7种namespace:
 5. **PID隔离进程**
 6. **User隔离用户和用户组**
 7. **UTS隔离主机名nis域名**
-
-
-

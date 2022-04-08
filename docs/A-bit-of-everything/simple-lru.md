@@ -2,7 +2,8 @@
 # 写个简易LRU玩玩
 
 ## **演示Code**
-```
+
+```go
 package hashtable
 
 import "fmt"
@@ -132,4 +133,3 @@ func (lru *LRUHashTable) moveToHead(node *doubleNode) {
    lru.addNode(node)
 }
 ```
-

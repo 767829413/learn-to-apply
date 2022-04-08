@@ -1,4 +1,4 @@
-#  理解Linux 终端、终端模拟器和伪终端
+# 理解Linux 终端、终端模拟器和伪终端
 
 你可能听说过 **TTY** 和 **PTY** 这些缩写，也在 `/dev` 目录下看到过 `/dev/tty[n]` 设备，大概知道它们和 Linux 终端的概念有关。可是你清楚 `TTY`、`PTY` 具体指的是什么，它们有什么区别，以及它们和 `shell` 又是什么关系呢？为了理解这些，我们需要先回顾一下历史。
 
@@ -12,13 +12,13 @@
 
 后来人们将 `Teleprinter` 连接到早期的大型计算机上，作为输入和输出设备，将输入的数据发送到计算机，并打印出响应。
 
-<img src="../../media/Pictures/ASR-33_at_CHM.agr.jpg" width = "70%" />
+![Teleprinter](../../media/Pictures/ASR-33_at_CHM.agr.jpg)
 
 在今天你很难想象程序的运行结果需要等到打印出来才能看到，`Teleprinter` 设备已经进了计算机博物馆。现在我们用 **TTY** 代表计算机终端（**terminal**），只是沿用了历史习惯，电传打字机（**teletypewriter**）曾经是计算机的终端，它的缩写便是 **TTY**(**T**ele**TY**pewriter)。
 
 为了把不同型号的电传打字机接入计算机，需要在操作系统内核安装驱动，为上层应用屏蔽所有的低层细节。
 
-<img src="../../media/Pictures/1.png">
+![1](../../media/Pictures/1.png)
 
 电传打字机通过两根电缆连接：一根用于向计算机发送指令，一根用于接收计算机的输出。这两根电缆插入 **UART** （Universal Asynchronous Receiver and Transmitter，通用异步接收和发送器）的串行接口连接到计算机。
 
@@ -30,13 +30,13 @@
 
 今天电传打字机已经进了博物馆，但 Linux/Unix 仍然保留了当初 TTY驱动和 **line discipline** 的设计和功能。终端不再是一个需要通过 UART 连接到计算机上物理设备。终端成为内核的一个模块，它可以直接向 TTY 驱动发送字符，并从 TTY 驱动读取响应然后打印到屏幕上。也就是说，用内核模块模拟物理终端设备，因此被称为**终端模拟器**(terminal emulator)。
 
-<img src="../../media/Pictures/2.png">
+![2](../../media/Pictures/2.png)
 
 上图是一个典型的Linux桌面系统。终端模拟器就像过去的物理终端一样，它监听来自键盘的事件将其发送到 TTY 驱动，并从 TTY 驱动读取响应，通过显卡驱动将结果渲染到显示器上。TTY驱动 和 **line discipline**的行为与原先一样，但不再有 UART 和 物理终端参与。
 
 如何看到一个终端模拟器呢？在 `Ubuntu 20` 桌面系统上，按 `Ctrl+Alt+F3` 就会得到一个由内核模拟的 TTY。Linux上这种模拟的文本终端也被称为[虚拟终端（Virtual consoles）](https://en.wikipedia.org/wiki/Terminal_emulator#Virtual_consoles)。每个虚拟终端都由一个特殊的设备文件 `/dev/tty[n]` 所表示，与这个虚拟终端的交互，是通过对这个设备文件的读写操作，以及使用`ioctl`系统调用操作这个设备文件进行的。通过执行 `tty` 命令可以查看代表当前虚拟终端的设备文件：
 
-```
+```bash
 $ tty
 /dev/tty3
 ```
@@ -47,14 +47,14 @@ $ tty
 
 我们可以看看 X 系统打开的文件中是否包含了设备文件 `/dev/tty2`。先查找 X 系统的 PID：
 
-```
+```bash
 # ps aux | grep Xorg
 mazhen      1404  0.1  0.6 741884 49996 tty2     Sl+  08:07   0:13 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -background none -noreset -keeptty -verbose 3
 ```
 
 再看看这个进程(1404)打开了哪些文件：
 
-```
+```bash
 # ll /proc/1404/fd
 总用量 0
 dr-x------ 2 mazhen mazhen  0 7月  10 08:07 ./
@@ -69,7 +69,7 @@ lrwx------ 1 mazhen mazhen 64 7月  10 10:09 10 -> 'socket:[34615]'
 
 再做一个有趣的实验，在 tty3 下以 root 用户身份执行 echo 命令：
 
-```
+```bash
 # echo "hello from tty3" > /dev/tty4
 ```
 
@@ -81,7 +81,7 @@ lrwx------ 1 mazhen mazhen 64 7月  10 10:09 10 -> 'socket:[34615]'
 
 PTY 运行在用户区，更加安全和灵活，同时仍然保留了 TTY 驱动和 **line discipline** 的功能。常用的伪终端有 xterm，gnome-terminal，以及远程终端 ssh。我们以 Ubuntu 桌面版提供的 gnome-terminal 为例，介绍伪终端如何与 TTY 驱动交互。
 
-<img src="../../media/Pictures/3.png">
+![3](../../media/Pictures/3.png)
 
 PTY 是通过打开特殊的设备文件 `/dev/ptmx` 创建，由一对双向的字符设备构成，称为 `PTY master` 和 `PTY slave`。
 
@@ -92,17 +92,16 @@ gnome-terminal 会 fork 一个 shell 子进程，并让 shell 持有 `PTY slave`
 
 `PTY master` 和 `PTY slave` 之间是 TTY 驱动，会在 master 和 slave 之间复制数据，并进行会话管理和提供 **line discipline** 功能。
 
-
 在 gnome-terminal 中执行 tty 命令，可以看到代表`PTY slave`的设备文件：
 
-```
+```bash
 $ tty
 /dev/pts/0
 ```
 
 执行 `ps -l` 命令，也可以确认 shell 关联的伪终端是 `pts/0`：
 
-```
+```bash
 $ ps -l
 F S   UID     PID    PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
 0 S  1000    1842    1832  0  80   0 -  3423 do_wai pts/0    00:00:00 bash
@@ -149,7 +148,7 @@ Shell是用户空间的应用程序，通常由 terminal fork出来，是 termin
 
 我们可以使用命令行工具 `stty` 查询和配置 TTY，包括 **line discipline** 规则。在 terminal 执行 `stty -a` 命令：
 
-```
+```bash
 $ stty -a
 speed 38400 baud; rows 40; columns 80; line = 0;
 intr = ^C; quit = ^\; erase = ^?; kill = ^U; eof = ^D; eol = <undef>;
@@ -166,13 +165,14 @@ echoctl echoke -flusho -extproc
 `-a` 标志告诉 `stty` 返回所有的设置，包括TTY 的特征和 **line discipline** 规则。
 
 让我们看一下第一行：
+
 * **speed** 表示波特率。当 terminal 和计算机通过物理线路连接时，speed 后的数字表示物理线路的波特率。波特率对 PTY 来说是没有意义。
 * **rows, columns** 表示 terminal 的行数和列数，以字符为单位。
 * **line** 表示**line discipline** 的类型。0 是 `N_TTY`。
 
 `stty` 能够对 terminal 进行设置，让我们做个简单的测试验证一下。在第一个 terminal 中使用 vi 编辑一个文件。vi 在启动时会查询当前 terminal 的大小，以便 vi 能填满整个窗口。这时候我们在另一个 terminal 中输入：
 
-```
+```bash
 # stty -F /dev/pts/0 rows 20
 ```
 
@@ -182,14 +182,14 @@ echoctl echoke -flusho -extproc
 
 最后，`stty -a` 列出了一系列 **line discipline** 规则的开关。`-` 表示开关是关闭的，否则开关就是打开的。所有的开关在 `man stty`中都有解释。我举其中一个简单的例子，`echo` 是指示 **line discipline** 将字符回传的规则，我们可以执行命令关闭 `echo` 规则：
 
-```
-$ stty -echo
+```bash
+stty -echo
 ```
 
 这时候你再输入一些东西，屏幕上什么也不会出现。**line discipline** 不会将字符回传给 `PTY master`，因此 terminal 不会再显示我们输入的内容。然而其他一切都照常进行。例如你输入 `ls`，在输入时看不到字符 `ls`，然后你输入回车后，仍然会看到 `ls` 的输出。执行命令恢复 `echo` 规则：
 
-```
-$ stty echo
+```bash
+stty echo
 ```
 
 可以通过 `stty raw` 命令来禁用所有的 **line discipline** 规则，这样的终端被称为 `raw terminal`。像 vi 这样的编辑器会将终端设置为 raw ，因为它需要自己处理字符。后面介绍的远程终端也是需要一个 `raw terminal`，同样会禁用所有的 **line discipline** 规则。
@@ -198,7 +198,7 @@ $ stty echo
 
 我们经常通过 ssh 连接到一个远程主机，这时候远程主机上的 `ssh server` 就是一个伪终端 PTY，它同样持有 `PTY master`，但 `ssh server` 不再监听键盘事件，以及在屏幕上绘制输出结果，而是通过 TCP 连接，向 `ssh client` 发送或接收字符。
 
-<img src="../../media/Pictures/4.png">
+![4](../../media/Pictures/4.png)
 
 我们简单梳理一下远程终端是如何执行命令的。
 
@@ -228,5 +228,3 @@ $ stty echo
 * 远程终端 `ssh` 也是一种**伪终端 PTY**。
 
 相信通过这篇文章，你已经能够理解终端、终端模拟器和伪终端的区别和联系。如果想进一步探究低层实现，可以阅读 TTY 驱动的源码 [drivers/tty/tty_io.c](https://github.com/torvalds/linux/blob/master/drivers/tty/tty_io.c)和 `line discipline` 的源码 [drivers/tty/n_tty.c](https://github.com/torvalds/linux/blob/master/drivers/tty/n_tty.c)。
-
-
