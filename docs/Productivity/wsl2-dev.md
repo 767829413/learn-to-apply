@@ -26,7 +26,7 @@ dism.exe /online /enable-feature /featurename:VirutalMachinePlatform /all /nores
 
 完成之后,以管理员身份运行 PowerShell,执行如下命令来设置wsl使用的默认版本
 
-```
+```cmd
 wsl --set-default-version 2
 ```
 
@@ -72,9 +72,10 @@ Clash 这个端口 http 和 socks 通用
 ```bash
 ## 获取主机 IP
 ## 主机 IP 保存在 /etc/resolv.conf 中
+## 建议写入.bashrc .profile
 export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
 
-alias setp='export HTTPS_PROXY="http://${hostip}:7890";export HTTP_PROXY="http://${hostip}:7890";export ALL_PROXY="socks5://${hostip}:7890";'
+alias setp='export HTTPS_PROXY="http://${hostip}:7890" && export HTTP_PROXY="http://${hostip}:7890" && export ALL_PROXY="socks5://${hostip}:7890";'
 
 alias unsetp='unset ALL_PROXY && unset HTTPS_PROXY && unset HTTP_PROXY'
 ```
@@ -92,6 +93,7 @@ ssh-keygen -t rsa -b 4096 -C "xxxxxx@example.com"
 ```bash
 git config --global user.name "Xxx Xxx"
 git config --global user.email "xxxxxx@example.com"
+git config --global core.editor "vim"
 ```
 
 ### 配置go环境
