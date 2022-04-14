@@ -102,7 +102,7 @@ git config --global core.editor "vim"
 
 ```bash
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.8.linux-amd64.tar.gz
-export PATH=/usr/local/go/bin:$PATH
+export PATH=/usr/local/go/bin:/root/go/bin:$PATH
 go env -w GO111MODULE=on
 go env -w  GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct
 ```
