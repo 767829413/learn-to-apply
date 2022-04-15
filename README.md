@@ -79,6 +79,7 @@
 
 ## Docker随想
 
+* [通过Docker快速搭建一个静态资源服务器](./docs/Docker/static_resource_server.md)
 * [容器技术创新漫谈](./docs/Docker/container-innovation.md)
 * [Docker单机网络模型动手实验](./docs/Docker/docker-network-bridge.md)
 * [Docker跨主机Overlay网络动手实验](./docs/Docker/docker-overlay-networks.md)

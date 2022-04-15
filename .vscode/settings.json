@@ -1,0 +1,98 @@
+{
+    "explorer.confirmDelete": false,
+    "code-runner.ignoreSelection": true,
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.runInTerminal": true,
+    "editor.suggestSelection": "first",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "editor.fontSize": 20,
+    "workbench.colorTheme": "One Dark Pro Darker",
+    "editor.fontWeight": "bold",
+    "git.autofetch": true,
+    "extensions.ignoreRecommendations": false,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "diffEditor.maxComputationTime": 0,
+    "json.maxItemsComputed": 50000000,
+    "go.delveConfig": {
+        "dlvLoadConfig": {
+            "followPointers": true,
+            "maxVariableRecurse": 1,
+            "maxStringLen": 64,
+            "maxArrayValues": 64,
+            "maxStructFields": -1
+        },
+        "apiVersion": 2,
+        "showGlobalVariables": false
+    },
+    "go.testTimeout": "3000s",
+    "go.testEnvVars": {},
+    "go.testFlags": [
+        "-v",
+        "-count=1"
+    ],
+    "go.toolsManagement.autoUpdate": true,
+    "terminal.integrated.detectLocale": "on",
+    "terminal.explorerKind": "external",
+    "editor.wordWrap": "on",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "workbench.startupEditor": "none",
+    "gitlens.advanced.messages": {
+        "suppressGitMissingWarning": true
+    },
+    "explorer.confirmDragAndDrop": false,
+    "editor.autoClosingBrackets": "never",
+    "git.confirmSync": false,
+    "fileheader.customMade": {
+        "Author": "Fang Yuan",
+        "Date": "Do not edit",
+        "LastEditTime": "Do not edit",
+        "Description": "",
+        "FilePath": "Do not edit",
+    },
+    "fileheader.cursorMode": {
+        "param": "",
+        "return": "",
+        "throws": ""
+    },
+    "fileheader.configObj": {
+        "autoAdd": false,
+        "autoAlready": false,
+        "colon": [
+            "",
+            ""
+        ],
+        "functionParamsShape": "no type"
+    },
+    "alignment.indentBase": "dontchange",
+    "alignment.surroundSpace": {
+        "colon": [
+            0,
+            1
+        ],
+        "assignment": [
+            1,
+            1
+        ],
+        "arrow": [
+            1,
+            1
+        ],
+        "comment": 2
+    },
+    "markdownlint.config": {
+        "MD001": false,
+        "MD046": false,
+        "MD003": false,
+        "MD036": false
+    },
+    "diffEditor.ignoreTrimWhitespace": false
+}
