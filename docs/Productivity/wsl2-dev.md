@@ -82,6 +82,67 @@ alias unsetp='unset ALL_PROXY && unset HTTPS_PROXY && unset HTTP_PROXY'
 
 ## 配置个人的开发环境
 
+### 配置源和短路径(可选)
+
+备份默认源
+
+```bash
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+```
+
+这里选择的是阿里的源
+
+```text
+deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+```
+
+设置短路径,首先找到 .bashrc 里这段
+
+```text
+PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+```
+
+将小写w改为大写的W，保存退出(wq)即可,顺便介绍下一些字符含义
+
+```text
+\d ：代表日期，格式为weekday month date，例如："Mon Aug 1"
+
+\H ：完整的主机名称。例如：我的机器名称为：fc4.linux，则这个名称就是fc4.linux
+
+\h ：仅取主机的第一个名字，如上例，则为fc4，.linux则被省略
+
+\t ：显示时间为24小时格式，如：HH：MM：SS
+
+\T ：显示时间为12小时格式
+
+\A ：显示时间为24小时格式：HH：MM
+
+\u ：当前用户的账号名称
+
+\v ：BASH的版本信息
+
+\w ：完整的工作目录名称。家目录会以 ~代替
+
+\W ：利用basename取得工作目录名称，所以只会列出最后一个目录
+
+\# ：下达的第几个命令
+
+\$ ：提示字符，如果是root时，提示符为：# ，普通用户则为：
+```
+
 ### 配置ssh配置
 
 ```bash
@@ -110,7 +171,7 @@ go env -w  GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct
 ### 配置php环境
 
 ```bash
-sudo apt -y install php7.4
-sudo apt-get install -y php7.4-cli php7.4-json php7.4-common php7.4-mysql php7.4-zip php7.4-gd php7.4-mbstring php7.4-curl php7.4-xml php7.4-bcmath
-sudo apt install composer
+sudo apt-get -y install php7.4
+sudo apt-get -y install php7.4-cli php7.4-json php7.4-common php7.4-mysql php7.4-zip php7.4-gd php7.4-mbstring php7.4-curl php7.4-xml php7.4-bcmath
+sudo apt-get -y install composer
 ```
