@@ -79,6 +79,7 @@
 
 ## Docker随想
 
+* [Docker镜像和容器的导入与导出及迁移](./docs/Docker/docker-container-import-export.md)
 * [通过Docker快速搭建一个静态资源服务器](./docs/Docker/static_resource_server.md)
 * [容器技术创新漫谈](./docs/Docker/container-innovation.md)
 * [Docker单机网络模型动手实验](./docs/Docker/docker-network-bridge.md)
@@ -119,3 +120,12 @@
 * [VS code快捷键](./docs/Productivity/vscode.md)
 * [如何让用户拥有sudo权限](./docs/Productivity/sudo.md)
 * [Git Feature Branch Workflow](./docs/Productivity/github-workflow.md)
+* [LINUX上传下载命令：RZ，SZ](./docs/Productivity/linux-rz-sz.md)
+* [golang简易编译打包工具使用](./docs/Productivity/compile-and-package.md)
+* [一款简易的php在线编辑工具](./docs/Productivity/php-online-edit.md)
+
+---
+
+## Dapr
+
+* [搭建dapr基于k8s的开发调试环境](./docs/Dapr/dapr-k8s-debug.md)
