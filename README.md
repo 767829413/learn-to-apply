@@ -30,6 +30,8 @@
 
 ## 杂七杂八
 
+* [在win10的wsl2搭建DNF来爽一爽](./docs/A-bit-of-everything/wsl2-dnf.md)
+* [在win10的wsl2固定ip](./docs/A-bit-of-everything/wsl2-bind-ip.md)
 * [由dijkstra(戴克斯特拉算法)引发的最短路径问题粗糙的实现方法](./docs/A-bit-of-everything/simple-dijkstra.md)
 * [麻痹,脑壳儿有点炸裂,动态规划先不深入了,来点拓扑排序压压惊](./docs/A-bit-of-everything/simple-topological-sorting.md)
 * [动态规划应用—字符纠错(莱文斯坦距离-Levenshtein distance 和 最长公共子串-Longest common substring)](./docs/A-bit-of-everything/simple-dynamic-planning-2.md)
