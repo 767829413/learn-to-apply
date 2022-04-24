@@ -10,7 +10,7 @@
 
 这个主要是借鉴老外提出的[建议](https://lifesaver.codes/answer/static-ip-on-wsl-2-418)
 
-就是每次开机,重启去分配一个固定ip给wsl2和主机
+就是每次开机,去分配一个固定ip给wsl2和主机
 
 ```cmd
 wsl -d Ubuntu -u root ip addr add 192.168.50.16/24 broadcast 192.168.50.255 dev eth0 label eth0:1
