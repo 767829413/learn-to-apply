@@ -58,7 +58,7 @@ DNF 台服容器非常消耗内存,作者推荐设置 8G SWAP 虚拟内存,所�
   ## 查看容器是否运行
   docker ps
   ## 等待三,四分钟后可以去 /your_path/dnf/log 查看日志,返回五国就是成功
-  grep -rHi 'GeoIP Allow Country Code' /dnf/log
+  grep -rHi 'GeoIP Allow Country Code' /your_path/dnf/log
 
   ```
 
