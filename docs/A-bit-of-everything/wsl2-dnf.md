@@ -4,7 +4,7 @@
 
 ### 前提条件
 
-* [在win10的wsl2固定ip](./wsl2-bind-ip.md)
+* [在win10的wsl2固定ip](../../docs/A-bit-of-everything/wsl2-bind-ip.md)
 * [DNF 台服客户端](https://pan.baidu.com/share/init?surl=0RgXFtpEhvRUm-hA98Am4A) 提取码：fybn
 * [网关文件](https://pan.baidu.com/share/init?surl=dlsu7hX1bU8IeVYCVWvO5g) 提取码：2333
 * [配套登录器的覆盖文件](https://pan.baidu.com/s/16txGf3LuDiLrglvQHNfLZw) 提取码：2333

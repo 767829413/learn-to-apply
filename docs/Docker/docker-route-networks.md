@@ -1,6 +1,6 @@
 # Docker跨主机通信路由模式动手实验
 
-容器的跨主机通信主要有两种方式：封包模式和路由模式。[上一篇文章](./docker-overlay-networks.md)演示了使用`VXLAN`协议的封包模式，这篇将介绍另一种方式，利用三层网络的路由转发实现容器的跨主机通信。
+容器的跨主机通信主要有两种方式：封包模式和路由模式。[上一篇文章](../../docs/Docker/docker-overlay-networks.md)演示了使用`VXLAN`协议的封包模式，这篇将介绍另一种方式，利用三层网络的路由转发实现容器的跨主机通信。
 
 ## 路由模式概述
 
@@ -27,7 +27,7 @@
 
 路由模式的实验比较简单，关键在于宿主机上路由规则的配置。为了简化实验，这些路由规则都是我们手工配置，而且两个节点之间二层网络互通，没有跨网段。
 
-参照[Docker跨主机Overlay网络动手实验](./docker-overlay-networks.md)，创建“容器”，`veth pairs`，`bridge`，设置IP，激活虚拟设备。
+参照[Docker跨主机Overlay网络动手实验](../../docs/Docker/docker-overlay-networks.md)，创建“容器”，`veth pairs`，`bridge`，设置IP，激活虚拟设备。
 
 然后在`node-1`上增加路由规则：
 

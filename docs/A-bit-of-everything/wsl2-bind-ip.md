@@ -4,7 +4,7 @@
 
 ### 前提条件
 
-* [已经安装好WSL2](../Productivity/wsl2-dev.md)
+* [已经安装好WSL2](../../docs/Productivity/wsl2-dev.md)
 
 ### 解决方案
 

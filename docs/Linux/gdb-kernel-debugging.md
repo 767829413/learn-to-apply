@@ -127,7 +127,7 @@ sudo iptables -t nat -A POSTROUTING -o wlp2s0 -j MASQUERADE
 
 ![ip_link](../../media/Pictures/ip_link.png)
 
-如果想进一步了解**iptables**，可以参见我的另一篇文章[《Docker单机网络模型动手实验》](./docker-network-bridge.md)。
+如果想进一步了解**iptables**，可以参见我的另一篇文章[《Docker单机网络模型动手实验》](../../docs/Docker/docker-network-bridge.md)。
 
 接着我们需要将虚拟机的网卡连接到网桥**br0**。后面我们使用**libvirt**来管理**QEMU/KVM**虚拟机，这样可以把虚拟机的配置参数记录在XML文件中，易于维护。
 
