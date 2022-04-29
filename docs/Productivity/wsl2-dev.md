@@ -11,6 +11,7 @@
 
 想要在Windows 10上运行WSL,首先需要启用Windows上的一些务,这些服务默认是关闭的.开始菜单,搜索 PowerShell,右键 PowerShell,选择使用管理员运行
 ![git](../../media/Pictures/1220220408140039.png)
+
 在打开的 PowerShell 终端,执行如下命令：
 
 ```cmd
