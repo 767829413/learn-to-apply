@@ -1,6 +1,6 @@
 # Docker跨主机Overlay网络动手实验
 
-[上一篇文章](./docker-network-bridge.md)我演示了`docker bridge`网络模型的实验，这次我将展示如何利用`Overlay 网络`实现跨主机容器的通信。
+[上一篇文章](../../docs/Docker/docker-network-bridge.md)我演示了`docker bridge`网络模型的实验，这次我将展示如何利用`Overlay 网络`实现跨主机容器的通信。
 
 ![2018-11-11 18.18.03](../../media/Pictures/2018-11-11%2018.18.03.png)
 
@@ -11,7 +11,7 @@
 
 本文主要介绍封包模式。`Overlay`网络主要有两种方式，一种是使用UDP在用户态封装，一种是利用`VXLAN` 在内核态封装。由于减少了用户态到内核态的切换，封包解包逻辑都在内核态进行，`VXLAN` 的性能更好，成为了容器网络的主流方案。
 
-关于路由模式，会在[下一篇文章](./docker-route-networks.md)介绍。
+关于路由模式，会在[下一篇文章](../../docs/Docker/docker-route-networks.md)介绍。
 
 ## VXLAN
 
@@ -55,7 +55,7 @@ sudo ip netns add docker1
 sudo ip netns add docker2
 ```
 
-为什么创建个`Namesapce`就说是“容器”？请参考[上一篇文章](./docker-network-bridge.md)。
+为什么创建个`Namesapce`就说是“容器”？请参考[上一篇文章](../../docs/Docker/docker-network-bridge.md)。
 
 * **创建Veth pairs**
 
@@ -353,4 +353,4 @@ sudo bridge fdb append [docker1的MAC地址]  dev vxlan100 dst 192.168.31.183
 
 相信通过亲自动手实验，容器网络对你来说不再神秘。希望本文对你理解容器网络有所帮助。
 
-下一篇我将动手实验容器跨主机通信的[路由模式](./docker-route-networks.md)。
+下一篇我将动手实验容器跨主机通信的[路由模式](../../docs/Docker/docker-route-networks.md)。

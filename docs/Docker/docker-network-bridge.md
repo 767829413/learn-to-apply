@@ -22,7 +22,7 @@
 
 如何让容器之间互相连接保持网络通畅，Docker有多种网络模型。对于单机上运行的多个容器，可以使用缺省的[bridge网络驱动](https://docs.docker.com/network/bridge/)。而容器的跨主机通信，一种常用的方式是利用`Overlay 网络`，基于物理网络的虚拟化网络来实现。
 
-本文会在单机上实验展示[bridge网络模型](https://docs.docker.com/network/bridge/)，揭示其背后的实现原理。[下一篇文章](./docker-overlay-networks.md)会演示容器如何利用`Overlay 网络`进行跨主机通信。
+本文会在单机上实验展示[bridge网络模型](https://docs.docker.com/network/bridge/)，揭示其背后的实现原理。[下一篇文章](../../docs/Docker/docker-overlay-networks.md)会演示容器如何利用`Overlay 网络`进行跨主机通信。
 
 我们按照下图创建网络拓扑，让容器之间网络互通，从容器内部可以访问外部资源，同时，容器内可以暴露服务让外部访问。
 
@@ -371,4 +371,4 @@ sudo ip link  del veth3
 
 本文我们在介绍了`veth`、`Linux bridge`、`iptables`等概念后，亲自动手模拟出了[docker bridge网络模型](https://docs.docker.com/network/bridge/)，并测试了几种场景的网络互通。实际上`docker network` 就是使用了上述技术，帮我们创建和维护网络。通过动手实验，相信你对docker bridge网络理解的更加深入。
 
-下一篇我将动手实验容器如何[利用`Overlay 网络`进行跨主机通信](./docker-overlay-networks.md)。
+下一篇我将动手实验容器如何[利用`Overlay 网络`进行跨主机通信](../../docs/Docker/docker-overlay-networks.md)。
