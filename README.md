@@ -125,6 +125,7 @@
 * [LINUX上传下载命令：RZ，SZ](./docs/Productivity/linux-rz-sz.md)
 * [golang简易编译打包工具使用](./docs/Productivity/compile-and-package.md)
 * [一款简易的php在线编辑工具](./docs/Productivity/php-online-edit.md)
+* [搭建自己的简易Blog](./docs/Productivity/easy-online-blog.md)
 
 ---
 
