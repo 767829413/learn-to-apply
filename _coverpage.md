@@ -1,6 +1,6 @@
 # 学以致用
 
-![logo](https://cdn.pixabay.com/photo/2016/04/01/09/56/panda-z-1299683_960_720.jpg)
+![logo](https://docsify.js.org/_media/icon.svg)
 
 **贵在坚持**
 
