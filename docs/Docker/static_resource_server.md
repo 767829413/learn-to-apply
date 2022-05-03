@@ -6,12 +6,12 @@
 
 * 买一个域名
 * 拥有自己的服务器(本例用的是阿里云轻量应用服务器)
-* 把你的域名DNS解析至你的云公网IP（生效时间预计从0-48小时不等）
+* 把你的域名DNS解析至你的云公网IP(生效时间预计从0-48小时不等)
 * 了解一下[Docker基本操作](https://yeasy.gitbook.io/docker_practice/)
 
-### 步骤一 构建Docker镜像（基于Nginx镜像）
+### 步骤一 构建Docker镜像(基于Nginx镜像)
 
-**新建一个mynginx工程来构建Docker镜像（基于Nginx镜像），里面有且仅包含Dockerfile和初始Nginx配置。Dockerfile中描述了Githooks挂载地址，安装好了Certbot命令，并加入初始Nginx配置**
+**新建一个mynginx工程来构建Docker镜像(基于Nginx镜像)**
 
 ```Dockerfile
 #基于Nginx镜像
