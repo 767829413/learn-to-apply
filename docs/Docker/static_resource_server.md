@@ -1,6 +1,6 @@
-# 通过Docker快速搭建一个静态资源服务器
+# 通过Docker快速搭建一个nginx
 
-## 在云服务器上搭建搭建一个静态资源服务器
+## 在云服务器上快速配置nginx
 
 ### 前提条件
 
@@ -11,7 +11,7 @@
 
 ### 步骤一 构建Docker镜像（基于Nginx镜像）
 
-**新建一个hexo-docker工程来构建Docker镜像（基于Nginx镜像），里面有且仅包含Dockerfile和初始Nginx配置。Dockerfile中描述了Githooks挂载地址，安装好了Certbot命令，并加入初始Nginx配置**
+**新建一个mynginx工程来构建Docker镜像（基于Nginx镜像），里面有且仅包含Dockerfile和初始Nginx配置。Dockerfile中描述了Githooks挂载地址，安装好了Certbot命令，并加入初始Nginx配置**
 
 ```Dockerfile
 #基于Nginx镜像
@@ -34,12 +34,60 @@ EXPOSE 80
 EXPOSE 443
 ```
 
+这里给出一份nginx配置
+
+```conf
+user root;
+worker_processes auto;
+
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+  worker_connections 1024;
+}
+
+http {
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+
+  log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+  '$status $body_bytes_sent "$http_referer" '
+  '"$http_user_agent" "$http_x_forwarded_for"';
+
+  access_log /var/log/nginx/access.log main;
+
+  sendfile on;
+  #tcp_nopush     on;
+
+  keepalive_timeout 65;
+
+  gzip on;
+
+  #include /etc/nginx/conf.d/*.conf;
+  server {
+    listen 80;
+    server_name domain1 domain2;
+
+    location / {
+      root /var/www; 
+      index index.html index.htm;
+    }
+
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+      root /usr/share/nginx/html;
+    }
+  }
+}
+```
+
 ### 步骤二 构建和启动Docker镜像和容器
 
 * 构建镜像
 
 ```bash
-docker build -t hexo-docker .
+docker build -t mynginx .
 ```
 
 * 启动容器
@@ -47,7 +95,7 @@ docker build -t hexo-docker .
     ***这里是通过volume方案，为后续申请证书的挂载做准备***
 
 ```bash
-docker run --name nginx -v $(pwd)/letsencrypt:/etc/letsencrypt -v /var/www/blog:/var/www/blog -v $(pwd)/nginx/nginx.conf:/etc/nginx/nginx.conf -d -p 80:80 -p 443:443 -p 8004:22 hexo-docker
+docker run --name nginx -v /your_path/letsencrypt:/etc/letsencrypt -v /your_path/var/www:/var/www -v /your_path/conf/nginx.conf:/etc/nginx/nginx.conf -d -p 80:80 -p 443:443 -p 8004:22 mynginx
 ```
 
 * 配置证书
@@ -55,7 +103,7 @@ docker run --name nginx -v $(pwd)/letsencrypt:/etc/letsencrypt -v /var/www/blog:
   * 进入容器
 
     ```bash
-    docker exec -it nginx /bin/bash
+    docker exec -it mynginx /bin/bash
     ```
 
   * 申请证书
@@ -64,7 +112,7 @@ docker run --name nginx -v $(pwd)/letsencrypt:/etc/letsencrypt -v /var/www/blog:
 
     ```bash
     ## 申请的域名
-    certbot --nginx -d "xxx.xxx"
+    certbot --nginx -d "domain1","domain2"
     ```
 
     ***这里就按照提示一步一步走就是了，最后见到congratulation!就能证明证书已经安装好了，因为我们在docker run 时采用了volume方案，生成出的证书会挂载到云服务的$(pwd)/letsencrypt目录下，并关联到Docker内部的/etc/letsencrypt目录 。这样能保证镜像中不带CA证书，解耦的同时也确保Docker在迁移的时候的安全性。***
