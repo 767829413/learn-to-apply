@@ -1,6 +1,6 @@
 # 学以致用
 
-![logo](https://docsify.js.org/_media/icon.svg)
+![logo](./media/Pictures/icon.svg)
 
 **贵在坚持**
 
