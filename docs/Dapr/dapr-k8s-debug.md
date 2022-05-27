@@ -2,7 +2,7 @@
 
 ## 前置条件
 
-* 建议虚拟机linux环境或者使用win10的wsl2
+* [使用win10的wsl2](../../docs/Productivity/wsl2-dev.md)
 * golang版本1.17及以上版本
 * IDE建议vs code
 
