@@ -5,3 +5,4 @@
 * [三数之和](../../../docs/leetcode/array/three-sum.md)
 * [最接近的三数之和](../../../docs/leetcode/array/three-sum-closest.md)
 * [四数之和](../../../docs/leetcode/array/four-sum.md)
+* [删除有序数组中的重复项](../../../docs/leetcode/array/remove-duplicates.md)
