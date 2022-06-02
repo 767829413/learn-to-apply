@@ -10,3 +10,4 @@
 * [删除有序数组中的重复项](../../../docs/leetcode/array/remove-duplicates.md)
 * [移除元素](../../../docs/leetcode/array/remove-element.md)
 * [下一个排列](../../../docs/leetcode/array/next-permutation.md)
+* [搜索旋转排序数组](../../../docs/leetcode/array/search-in-rotated-sorted-array.md)
