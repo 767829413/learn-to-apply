@@ -23,30 +23,29 @@
 
 ```go
 func maxArea(height []int) int {
- index := len(height) - 1
- l1, l2, area := 0, index, 0
+	index := len(height) - 1
+	l1, l2, area := 0, index, 0
 
- for l1 < l2 {
-  l := l2 - l1
-  // 面积取决于短板
-  // 长板往内移动时遇到更长的板没有用,取决于最短的板,此时长度还缩短了
-  // 短板往内移动时可能遇到比当前长的短板,有机会面积增大
-  if height[l1] > height[l2] {
-   area = max(area, height[l2]*l)
-   l2--
-  } else {
-   area = max(area, height[l1]*l)
-   l1++
-  }
- }
- return area
+	for l1 < l2 {
+		l := l2 - l1
+		// 面积取决于短板
+		// 长板往内移动时遇到更长的板没有用,取决于最短的板,此时长度还缩短了
+		// 短板往内移动时可能遇到比当前长的短板,有机会面积增大
+		if height[l1] > height[l2] {
+			area = max(area, height[l2]*l)
+			l2--
+		} else {
+			area = max(area, height[l1]*l)
+			l1++
+		}
+	}
+	return area
 }
 
 func max(a, b int) int {
- if a > b {
-  return a
- }
- return b
+	if a > b {
+		return a
+	}
+	return b
 }
-
 ```

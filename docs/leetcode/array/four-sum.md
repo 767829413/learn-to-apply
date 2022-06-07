@@ -29,64 +29,63 @@
 
 ```go
 func fourSum(nums []int, target int) [][]int {
- res := [][]int{}
- l := len(nums)
- //特判,数组长度小于4就返回
- if l < 4 {
-  return res
- }
- // 排序,从小到大
- sort.Ints(nums)
- // 遍历排序后的数组
- for i := 0; i < l-3; i++ {
-  if i > 0 && nums[i] == nums[i-1] {
-   continue
-  }
-  // 第一个数固定了,从小到大的顺序相加,只要和大于target,则后面的不可能出现等于target了
-  if nums[i]+nums[i+1]+nums[i+2]+nums[i+3] > target {
-   return res
-  }
-  // 第一个数固定了,从大到小的顺序相加,只要和小于 target,第一个数和剩下的任意三个数相加都会小于,直接跳过
-  if nums[i]+nums[l-3]+nums[l-2]+nums[l-1] < target {
-   continue
-  }
-  for j := i + 1; j < l-2; j++ {
-   if j > i+1 && nums[j] == nums[j-1] {
-    continue
-   }
-   // 前两个数固定了,从小到大的顺序相加,只要和大于target,则后面的不可能出现等于target了
-   if nums[i]+nums[j]+nums[j+1]+nums[j+2] > target {
-    break
-   }
-   // 前两个数固定了,从大到小的顺序相加,只要和小于 target,和剩下的任意两个数相加都会小于,直接跳过
-   if nums[i]+nums[j]+nums[l-2]+nums[l-1] < target {
-    continue
-   }
-   lo := j + 1
-   hi := l - 1
-   for lo < hi {
-    tmp := nums[i] + nums[j] + nums[lo] + nums[hi]
-    if tmp == target {
-     res = append(res, []int{nums[i], nums[j], nums[lo], nums[hi]})
-     //重复值跳过
-     for lo < hi && nums[lo] == nums[lo+1] {
-      lo++
-     }
-     //重复值跳过
-     for lo < hi && nums[hi] == nums[hi-1] {
-      hi--
-     }
-     lo++
-     hi--
-    } else if tmp > target { // 和大于 target,那么右边界向左,总和缩小
-     hi--
-    } else { // 和小于 target,那么左边界向右,总和增大
-     lo++
-    }
-   }
-  }
- }
- return res
+	res := [][]int{}
+	l := len(nums)
+	//特判,数组长度小于4就返回
+	if l < 4 {
+		return res
+	}
+	// 排序,从小到大
+	sort.Ints(nums)
+	// 遍历排序后的数组
+	for i := 0; i < l-3; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+		// 第一个数固定了,从小到大的顺序相加,只要和大于target,则后面的不可能出现等于target了
+		if nums[i]+nums[i+1]+nums[i+2]+nums[i+3] > target {
+			return res
+		}
+		// 第一个数固定了,从大到小的顺序相加,只要和小于 target,第一个数和剩下的任意三个数相加都会小于,直接跳过
+		if nums[i]+nums[l-3]+nums[l-2]+nums[l-1] < target {
+			continue
+		}
+		for j := i + 1; j < l-2; j++ {
+			if j > i+1 && nums[j] == nums[j-1] {
+				continue
+			}
+			// 前两个数固定了,从小到大的顺序相加,只要和大于target,则后面的不可能出现等于target了
+			if nums[i]+nums[j]+nums[j+1]+nums[j+2] > target {
+				break
+			}
+			// 前两个数固定了,从大到小的顺序相加,只要和小于 target,和剩下的任意两个数相加都会小于,直接跳过
+			if nums[i]+nums[j]+nums[l-2]+nums[l-1] < target {
+				continue
+			}
+			lo := j + 1
+			hi := l - 1
+			for lo < hi {
+				tmp := nums[i] + nums[j] + nums[lo] + nums[hi]
+				if tmp == target {
+					res = append(res, []int{nums[i], nums[j], nums[lo], nums[hi]})
+					//重复值跳过
+					for lo < hi && nums[lo] == nums[lo+1] {
+						lo++
+					}
+					//重复值跳过
+					for lo < hi && nums[hi] == nums[hi-1] {
+						hi--
+					}
+					lo++
+					hi--
+				} else if tmp > target { // 和大于 target,那么右边界向左,总和缩小
+					hi--
+				} else { // 和小于 target,那么左边界向右,总和增大
+					lo++
+				}
+			}
+		}
+	}
+	return res
 }
-
 ```

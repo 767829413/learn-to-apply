@@ -74,6 +74,7 @@
     },
     "alignment.indentBase": "dontchange",
     "alignment.surroundSpace": {
+
         "colon": [
             0,
             1
@@ -92,7 +93,19 @@
         "MD001": false,
         "MD046": false,
         "MD003": false,
-        "MD036": false
+        "MD036": false,
+        "MD010": false
     },
-    "diffEditor.ignoreTrimWhitespace": false
+    "diffEditor.ignoreTrimWhitespace": false,
+    "settingsSync.ignoredExtensions": [
+    
+    ],
+    "settingsSync.ignoredSettings": [
+    
+    ],
+    "notebook.editorOptionsCustomizations": {
+    
+    },
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "search.followSymlinks": false
 }
