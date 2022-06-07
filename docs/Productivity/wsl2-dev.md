@@ -73,7 +73,7 @@ Clash 这个端口 http 和 socks 通用
 ```bash
 ## 获取主机 IP
 ## 主机 IP 保存在 /etc/resolv.conf 中
-## 建议写入.bashrc .profile
+## 建议写入.bashrc .profile 如果配置了zsh,建议写入 ~/.zshrc
 export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
 
 alias setp='export HTTPS_PROXY="http://${hostip}:7890" && export HTTP_PROXY="http://${hostip}:7890" && export ALL_PROXY="socks5://${hostip}:7890";'
@@ -156,6 +156,55 @@ ssh-keygen -t rsa -b 4096 -C "xxxxxx@example.com"
 git config --global user.name "Xxx Xxx"
 git config --global user.email "xxxxxx@example.com"
 git config --global core.editor "vim"
+```
+
+### 配置 Shell（安装 zsh 和 oh-my-zsh）
+
+```bash
+# 安装 zsh
+apt-get -y install zsh
+
+# 将 zsh 设置为系统默认 shell
+sudo chsh -s /bin/zsh
+```
+
+zsh 的配置太复杂， oh-my-zsh 可以让我们更方便的配置 zsh,重启 Terminal 生效
+
+```bash
+# 自动安装，如果你没安装 git 需要先安装 git
+wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+
+# 或者也可以选择手动安装
+git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+```
+
+zsh 的配置主要集中在 ~/.zshrc 文件里
+
+```text
+## 常用命令配置别名
+alias cls='clear'
+alias ll='ls -l'
+alias la='ls -a'
+alias vi='vim'
+alias grep="grep --color=auto"
+
+##  zsh的主题
+ZSH_THEME="robbyrussell"
+```
+
+oh-my-zsh 还支持各种插件，存放在 ~/.oh-my-zsh/plugins 目录下
+
+```bash
+## zsh-autosuggestions：命令行命令键入时的历史命令建议插件
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+## zsh-syntax-highlighting：命令行语法高亮插件
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+## 插件安装好后需要在 ~/.zshrc 文件里配置后方可使用，配置如下
+vim ~/.zshrc
+## plugins=(其他插件名 zsh-autosuggestions zsh-syntax-highlighting)
 ```
 
 ### 配置go环境
