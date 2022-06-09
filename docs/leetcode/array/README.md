@@ -14,3 +14,4 @@
 * [在排序数组中查找元素的第一个和最后一个位置](../../../docs/leetcode/array/find-first-and-last-position-of-element-in-sorted-array.md)
 * [搜索插入位置](../../../docs/leetcode/array/search-insert-position.md)
 * [有效的数独](../../../docs/leetcode/array/valid-sudoku.md)
+* [解数独](../../../docs/leetcode/array/sudoku-solver.md)
