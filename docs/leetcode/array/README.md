@@ -17,3 +17,4 @@
 * [解数独](../../../docs/leetcode/array/sudoku-solver.md)
 * [组合总和](../../../docs/leetcode/array/combination-sum.md)
 * [组合总和 II](../../../docs/leetcode/array/combination-sum-ii.md)
+* [缺失的第一个正数](../../../docs/leetcode/array/first-missing-positive.md)
