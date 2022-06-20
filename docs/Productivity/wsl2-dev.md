@@ -33,7 +33,7 @@ wsl --install -d <DistroName>
 
 完成之后,以管理员身份运行 PowerShell,执行如下命令来设置wsl使用的默认版本
 
-### 步骤二 使用WSL安装Ubuntu 20.04
+### 步骤二 使用WSL安装其他版本Ubuntu(可选)
 
 在开启WSL功能之后,安装一个Linux的分发版很简单,只需要打开Windows应用商店（Microsoft Store）,这里我们将安装Ubuntu 20.04分发版.打开应用商店之后,直接在应用商店中搜索 Ubuntu ,将看有很多分发版本的选项,这里选择 Ubuntu 20.04.4.
 
