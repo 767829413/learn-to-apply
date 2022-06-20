@@ -74,7 +74,6 @@
     },
     "alignment.indentBase": "dontchange",
     "alignment.surroundSpace": {
-
         "colon": [
             0,
             1
@@ -107,5 +106,6 @@
     
     },
     "terminal.integrated.enableMultiLinePasteWarning": false,
-    "search.followSymlinks": false
+    "search.followSymlinks": false,
+    "terminal.integrated.defaultProfile.linux": "bash"
 }

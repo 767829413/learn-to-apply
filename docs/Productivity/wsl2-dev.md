@@ -22,14 +22,16 @@ dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux 
 dism.exe /online /enable-feature /featurename:VirutalMachinePlatform /all /norestart
 ```
 
-***完成以上操作之后,需要重启Windows操作系统,重启之后再次登陆系统.
-接下来需要从微软下载一个最新的Linux内核升级包并安装,下载安装包 [wsl_update_x64.msi](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi),下载完成后直接安装.***
-
-完成之后,以管理员身份运行 PowerShell,执行如下命令来设置wsl使用的默认版本
+***使用微软WSL的文档[安装方式](https://docs.microsoft.com/zh-cn/windows/wsl/install)***
 
 ```cmd
-wsl --set-default-version 2
+# 查看可用发行版列表
+# wsl --list --online
+# 此命令将启用所需的可选组件，下载最新的 Linux 内核，将 WSL 2 设置为默认值，并安装 Linux 发行版
+wsl --install -d <DistroName>
 ```
+
+完成之后,以管理员身份运行 PowerShell,执行如下命令来设置wsl使用的默认版本
 
 ### 步骤二 使用WSL安装Ubuntu 20.04
 
@@ -50,9 +52,12 @@ wsl --set-default-version 2
 
 [WSL 中的高级设置配置](https://docs.microsoft.com/zh-cn/windows/wsl/wsl-config#wslconf)
 
-重启WSL可以使用任务管理器重启服务 LxssManager
+重启WSL
 
-![LxssManager](../../media/Pictures/reboot_20220408142420.png)
+```cmd
+# 重启 WSL 2 分发版的快速路径，但它将关闭所有正在运行的分发版
+wsl --shutdown
+```
 
 ### 步骤四 WSL2 配置代理(可选)
 
