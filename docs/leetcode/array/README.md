@@ -25,6 +25,7 @@
 * [组合总和](../../../docs/leetcode/array/combination-sum.md)
 * [组合总和 II](../../../docs/leetcode/array/combination-sum-ii.md)
 * [跳跃游戏 II](../../../docs/leetcode/array/jump-game-ii.md)
+* [全排列](../../../docs/leetcode/array/permutations.md)
 
 ---
 
