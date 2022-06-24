@@ -139,3 +139,9 @@
 ## Dapr
 
 * [搭建dapr基于k8s的开发调试环境](./docs/Dapr/dapr-k8s-debug.md)
+
+---
+
+## Rust
+
+* [WSL2 + VSCode + Rust 开发环境搭建](./docs/Rust/wsl2-vscode-dev.md)
