@@ -12,7 +12,7 @@
 在Windows Terminal打开Ubuntu 20.04执行一下命令,根据提示执行相应操作
 
 ```bash
-## 出现 Rust is installed now. Great! 表示安装成功了
+## 出现 Rust is installed now. Great! 表示执行成功了
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ## 运行下面命令,出现 cargo 1.61.0 (a028ae4 2022-04-29) 表示安装成功
 ## zsh 建议在 .zshrc 文件中配置 . "$HOME/.cargo/env"
