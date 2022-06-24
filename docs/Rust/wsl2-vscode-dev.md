@@ -27,9 +27,9 @@ Rust是必须要有C支持的,GCC必装
 
 ```bash
 ## 保证源最新
-apt-get update
+sudo apt-get update
 ## 安装gcc
-sudo apt install gcc
+sudo apt-get -y install gcc
 ```
 
 ### 步骤三 打开vscode安装相应插件
