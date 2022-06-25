@@ -27,6 +27,7 @@
 * [跳跃游戏 II](../../../docs/leetcode/array/jump-game-ii.md)
 * [全排列](../../../docs/leetcode/array/permutations.md)
 * [全排列 II](../../../docs/leetcode/array/permutations-ii.md)
+* [旋转图像](../../../docs/leetcode/array/rotate-image.md)
 
 ---
 
