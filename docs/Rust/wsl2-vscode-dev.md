@@ -42,6 +42,8 @@ sudo apt-get -y install gcc
 
 * [rust-analyzer(可选)](https://marketplace.visualstudio.com/items?itemName=dustypomerleau.rust-syntax)
 
+* [vscode-rustfmt(可选)](https://marketplace.visualstudio.com/items?itemName=statiolake.vscode-rustfmt)
+
 ### 步骤四 hello world
 
 ```bash
