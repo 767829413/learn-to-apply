@@ -69,6 +69,7 @@
 
 ## Kubernetes相关
 
+* [Kind加载本地镜像失败](./docs/Kubernetes/kind-load-docker-image-failure.md)
 * [自己动手将谷歌k8s镜像同步到阿里云](./docs/Kubernetes/sync-docker-repo.md)
 * [Kubernetes集群的身份验证](./docs/Kubernetes/kubernetes-authentication.md)
 * [使用kubectl管理多集群](./docs/Kubernetes/kubectl-multiple-clusters.md)
