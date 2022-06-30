@@ -2,7 +2,8 @@
 # 麻痹,脑壳儿有点炸裂,动态规划先不深入了,来点拓扑排序压压惊
 
 ## **演示Code**
-```
+
+```go
 package advancedapplications
 
 import (
@@ -158,4 +159,3 @@ func TestGraph_TopoSortByDFS(t *testing.T) {
    g.TopoSortByDFS()
 }
 ```
-
