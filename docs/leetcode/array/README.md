@@ -1,7 +1,5 @@
 # 数组
 
-一般指针都能解决问题
-
 ---
 
 ## 简单
@@ -30,6 +28,7 @@
 * [全排列 II](../../../docs/leetcode/array/permutations-ii.md)
 * [旋转图像](../../../docs/leetcode/array/rotate-image.md)
 * [字母异位词分组](../../../docs/leetcode/array/group-anagrams.md)
+* [螺旋矩阵](../../../docs/leetcode/array/spiral-matrix.md)
 
 ---
 
