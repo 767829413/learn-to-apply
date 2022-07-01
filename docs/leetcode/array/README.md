@@ -29,6 +29,7 @@
 * [旋转图像](../../../docs/leetcode/array/rotate-image.md)
 * [字母异位词分组](../../../docs/leetcode/array/group-anagrams.md)
 * [螺旋矩阵](../../../docs/leetcode/array/spiral-matrix.md)
+* [跳跃游戏](../../../docs/leetcode/array/jump-game.md)
 
 ---
 
