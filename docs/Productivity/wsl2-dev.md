@@ -7,22 +7,9 @@
 * Windows 10 版本 1903 Build 19362,或高于该版本
 * 如果是ARM64的系统,则需要版本2004 Build 19041,或高于该版本
 
-### 步骤一 为WSL启用Windows服务
+### 步骤一 安装WSL对应的Linux子系统
 
-想要在Windows 10上运行WSL,首先需要启用Windows上的一些务,这些服务默认是关闭的.开始菜单,搜索 PowerShell,右键 PowerShell,选择使用管理员运行
-![git](../../media/Pictures/1220220408140039.png)
-
-在打开的 PowerShell 终端,执行如下命令：
-
-```cmd
-# [dism.exe]是Windows的部署映像服务和管理工具
-# 开启了WSL的功能
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-# 开启Hyper-V的功能
-dism.exe /online /enable-feature /featurename:VirutalMachinePlatform /all /norestart
-```
-
-***使用微软WSL的文档[安装方式](https://docs.microsoft.com/zh-cn/windows/wsl/install)***
+***根据微软WSL的文档[安装方式](https://docs.microsoft.com/zh-cn/windows/wsl/install)，可以更便捷的进行安装***
 
 ```cmd
 # 查看可用发行版列表
@@ -33,7 +20,7 @@ wsl --install -d <DistroName>
 
 完成之后,以管理员身份运行 PowerShell,执行如下命令来设置wsl使用的默认版本
 
-### 步骤二 使用WSL安装其他版本Ubuntu(可选)
+### 步骤二 安装其他版本Ubuntu(可选)
 
 在开启WSL功能之后,安装一个Linux的分发版很简单,只需要打开Windows应用商店（Microsoft Store）,这里我们将安装Ubuntu 20.04分发版.打开应用商店之后,直接在应用商店中搜索 Ubuntu ,将看有很多分发版本的选项,这里选择 Ubuntu 20.04.4.
 
