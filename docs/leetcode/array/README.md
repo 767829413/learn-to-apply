@@ -30,6 +30,7 @@
 * [字母异位词分组](../../../docs/leetcode/array/group-anagrams.md)
 * [螺旋矩阵](../../../docs/leetcode/array/spiral-matrix.md)
 * [跳跃游戏](../../../docs/leetcode/array/jump-game.md)
+* [合并区间](../../../docs/leetcode/array/merge-intervals.md)
 
 ---
 
