@@ -39,6 +39,7 @@
 ## Kubernetes相关
 
 * [深入理解声明式API-实践自定义控制器](./docs/Kubernetes/controller-crd.md)
+* [kubernetes二次开发](./docs/Kubernetes/kubernetes-secondary-development.md)
 * [Kind加载本地镜像失败](./docs/Kubernetes/kind-load-docker-image-failure.md)
 * [自己动手将谷歌k8s镜像同步到阿里云](./docs/Kubernetes/sync-docker-repo.md)
 * [Kubernetes集群的身份验证](./docs/Kubernetes/kubernetes-authentication.md)
