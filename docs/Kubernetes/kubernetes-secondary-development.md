@@ -391,11 +391,6 @@ redis.myapp.demo.kubebuilder.io                       2022-02-13T11:32:20Z
 > （2）创建Kind ：Redis
 > （3）创建POD，支持副本数控制，验证
 > （3）创建多副本POD，支持副本收缩
-> 为了开发方便，可以将上面的生成的kubebuilder-demo文件拷贝到windows下，并导入到goland中。并配置SFTP自动上传到$GOPATH/src/kubebuilder-demo下
-> ![img](https://img2022.cnblogs.com/blog/1722983/202202/1722983-20220214221457761-1988314662.png)
-> ![img](https://img2022.cnblogs.com/blog/1722983/202202/1722983-20220214221722384-235338823.png)
-> ![img](https://img2022.cnblogs.com/blog/1722983/202202/1722983-20220214221818973-425192864.png)
-> 另外也可以直接将文件拷贝到本地后，直接在本地运行
 
 * （1）将Kubernetes的~/.kube/config文件，拷贝到windows的$ %HOME% /.kube/下  
     如：C:\\Users\\Administrator\.kube，之所以要这个做是因为kubebuilder中加载kubeconfig文件的顺序所决定的。详情见：Kubebuilder认证配置文件的加载
@@ -418,7 +413,7 @@ redis.myapp.demo.kubebuilder.io                       2022-02-13T11:32:20Z
 	Port int `json:"port,omitempty"`
 ```
 
-> ![img](https://img2022.cnblogs.com/blog/1722983/202202/1722983-20220214222123032-347003838.png)
+> ![_20220706151339.png](https://s2.loli.net/2022/07/06/8D9IhZVEL6b7kyv.png)
 > 这里我们只是针对于port的范围做验证，有关Kubernetes的验证见：<https://book.kubebuilder.io/reference/markers/crd-validation.html>
 > `（2）修改myapp_v1_redis.yaml文件，增加端口字段：`
 
@@ -767,9 +762,9 @@ func (r *Request) request(ctx context.Context, fn func(*http.Request, *http.Resp
 
 > 最终在这里完成发送请求，将POD放入到请求荷载中：
 >
-> net/http/client.go:725
+> sigs.k8s.io/controller-runtime/pkg/client
 >
-> ![img](https://img2022.cnblogs.com/blog/1722983/202202/1722983-20220217215028037-1816335387.png)
+> ![_251339.png](https://s2.loli.net/2022/07/06/X3h5qoMeEjgVyUt.png)
 
 ### 创建多副本的POD
 
@@ -1543,7 +1538,7 @@ redis-sample   5
 >
 > <https://book.kubebuilder.io/reference/markers/crd.html>
 >
-> ![img](https://img2022.cnblogs.com/blog/1722983/202202/1722983-20220215211950286-911050233.png)
+> ![_2599939.png](https://s2.loli.net/2022/07/06/8jCYnDwKhxs39Tv.png)
 >
 > `（1）修改api/v1/redis_types.go`
 
