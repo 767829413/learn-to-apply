@@ -160,15 +160,7 @@ kubectl get crds/redis.myapp.demo.kubebuilder.io -o yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  annotations:
-    controller-gen.kubebuilder.io/version: v0.9.0
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"apiextensions.k8s.io/v1","kind":"CustomResourceDefinition","metadata":{"annotations":{"controller-gen.kubebuilder.io/version":"v0.9.0"},"creationTimestamp":null,"name":"redis.myapp.demo.kubebuilder.io"},"spec":{"group":"myapp.demo.kubebuilder.io","names":{"kind":"Redis","listKind":"RedisList","plural":"redis","singular":"redis"},"scope":"Namespaced","versions":[{"name":"v1","schema":{"openAPIV3Schema":{"description":"Redis is the Schema for the redis API","properties":{"apiVersion":{"description":"APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources","type":"string"},"kind":{"description":"Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds","type":"string"},"metadata":{"type":"object"},"spec":{"description":"RedisSpec defines the desired state of Redis","properties":{"num":{"type":"integer"},"port":{"maximum":6380,"minimum":6370,"type":"integer"}},"type":"object"},"status":{"description":"RedisStatus defines the observed state of Redis","type":"object"}},"type":"object"}},"served":true,"storage":true,"subresources":{"status":{}}}]}}
-  creationTimestamp: "2022-06-30T07:02:33Z"
-  generation: 3
-  name: redis.myapp.demo.kubebuilder.io
-  resourceVersion: "314435"
-  uid: 2ae70d3e-7232-4c3b-ba7c-8b817dac1d09
+## ...
 spec:
   conversion:
     strategy: None
@@ -186,17 +178,9 @@ spec:
         description: Redis is the Schema for the redis API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
+          ## ...
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
+          ## ...
           spec:
             description: RedisSpec defines the desired state of Redis
             properties:
@@ -215,28 +199,10 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: Redis
-    listKind: RedisList
-    plural: redis
-    singular: redis
-  conditions:
-  - lastTransitionTime: "2022-06-30T07:02:33Z"
-    message: no conflicts found
-    reason: NoConflicts
-    status: "True"
-    type: NamesAccepted
-  - lastTransitionTime: "2022-06-30T07:02:33Z"
-    message: the initial names have been accepted
-    reason: InitialNamesAccepted
-    status: "True"
-    type: Established
-  storedVersions:
-  - v1
 ```
 
 3. 调试方式
+
 一个terminal执行自定义控制器
 
 ```bash
