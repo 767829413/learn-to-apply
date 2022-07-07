@@ -116,4 +116,5 @@
 
 ## Rust
 
+* [Rust语言圣经](https://course.rs/about-book.html)
 * [WSL2 + VSCode + Rust 开发环境搭建](./docs/Rust/wsl2-vscode-dev.md)
