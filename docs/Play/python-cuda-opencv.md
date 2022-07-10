@@ -281,10 +281,6 @@ Configuring done
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/CD6T71iLh8R9PHg.png)
 
-5. 搜索 `extra`
-
-![fff-11002037.png](https://s2.loli.net/2022/07/11/CD6T71iLh8R9PHg.png)
-
 6. 再次 `Configure` 后,搜索 `fast`
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/sXToABHeg7EKxMm.png)
