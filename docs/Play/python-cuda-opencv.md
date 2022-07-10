@@ -318,6 +318,42 @@ Python 3.6.5 |Anaconda, Inc.| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bi
 Type "help", "copyright", "credits" or "license" for more information.
 >>> from cv2 import cuda
 >>> cuda.printCudaDeviceInfo(0)
+*** CUDA Device Query (Runtime API) version (CUDART static linking) ***
+
+Device count: 1
+
+Device 0: "NVIDIA GeForce RTX 3060"
+  CUDA Driver Version / Runtime Version          11.60 / 11.20
+  CUDA Capability Major/Minor version number:    8.6
+  Total amount of global memory:                 12288 MBytes (12884377600 bytes)
+  GPU Clock Speed:                               1.78 GHz
+  Max Texture Dimension Size (x,y,z)             1D=(131072), 2D=(131072,65536), 3D=(16384,16384,16384)
+  Max Layered Texture Size (dim) x layers        1D=(32768) x 2048, 2D=(32768,32768) x 2048
+  Total amount of constant memory:               65536 bytes
+  Total amount of shared memory per block:       49152 bytes
+  Total number of registers available per block: 65536
+  Warp size:                                     32
+  Maximum number of threads per block:           1024
+  Maximum sizes of each dimension of a block:    1024 x 1024 x 64
+  Maximum sizes of each dimension of a grid:     2147483647 x 65535 x 65535
+  Maximum memory pitch:                          2147483647 bytes
+  Texture alignment:                             512 bytes
+  Concurrent copy and execution:                 Yes with 1 copy engine(s)
+  Run time limit on kernels:                     Yes
+  Integrated GPU sharing Host Memory:            No
+  Support host page-locked memory mapping:       Yes
+  Concurrent kernel execution:                   Yes
+  Alignment requirement for Surfaces:            Yes
+  Device has ECC support enabled:                No
+  Device is using TCC driver mode:               No
+  Device supports Unified Addressing (UVA):      Yes
+  Device PCI Bus ID / PCI location ID:           1 / 0
+  Compute Mode:
+      Default (multiple host threads can use ::cudaSetDevice() with device simultaneously)
+
+deviceQuery, CUDA Driver = CUDART, CUDA Driver Version  = 11.60, CUDA Runtime Version = 11.20, NumDevs = 1
+
+>>>
 ```
 
 ***注意：***
