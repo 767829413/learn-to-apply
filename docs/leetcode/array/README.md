@@ -29,6 +29,11 @@
 * [旋转图像](../../../docs/leetcode/array/rotate-image.md)
 * [字母异位词分组](../../../docs/leetcode/array/group-anagrams.md)
 * [螺旋矩阵](../../../docs/leetcode/array/spiral-matrix.md)
+* [跳跃游戏](../../../docs/leetcode/array/jump-game.md)
+* [合并区间](../../../docs/leetcode/array/merge-intervals.md)
+* [插入区间](../../../docs/leetcode/array/insert-interval.md)
+* [螺旋矩阵 II](../../../docs/leetcode/array/spiral-matrix-ii.md)
+* [不同路径 II](../../../docs/leetcode/array/unique-paths-ii.md)
 
 ---
 
