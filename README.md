@@ -115,3 +115,9 @@
 ## Rust
 
 * [WSL2 + VSCode + Rust 开发环境搭建](./docs/Rust/wsl2-vscode-dev.md)
+
+---
+
+## Play
+
+* [构建深度学习环境](./docs/Play/python-cuda-opencv.md)
