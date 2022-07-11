@@ -30,6 +30,12 @@
 
 ---
 
+## Dapr
+
+* [搭建dapr基于k8s的开发调试环境](./docs/Dapr/dapr-k8s-debug.md)
+
+---
+
 ## Kubernetes相关
 
 * [深入理解声明式API-实践自定义控制器](./docs/Kubernetes/controller-crd.md)
@@ -70,12 +76,6 @@
 
 * [Rust语言圣经](https://course.rs/about-book.html)
 * [WSL2 + VSCode + Rust 开发环境搭建](./docs/Rust/wsl2-vscode-dev.md)
-
----
-
-## Dapr
-
-* [搭建dapr基于k8s的开发调试环境](./docs/Dapr/dapr-k8s-debug.md)
 
 ---
 
