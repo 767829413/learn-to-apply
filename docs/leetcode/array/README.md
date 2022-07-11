@@ -34,6 +34,7 @@
 * [插入区间](../../../docs/leetcode/array/insert-interval.md)
 * [螺旋矩阵 II](../../../docs/leetcode/array/spiral-matrix-ii.md)
 * [不同路径 II](../../../docs/leetcode/array/unique-paths-ii.md)
+* [最小路径和](../../../docs/leetcode/array/minimum-path-sum.md)
 
 ---
 
