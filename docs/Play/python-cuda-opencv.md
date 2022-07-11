@@ -6,7 +6,7 @@
 
 * [了解tensorflow相关兼容性](https://www.tensorflow.org/install/source_windows)
 * [Google搜索](https://www.google.com/)
-* [How To Install and Build OpenCV with GPU for Python | VS Code | NVIDIA Cuda and OpenCV 4.5.2](https://www.youtube.com/watch?v=HsuKxjQhFU0&ab_channel=NicolaiNielsen-ComputerVision%26AI)
+* [How To Install and Build OpenCV with GPU for Python | VS Code | NVIDIA Cuda and OpenCV 4.5.2](https://www.youtube.com/watch?v=HsuKxjQhFU0&ab_channel=NicolaiNielsen-ComputerVision&AI)
 
 ### 步骤一 安装 Visual Studio 2019
 
@@ -54,11 +54,11 @@ Python 3.6.5 :: Anaconda, Inc.
 
 ![96514000559.png](https://s2.loli.net/2022/07/11/ew97URzHgmQTIfP.png)
 
-将解压后的 `cuda文件` 移动到你指定的目录下
+将解压后的 `cuda文件` 移动到你指定的目录下 `your_path/cuda`
 
 ![343567711000831.png](https://s2.loli.net/2022/07/11/lXPFng3UE5whrCQ.png)
 
-设置环境变量,更新到path下面
+设置环境变量,更新到path下面, `your_path/cuda/bin`, `your_path/cuda/include`, `your_path/cuda/lib/x64`
 
 ![rfv-0711001029.png](https://s2.loli.net/2022/07/11/TflbjRkq9zLYadF.png)
 
@@ -137,7 +137,7 @@ True
 
 1. 如果出现 `CondaHTTPError: HTTP 000 CONNECTION 问题` 建议看看这个 [解决方案](https://zhuanlan.zhihu.com/p/260034241)
 
-修改 `Win11` 下的 C:\Users\user_name\.condarc
+修改 `Win11` 下的 C:\Users%user_name\.condarc
 
 ```cmd
 channels:
@@ -238,7 +238,16 @@ Configuring done
 
 `Unavailable:java python2 python3` 和 `Python (for build):NO` 表示未识别支持 `Python` 环境
 
-可以自行配置
+可以搜索 `python` 可以自行配置
+
+| NAME | value |
+| :---- | :----- |
+| PYTHON3_EXECUTABLE | `your_path/Anaconda3/python.exec` |
+| PYTHON3_INCLUDE_DIR | `your_path/Anaconda3/include` |
+| PYTHON3_LIBRARY | `your_path/Anaconda3/libs/python36.lib` |
+| PYTHON3_LIBRARY_DEBUG | PYTHON_DEBUG_LIBRARY-NOTFOUND |
+| PYTHON3_NUMPY_INCLUDE_DIRS | `your_path/Anaconda3/Lib/site-packages/numpy/core/include` |
+| PYTHON3_PACKAGES_PATH | `your_path/Anaconda3/Lib/site-packages` |
 
 ![qwe-11002037.png](https://s2.loli.net/2022/07/11/srTXB4v6jqNhJKQ.png)
 
@@ -261,27 +270,27 @@ Configuring done
 
 下面再进行一些配置
 
-1. 搜索 `with_cuda`
+1. 搜索 `with_cuda`, 勾选 `WITH_CUDA`
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/QVGZm3DfC1nLhPB.png)
 
-2. 搜索 `opencv_dnn`
+2. 搜索 `opencv_dnn`, 勾选 `BUILD_opencv_dnn`, `OPENCV_DNN_CUDA`, `OPENCV_DNN_OPENCL`
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/mVwkRlZyq7JCYpc.png)
 
-3. 搜索 `fast`
+3. 搜索 `fast`, 勾选 `ENABLE_FAST_MATH`
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/XIFMuNROk28ZrpG.png)
 
-4. 搜索 `world`
+4. 搜索 `world`, 勾选 `BUILD_opencv_world`
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/OBptswH2lgC9e3z.png)
 
-5. 搜索 `extra`
+5. 搜索 `extra`, 设置 `your_path/opencv_contrib-4.5.2/modules`
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/CD6T71iLh8R9PHg.png)
 
-6. 再次 `Configure` 后,搜索 `fast`
+6. 再次 `Configure` 后,搜索 `fast`, 勾选 `CUDA_FAST_MATH`
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/sXToABHeg7EKxMm.png)
 
@@ -289,7 +298,7 @@ Configuring done
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/AD4sxIU5TSZ8Ko2.png)
 
-8. 搜索 `conf`
+8. 搜索 `conf`,设置 `CMAKE_CONFIGURATION_TYPES` 为 `Release` (windows不要用 `Debug`)
 
 ![fff-11002037.png](https://s2.loli.net/2022/07/11/h8UM1jbZtxYadzG.png)
 
