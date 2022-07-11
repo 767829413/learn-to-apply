@@ -37,7 +37,7 @@ nohup docsify serve /your_path/docs --port 80 > ./info.log 2>&1& echo $! > ./inf
 
 这里其实建议配合nginx来使用,还能兼顾https,可以参考我的这篇文章
 
-[通过Docker快速搭建一个静态资源服务器](../../docs/Docker/static_resource_server.md)
+[通过Docker快速搭建一个静态资源服务器](../../docs/Play/static_resource_server.md)
 
 ### 步骤四 利用github的webhook进行自动更新
 
