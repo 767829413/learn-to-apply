@@ -4,6 +4,7 @@
 
 ### 前提条件
 
+* `NVIDIA` 系列显卡
 * [了解tensorflow相关兼容性](https://www.tensorflow.org/install/source_windows)
 * [Google搜索](https://www.google.com/)
 * [How To Install and Build OpenCV with GPU for Python | VS Code | NVIDIA Cuda and OpenCV 4.5.2](https://www.youtube.com/watch?v=HsuKxjQhFU0&ab_channel=NicolaiNielsen-ComputerVision&AI)
