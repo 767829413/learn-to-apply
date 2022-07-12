@@ -8,6 +8,7 @@
 * [移除元素](../../../docs/leetcode/array/remove-element.md)
 * [搜索插入位置](../../../docs/leetcode/array/search-insert-position.md)
 * [最大子数组和](../../../docs/leetcode/array/maximum-subarray.md)
+* [加一](../../../docs/leetcode/array/plus-one.md)
 
 ---
 
