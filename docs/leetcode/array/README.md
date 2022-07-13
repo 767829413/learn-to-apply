@@ -46,3 +46,4 @@
 * [缺失的第一个正数](../../../docs/leetcode/array/first-missing-positive.md)
 * [接雨水](../../../docs/leetcode/array/trapping-rain-water.md)
 * [N 皇后](../../../docs/leetcode/array/n-queens.md)
+* [文本左右对齐](../../../docs/leetcode/array/text-justification.md)
