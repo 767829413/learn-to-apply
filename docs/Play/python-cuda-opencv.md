@@ -258,6 +258,14 @@ Configuring done
 
 ![qwe-11002037.png](https://s2.loli.net/2022/07/11/srTXB4v6jqNhJKQ.png)
 
+如果还是不行,请看这个
+
+[方案前置](https://stackoverflow.com/questions/24174394/cmake-is-not-able-to-find-python-libraries/33759845#33759845)
+
+[方案](https://answers.opencv.org/question/229281/opencv-python-built-for-windows-x64-python-37-pyd-file-not-found-opencv-modules-unavailable/)
+
+***以上都不行建议删掉build文件夹改下名字试试***
+
 再次 `Configure` 查看输出 `Unavailable:java python2`表示成功
 
 ```text
