@@ -1,13 +1,18 @@
 # 构建深度学习环境
 
-## Win11如何为 Python 3.6 安装和构建 tensorflow-gpu 2.6.0, Cuda Toolkit 11.2 cuDNN 8.1, OpenCV 4.5.2
+## Win11如何为 Python 3.6 安装和构建 tensorflow-gpu 2.4.0, Cuda Toolkit 11.0 cuDNN 8.0, OpenCV 4.5.2
 
 ### 前提条件
 
 * `NVIDIA` 系列显卡
+* [pytorch和cudatoolkit版本兼容性](https://pytorch.org/get-started/previous-versions/#conda-2)
+* [关于torch torchvison离线安装](https://blog.csdn.net/shenjianhua005/article/details/115742154)
+* [pip离线安装包](https://blog.51cto.com/u_15054047/4182743)
+* [pytorch离线安装包](https://download.pytorch.org/whl/torch_stable.html)
 * [了解tensorflow相关兼容性](https://www.tensorflow.org/install/source_windows)
 * [Google搜索](https://www.google.com/)
 * [How To Install and Build OpenCV with GPU for Python | VS Code | NVIDIA Cuda and OpenCV 4.5.2](https://www.youtube.com/watch?v=HsuKxjQhFU0&ab_channel=NicolaiNielsen-ComputerVision&AI)
+* **信我,按照我这个版本来,你会很通畅,别的版本组合会让你有种便秘的感觉**
 
 ### 步骤一 安装 Visual Studio 2019
 
@@ -38,22 +43,23 @@ Python 3.6.5 :: Anaconda, Inc.
 国内网不好的,那就按照下面的操作
 
 [pip conda 安装速度慢解决方法](https://cloud.tencent.com/developer/article/1695021)
+[Anaconda 镜像使用帮助](https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/)
 
-### 步骤三 安装 Cuda Toolkit 11.2, cuDNN 8.1
+### 步骤三 安装 Cuda Toolkit 11.0, cuDNN 8.0
 
 [Cuda Toolkit 版本地址](https://developer.nvidia.com/cuda-toolkit-archive)
 
-[Cuda 11.2 下载地址](https://developer.download.nvidia.com/compute/cuda/11.2.2/local_installers/cuda_11.2.2_461.33_win10.exe)
+[Cuda 11.0 下载地址](https://developer.nvidia.com/cuda-11-0-3-download-archive?target_os=Windows&target_arch=x86_64&target_version=10&target_type=exe_local)
 
 [Cudnn 版本地址](https://developer.nvidia.com/rdp/cudnn-archive)
 
-[Cudnn 8.1 下载地址](https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.1.1.33/11.2_20210301/cudnn-11.2-windows-x64-v8.1.1.33.zip)
+[Cudnn 8.0 下载地址](https://developer.nvidia.com/compute/machine-learning/cudnn/secure/8.0.5/11.0_20201106/cudnn-11.0-windows-x64-v8.0.5.39.zip)
 
-下载完成后先安装 `Cuda 11.2`
+下载完成后先安装 `Cuda 11.0`
 
-安装完成后解压 `Cudnn 8.1`
+安装完成后解压 `Cudnn 8.0`
 
-![96514000559.png](https://s2.loli.net/2022/07/11/ew97URzHgmQTIfP.png)
+![713231420.png](https://s2.loli.net/2022/07/13/uPqCSpcEJXVg14d.png)
 
 将解压后的 `cuda文件` 移动到你指定的目录下 `your_path/cuda`
 
@@ -63,7 +69,7 @@ Python 3.6.5 :: Anaconda, Inc.
 
 ![rfv-0711001029.png](https://s2.loli.net/2022/07/11/TflbjRkq9zLYadF.png)
 
-### 步骤四 安装 tensorflow-gpu 2.6.0
+### 步骤四 安装 tensorflow-gpu 2.4.0
 
 首先配置环境变量
 
@@ -114,10 +120,10 @@ Executing transaction: done
 conda activate myenv
 ```
 
-正式开始安装 `tensorflow-gpu 2.6.0`
+正式开始安装 `tensorflow-gpu 2.4.0`
 
 ```cmd
-pip install tensorflow-gpu==2.6.0
+pip install tensorflow-gpu==2.4.0
 ```
 
 验证是否安装成功
