@@ -1,15 +1,15 @@
 # 构建深度学习环境
 
-## Win11如何为 Python 3.6 安装和构建 tensorflow-gpu 2.4.0, Cuda Toolkit 11.0 cuDNN 8.0, OpenCV 4.5.2
+## Win11如何为 Python 3.6 安装和构建 tensorflow-gpu 2.4.0, Cuda Toolkit 11.0 cuDNN 8.0, OpenCV 4.5.2 PyTorch v1.7.1
 
 ### 前提条件
 
 * `NVIDIA` 系列显卡
-* [pytorch和cudatoolkit版本兼容性](https://pytorch.org/get-started/previous-versions/#conda-2)
-* [关于torch torchvison离线安装](https://blog.csdn.net/shenjianhua005/article/details/115742154)
-* [pip离线安装包](https://blog.51cto.com/u_15054047/4182743)
-* [pytorch离线安装包](https://download.pytorch.org/whl/torch_stable.html)
-* [了解tensorflow相关兼容性](https://www.tensorflow.org/install/source_windows)
+* [PyTorch 和 Cuda Toolkit 版本兼容性](https://pytorch.org/get-started/previous-versions/#conda-2)
+* [关于 PyTorch 离线安装](https://blog.csdn.net/shenjianhua005/article/details/115742154)
+* [pip 离线安装包](https://blog.51cto.com/u_15054047/4182743)
+* [PyTorch 离线安装包](https://download.pytorch.org/whl/torch_stable.html)
+* [了解 tensorflow 相关兼容性](https://www.tensorflow.org/install/source_windows)
 * [Google搜索](https://www.google.com/)
 * [How To Install and Build OpenCV with GPU for Python | VS Code | NVIDIA Cuda and OpenCV 4.5.2](https://www.youtube.com/watch?v=HsuKxjQhFU0&ab_channel=NicolaiNielsen-ComputerVision&AI)
 * **信我,按照我这个版本来,你会很通畅,别的版本组合会让你有种便秘的感觉**
