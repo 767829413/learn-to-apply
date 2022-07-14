@@ -8,7 +8,7 @@
 * [PyTorch 和 Cuda Toolkit 版本兼容性](https://pytorch.org/get-started/previous-versions/#conda-2)
 * [关于 PyTorch 离线安装](https://blog.csdn.net/shenjianhua005/article/details/115742154)
 * [pip 离线安装包](https://blog.51cto.com/u_15054047/4182743)
-* [PyTorch 离线安装包](https://download.pytorch.org/whl/torch_stable.html)
+* [PyTorch 离线安装包(要用gpu记得选带cu1x.x的)](https://download.pytorch.org/whl/torch_stable.html)
 * [了解 tensorflow 相关兼容性](https://www.tensorflow.org/install/source_windows)
 * [Google搜索](https://www.google.com/)
 * [How To Install and Build OpenCV with GPU for Python | VS Code | NVIDIA Cuda and OpenCV 4.5.2](https://www.youtube.com/watch?v=HsuKxjQhFU0&ab_channel=NicolaiNielsen-ComputerVision&AI)
