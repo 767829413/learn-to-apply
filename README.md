@@ -7,7 +7,7 @@
 * [WSL2 快速搭建开发环境](./docs/Productivity/wsl2-dev.md)
 * [VS code快捷键](./docs/Productivity/vscode.md)
 * [Git Feature Branch Workflow](./docs/Productivity/github-workflow.md)
-* [LINUX上传下载命令：RZ，SZ](./docs/Productivity/linux-rz-sz.md)
+* [LINUX 常用命令](./docs/Productivity/linux-general-commands.md)
 * [golang简易编译打包工具使用](./docs/Productivity/compile-and-package.md)
 * [一款简易的php在线编辑工具](./docs/Productivity/php-online-edit.md)
 
@@ -15,6 +15,7 @@
 
 ## Play
 
+* [如何在自定义对象上训练YOLOv5](./docs/Play/train-yolov5-cuda-custom.md)
 * [构建深度学习环境](./docs/Play/python-cuda-opencv.md)
 * [在win10的wsl2搭建DNF来爽一爽](./docs/Play/wsl2-dnf.md)
 * [在win10的wsl2固定ip](./docs/Play/wsl2-bind-ip.md)
