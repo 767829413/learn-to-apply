@@ -38,6 +38,7 @@
 * [最小路径和](../../../docs/leetcode/array/minimum-path-sum.md)
 * [矩阵置零](../../../docs/leetcode/array/set-matrix-zeroes.md)
 * [搜索二维矩阵](../../../docs/leetcode/array/search-a-2d-matrix.md)
+* [颜色分类](../../../docs/leetcode/array/sort-colors.md)
 
 ---
 
