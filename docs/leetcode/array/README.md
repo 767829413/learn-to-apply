@@ -40,6 +40,7 @@
 * [搜索二维矩阵](../../../docs/leetcode/array/search-a-2d-matrix.md)
 * [颜色分类](../../../docs/leetcode/array/sort-colors.md)
 * [子集](../../../docs/leetcode/array/subsets.md)
+* [单词搜索](../../../docs/leetcode/array/word-search.md)
 
 ---
 
