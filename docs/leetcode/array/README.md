@@ -42,6 +42,7 @@
 * [子集](../../../docs/leetcode/array/subsets.md)
 * [单词搜索](../../../docs/leetcode/array/word-search.md)
 * [删除有序数组中的重复项 II](../../../docs/leetcode/array/remove-duplicates-from-sorted-array-ii.md)
+* [搜索旋转排序数组 II](../../../docs/leetcode/array/search-in-rotated-sorted-array-ii.md)
 
 ---
 
