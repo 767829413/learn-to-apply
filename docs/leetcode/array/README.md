@@ -43,6 +43,7 @@
 * [单词搜索](../../../docs/leetcode/array/word-search.md)
 * [删除有序数组中的重复项 II](../../../docs/leetcode/array/remove-duplicates-from-sorted-array-ii.md)
 * [搜索旋转排序数组 II](../../../docs/leetcode/array/search-in-rotated-sorted-array-ii.md)
+* [柱状图中最大的矩形](../../../docs/leetcode/array/largest-rectangle-in-histogram.md)
 
 ---
 
