@@ -45,6 +45,7 @@
 * [搜索旋转排序数组 II](../../../docs/leetcode/array/search-in-rotated-sorted-array-ii.md)
 * [柱状图中最大的矩形](../../../docs/leetcode/array/largest-rectangle-in-histogram.md)
 * [最大矩形](../../../docs/leetcode/array/maximal-rectangle.md)
+* [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
 
 ---
 
