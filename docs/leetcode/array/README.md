@@ -46,6 +46,7 @@
 * [柱状图中最大的矩形](../../../docs/leetcode/array/largest-rectangle-in-histogram.md)
 * [最大矩形](../../../docs/leetcode/array/maximal-rectangle.md)
 * [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
+* [子集 II](../../../docs/leetcode/array/subsets-ii.md)
 
 ---
 
