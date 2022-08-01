@@ -47,6 +47,7 @@
 * [最大矩形](../../../docs/leetcode/array/maximal-rectangle.md)
 * [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
 * [子集 II](../../../docs/leetcode/array/subsets-ii.md)
+* [从前序与中序遍历序列构造二叉树](../../../docs/leetcode/array/construct-binary-tree-from-preorder-and-inorder-traversal.md)
 
 ---
 
