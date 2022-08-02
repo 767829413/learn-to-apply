@@ -28,6 +28,7 @@
 
 * [配套练习册](https://github.com/767829413/go-algorithm)
 * [数组](./docs/leetcode/array/README.md)
+* [top-apply](./docs/leetcode/top-apply/README.md)
 
 ---
 
