@@ -34,11 +34,15 @@ func findKthLargest(nums []int, k int) int {
 	// QuickSort(nums)
 	// return nums[l-k]
 	// 堆排序
-	heapSize := len(nums)
+	heapSize := l
+	// 构建大顶堆
 	buildMaxHeap(nums, heapSize)
 	for i := len(nums) - 1; i >= len(nums)-k+1; i-- {
+		// 这里是交换最大最小值,来进行一次自顶向下的全堆化
 		nums[0], nums[i] = nums[i], nums[0]
+		// 这是缩减堆的大小,逼近所期望的第k大值
 		heapSize--
+		// 进行对话,堆顶是最大值
 		maxHeapify(nums, 0, heapSize)
 	}
 	return nums[0]
@@ -122,21 +126,30 @@ func QuickSort(arr []int) {
 }
 
 func buildMaxHeap(a []int, heapSize int) {
+	// 配置堆高
 	for i := heapSize / 2; i >= 0; i-- {
+		// 自顶向下执行堆化
 		maxHeapify(a, i, heapSize)
 	}
 }
 
 func maxHeapify(a []int, i, heapSize int) {
+	// 初始化当前i的左右节点l ,r
 	l, r, largest := i*2+1, i*2+2, i
+	// 左节点是否大于当前节点值
 	if l < heapSize && a[l] > a[largest] {
 		largest = l
 	}
+	// 右节点是否大于当前节点值
 	if r < heapSize && a[r] > a[largest] {
 		largest = r
 	}
+	// 上述操作是为了保证数组堆化后左侧最大,右侧最小
+	// 如果左右节点有大于当前节点的就开始堆化
 	if largest != i {
+		// 交换当前节点与大于其节点的左或右的位置
 		a[i], a[largest] = a[largest], a[i]
+		// 然后就可以再次堆化
 		maxHeapify(a, largest, heapSize)
 	}
 }
