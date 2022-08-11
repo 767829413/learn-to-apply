@@ -15,6 +15,7 @@
 * [数组中的第K个最大元素](../../../docs/leetcode/top-apply/kth-largest-element-in-an-array.md)
 * [三数之和](../../../docs/leetcode/top-apply/3sum.md)
 * [排序数组](../../../docs/leetcode/top-apply/sort-an-array.md)
+* [最大子数组和](../../../docs/leetcode/top-apply/maximum-subarray.md)
 
 ---
 
