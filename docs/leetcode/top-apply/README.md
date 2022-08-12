@@ -5,6 +5,7 @@
 ## 简单
 
 * [反转链表](../../../docs/leetcode/top-apply/reverse-linked-list.md)
+* [合并两个有序链表](../../../docs/leetcode/top-apply/merge-two-sorted-lists.md)
 
 ---
 
