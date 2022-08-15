@@ -6,6 +6,7 @@
 
 * [反转链表](../../../docs/leetcode/top-apply/reverse-linked-list.md)
 * [合并两个有序链表](../../../docs/leetcode/top-apply/merge-two-sorted-lists.md)
+* [两数之和](../../../docs/leetcode/top-apply/two-sum.md)
 
 ---
 
