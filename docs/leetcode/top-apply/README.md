@@ -22,6 +22,7 @@
 * [最大子数组和](../../../docs/leetcode/top-apply/maximum-subarray.md)
 * [二叉树的层序遍历](../../../docs/leetcode/top-apply/binary-tree-level-order-traversal.md)
 * [岛屿数量](../../../docs/leetcode/top-apply/number-of-islands.md)
+* [搜索旋转排序数组](../../../docs/leetcode/array/search-in-rotated-sorted-array.md)
 * [二叉树的锯齿形层序遍历](../../../docs/leetcode/binary-tree-zigzag-level-order-traversal.md)
 
 ---

@@ -20,6 +20,7 @@
 ## code
 
 ```go
+// Search in rotated sorted array
 func search(nums []int, target int) int {
 	l := len(nums)
 	if l == 0 {
@@ -52,6 +53,50 @@ func search(nums []int, target int) int {
 				lo = mid + 1
 			} else { // 重新定义,mid值随之更新
 				hi = mid - 1
+			}
+		}
+	}
+	return -1
+}
+
+func search(nums []int, target int) int {
+	l := len(nums)
+	if l < 1 {
+		return -1
+	}
+	// 初始化边界和循环退出条件
+	for lo, hi := 0, l-1; lo <= hi; {
+		mid := (lo + hi) >> 1
+		if nums[mid] == target {
+			return mid
+		}
+		if nums[lo] == target {
+			return lo
+		}
+		if nums[hi] == target {
+			return hi
+		}
+		if nums[lo] < nums[hi] {
+			if target > nums[mid] {
+				lo = mid + 1
+			} else {
+				hi = mid - 1
+			}
+		} else {
+			// 判断有序
+			if nums[lo] < nums[mid] {
+				// 不在有序的就是在无序里根据条件收敛
+				if target > nums[mid] || target < nums[lo] {
+					lo = mid + 1
+				} else {
+					hi = mid - 1
+				}
+			} else {
+				if target < nums[mid] || target > nums[hi] {
+					hi = mid - 1
+				} else {
+					lo = mid + 1
+				}
 			}
 		}
 	}
