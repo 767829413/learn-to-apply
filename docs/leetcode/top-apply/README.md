@@ -10,6 +10,7 @@
 * [买卖股票的最佳时机](../../../docs/leetcode/top-apply/best-time-to-buy-and-sell-stock.md)
 * [环形链表](../../../docs/leetcode/top-apply/linked-list-cycle.md)
 * [相交链表](../../../docs/leetcode/top-apply/intersection-of-two-linked-lists.md)
+* [有效的括号](../../../docs/leetcode/top-apply/valid-parentheses.md)
 
 ---
 
