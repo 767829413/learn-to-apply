@@ -27,6 +27,7 @@
 * [搜索旋转排序数组](../../../docs/leetcode/array/search-in-rotated-sorted-array.md)
 * [二叉树的锯齿形层序遍历](../../../docs/leetcode/top-apply/binary-tree-zigzag-level-order-traversal.md)
 * [二叉树的最近公共祖先](../../../docs/leetcode/top-apply/lowest-common-ancestor-of-a-binary-tree.md)
+* [最长回文子串](../../../docs/leetcode/top-apply/longest-palindromic-substring.md)
 
 ---
 
