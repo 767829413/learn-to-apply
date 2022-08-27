@@ -9,6 +9,7 @@
 * [搜索插入位置](../../../docs/leetcode/array/search-insert-position.md)
 * [最大子数组和](../../../docs/leetcode/array/maximum-subarray.md)
 * [加一](../../../docs/leetcode/array/plus-one.md)
+* [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
 
 ---
 
@@ -45,7 +46,6 @@
 * [搜索旋转排序数组 II](../../../docs/leetcode/array/search-in-rotated-sorted-array-ii.md)
 * [柱状图中最大的矩形](../../../docs/leetcode/array/largest-rectangle-in-histogram.md)
 * [最大矩形](../../../docs/leetcode/array/maximal-rectangle.md)
-* [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
 * [子集 II](../../../docs/leetcode/array/subsets-ii.md)
 * [从前序与中序遍历序列构造二叉树](../../../docs/leetcode/array/construct-binary-tree-from-preorder-and-inorder-traversal.md)
 
