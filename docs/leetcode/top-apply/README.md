@@ -36,3 +36,4 @@
 ## 困难
 
 * [K 个一组翻转链表](../../../docs/leetcode/top-apply/reverse-nodes-in-k-group.md)
+* [合并K个升序链表](../../../docs/leetcode/top-apply/merge-k-sorted-lists.md)
