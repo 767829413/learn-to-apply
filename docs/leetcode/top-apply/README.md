@@ -30,6 +30,7 @@
 * [二叉树的最近公共祖先](../../../docs/leetcode/top-apply/lowest-common-ancestor-of-a-binary-tree.md)
 * [最长回文子串](../../../docs/leetcode/top-apply/longest-palindromic-substring.md)
 * [全排列](../../../docs/leetcode/array/permutations.md)
+* [螺旋矩阵](../../../docs/leetcode/array/spiral-matrix.md)
 
 ---
 
