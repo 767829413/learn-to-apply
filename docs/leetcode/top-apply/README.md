@@ -31,6 +31,7 @@
 * [最长回文子串](../../../docs/leetcode/top-apply/longest-palindromic-substring.md)
 * [全排列](../../../docs/leetcode/array/permutations.md)
 * [螺旋矩阵](../../../docs/leetcode/array/spiral-matrix.md)
+* [反转链表 II](../../../docs/leetcode/top-apply/reverse-linked-list-ii.md)
 
 ---
 
