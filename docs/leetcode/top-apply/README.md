@@ -12,6 +12,7 @@
 * [相交链表](../../../docs/leetcode/top-apply/intersection-of-two-linked-lists.md)
 * [有效的括号](../../../docs/leetcode/top-apply/valid-parentheses.md)
 * [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
+* [字符串相加](../../../docs/leetcode/array/add-strings.md)
 
 ---
 
