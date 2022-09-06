@@ -15,6 +15,7 @@
 
 ## Play
 
+* [Windows 上的 Hyperledger Fabric开发配置](./docs/Play/hyperledger-fabric-wsl.md)
 * [如何在自定义对象上训练YOLOv5](./docs/Play/train-yolov5-cuda-custom.md)
 * [构建深度学习环境](./docs/Play/python-cuda-opencv.md)
 * [在win10的wsl2搭建DNF来爽一爽](./docs/Play/wsl2-dnf.md)
