@@ -22,36 +22,34 @@
 ## code
 
 ```go
+// Trapping rain water
 func trap(height []int) int {
 	l := len(height)
-	sum := 0
-	if l <= 0 {
-		return sum
+	if l < 3 {
+		return 0
 	}
-
 	// 接水我们以当前位置是否能积水为参考标准
 	// 当前位置高为h,左边最高设为lm,右边最高设为rm
 	// 只有当前位置高度h小于min(lm,rm)的时候才能有积水等于 min(lm,rm) - h
-	// 建立左右指针 lo hi,通过比较 height[lo] , height[hi]的高度确定当前位置依赖哪边高度
-	lo, hi, lm, rm := 0, l-1, 0, 0
-	for lo < hi {
-		// 左边高度为依赖
-		if height[lo] < height[hi] {
-			// 判断lo位置是不是左边最高的
-			if height[lo] >= lm {
-				lm = height[lo]
+	// 建立左右指针 left right,首先通过比较 height[left] height[right]的高度确定接水的短板
+	// 较短的一边指针位置与对应边界进行比较可以得出是否接住雨水
+	left, right, lm, rm, sum := 0, len(height)-1, 0, 0, 0
+	for left < right {
+		// 接的雨水依赖右边
+		if height[left] > height[right] {
+			if rm > height[right] {
+				sum += rm - height[right]
 			} else {
-				// 不是最高则是可积水位置
-				sum += lm - height[lo]
+				rm = height[right]
 			}
-			lo++
+			right--
 		} else {
-			if height[hi] >= rm {
-				rm = height[hi]
+			if lm > height[left] {
+				sum += lm - height[left]
 			} else {
-				sum += rm - height[hi]
+				lm = height[left]
 			}
-			hi--
+			left++
 		}
 	}
 	return sum
