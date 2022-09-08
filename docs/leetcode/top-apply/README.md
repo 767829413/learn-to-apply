@@ -35,6 +35,7 @@
 * [反转链表 II](../../../docs/leetcode/top-apply/reverse-linked-list-ii.md)
 * [环形链表 II](../../../docs/leetcode/top-apply/linked-list-cycle-ii.md)
 * [最长递增子序列](../../../docs/leetcode/top-apply/longest-increasing-subsequence.md)
+* [重排链表](../../../docs/leetcode/top-apply/reorder-list.md)
 
 ---
 
