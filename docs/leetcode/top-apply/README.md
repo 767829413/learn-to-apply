@@ -13,6 +13,7 @@
 * [有效的括号](../../../docs/leetcode/top-apply/valid-parentheses.md)
 * [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
 * [字符串相加](../../../docs/leetcode/array/add-strings.md)
+* [二叉树的中序遍历](../../../docs/leetcode/array/binary-tree-inorder-traversal.md)
 
 ---
 
