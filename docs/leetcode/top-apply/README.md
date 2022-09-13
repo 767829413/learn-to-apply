@@ -14,6 +14,7 @@
 * [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
 * [字符串相加](../../../docs/leetcode/array/add-strings.md)
 * [二叉树的中序遍历](../../../docs/leetcode/array/binary-tree-inorder-traversal.md)
+* [二分查找](../../../docs/leetcode/array/binary-search.md)
 
 ---
 
