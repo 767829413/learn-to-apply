@@ -12,9 +12,10 @@
 * [相交链表](../../../docs/leetcode/top-apply/intersection-of-two-linked-lists.md)
 * [有效的括号](../../../docs/leetcode/top-apply/valid-parentheses.md)
 * [合并两个有序数组](../../../docs/leetcode/array/merge-sorted-array.md)
-* [字符串相加](../../../docs/leetcode/array/add-strings.md)
-* [二叉树的中序遍历](../../../docs/leetcode/array/binary-tree-inorder-traversal.md)
-* [二分查找](../../../docs/leetcode/array/binary-search.md)
+* [字符串相加](../../../docs/leetcode/top-apply/add-strings.md)
+* [二叉树的中序遍历](../../../docs/leetcode/top-apply/binary-tree-inorder-traversal.md)
+* [二分查找](../../../docs/leetcode/top-apply/binary-search.md)
+* [用栈实现队列](../../../docs/leetcode/top-apply/implement-queue-using-stacks.md)
 
 ---
 
