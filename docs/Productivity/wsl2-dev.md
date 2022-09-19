@@ -207,7 +207,7 @@ vim ~/.zshrc
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz
 export PATH=/usr/local/go/bin:/root/go/bin:$PATH
 go env -w GO111MODULE=on
-go env -w  GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct
+go env -w  GOPROXY=https://goproxy.cn,https://proxy.golang.com.cn,https://mirrors.aliyun.com/goproxy/,direct
 ```
 
 ### 配置php环境
