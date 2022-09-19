@@ -21,6 +21,8 @@
 ## code
 
 ```go
+// Merge intervals
+
 func merge(intervals [][]int) [][]int {
 	box := [][]int{}
 	l := len(intervals)
@@ -49,5 +51,33 @@ func merge(intervals [][]int) [][]int {
 		}
 	}
 	return box
+}
+
+func merge(intervals [][]int) [][]int {
+	l := len(intervals)
+	if l <= 1 {
+		return intervals
+	}
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+	res, slow, quick := [][]int{intervals[0]}, 0, 1
+	for quick < l {
+		if res[slow][0] <= intervals[quick][0] && intervals[quick][0] <= res[slow][1] {
+			var v []int
+			if intervals[quick][1] > res[slow][1] {
+				v = []int{res[slow][0], intervals[quick][1]}
+			} else {
+				v = []int{res[slow][0], res[slow][1]}
+			}
+			res[slow] = v
+			quick++
+		} else {
+			res = append(res, intervals[quick])
+			slow++
+			quick++
+		}
+	}
+	return res
 }
 ```
