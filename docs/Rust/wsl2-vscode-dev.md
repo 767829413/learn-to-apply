@@ -40,6 +40,10 @@ sudo apt-get -y install gcc
 
 * [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
 
+* [CodeLLDB(debug必备)](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
+
+* [codelldb-x86_64-linux.vsix(debug必备)](https://github.com/vadimcn/vscode-lldb/releases/download/v1.7.4/codelldb-x86_64-linux.vsix)
+
 * [rust-analyzer(可选)](https://marketplace.visualstudio.com/items?itemName=dustypomerleau.rust-syntax)
 
 * [vscode-rustfmt(可选)](https://marketplace.visualstudio.com/items?itemName=statiolake.vscode-rustfmt)
