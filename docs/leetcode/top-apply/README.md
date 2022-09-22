@@ -43,6 +43,7 @@
 * [二叉树的右视图](../../../docs/leetcode/top-apply/binary-tree-right-side-view.md)
 * [合并区间](../../../docs/leetcode/array/merge-intervals.md)
 * [删除链表的倒数第 N 个结点](../../../docs/leetcode/top-apply/remove-nth-node-from-end-of-list.md)
+* [排序链表](../../../docs/leetcode/top-apply/sort-list.md)
 
 ---
 
