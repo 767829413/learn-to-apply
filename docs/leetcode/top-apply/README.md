@@ -44,6 +44,7 @@
 * [合并区间](../../../docs/leetcode/array/merge-intervals.md)
 * [删除链表的倒数第 N 个结点](../../../docs/leetcode/top-apply/remove-nth-node-from-end-of-list.md)
 * [排序链表](../../../docs/leetcode/top-apply/sort-list.md)
+* [删除排序链表中的重复元素 II](../../../docs/leetcode/top-apply/remove-duplicates-from-sorted-list-ii.md)
 
 ---
 
