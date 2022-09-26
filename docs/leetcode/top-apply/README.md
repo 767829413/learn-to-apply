@@ -17,6 +17,7 @@
 * [二分查找](../../../docs/leetcode/top-apply/binary-search.md)
 * [用栈实现队列](../../../docs/leetcode/top-apply/implement-queue-using-stacks.md)
 * [爬楼梯](../../../docs/leetcode/top-apply/climbing-stairs.md)
+* [x 的平方根](../../../docs/leetcode/top-apply/sqrtx.md)
 
 ---
 
