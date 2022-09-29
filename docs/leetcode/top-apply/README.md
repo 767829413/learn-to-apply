@@ -48,6 +48,7 @@
 * [删除排序链表中的重复元素 II](../../../docs/leetcode/top-apply/remove-duplicates-from-sorted-list-ii.md)
 * [下一个排列](../../../docs/leetcode/array/next-permutation.md)
 * [两数相加](../../../docs/leetcode/top-apply/add-two-numbers.md)
+* [字符串转换整数 (atoi)](../../../docs/leetcode/top-apply/string-to-integer-atoi.md)
 
 ---
 
