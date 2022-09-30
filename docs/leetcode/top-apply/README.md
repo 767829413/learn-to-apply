@@ -49,6 +49,7 @@
 * [下一个排列](../../../docs/leetcode/array/next-permutation.md)
 * [两数相加](../../../docs/leetcode/top-apply/add-two-numbers.md)
 * [字符串转换整数 (atoi)](../../../docs/leetcode/top-apply/string-to-integer-atoi.md)
+* [最长公共子序列](../../../docs/leetcode/top-apply/longest-common-subsequence.md)
 
 ---
 
