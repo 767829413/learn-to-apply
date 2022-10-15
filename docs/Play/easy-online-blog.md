@@ -44,6 +44,7 @@ nohup docsify serve /your_path/docs --port 80 > ./info.log 2>&1& echo $! > ./inf
 这里使用的是github的[webhook](https://docs.github.com/cn/developers/webhooks-and-events/webhooks/about-webhooks)来实现自动拉取的功能,方式有很多,自己google就是了,这里也提供了一个简单的执行方案[webhook_linux_amd64](https://github.com/767829413/webhook)
 
 ```bash
+
 ## route 定义在webhook配置的Payload URL
 ## path 项目路径执行git pull的地方
 ## port 监听的端口
