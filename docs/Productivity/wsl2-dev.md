@@ -20,7 +20,7 @@ wsl --install -d <DistroName>
 
 注意:
 
-出现 [0xc03a001a错误解决方案](https://rdfarm.net/wsl2-error-0xc03a001a/)
+如果出现 [0xc03a001a错误解决方案](https://rdfarm.net/wsl2-error-0xc03a001a/)
 
 完成之后,以管理员身份运行 PowerShell,执行如下命令来设置wsl使用的默认版本
 
