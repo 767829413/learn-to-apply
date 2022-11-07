@@ -74,7 +74,7 @@ export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
 
 alias setp='export https_proxy="http://${hostip}:7890" && export http_proxy="http://${hostip}:7890" && export all_proxy="socks5://${hostip}:7890";'
 
-alias unsetp='unset ALL_PROXY && unset https_proxy && unset http_proxy'
+alias unsetp='unset all_proxy && unset https_proxy && unset http_proxy'
 ```
 
 ## 配置个人的开发环境
