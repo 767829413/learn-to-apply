@@ -68,9 +68,9 @@ Clash 这个端口 http 和 socks 通用
 ## 建议写入.bashrc .profile 如果配置了zsh,建议写入 ~/.zshrc
 export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
 
-alias setp='export HTTPS_PROXY="http://${hostip}:7890" && export HTTP_PROXY="http://${hostip}:7890" && export ALL_PROXY="socks5://${hostip}:7890";'
+alias setp='export https_proxy="http://${hostip}:7890" && export http_proxy="http://${hostip}:7890" && export all_proxy="socks5://${hostip}:7890";'
 
-alias unsetp='unset ALL_PROXY && unset HTTPS_PROXY && unset HTTP_PROXY'
+alias unsetp='unset ALL_PROXY && unset https_proxy && unset http_proxy'
 ```
 
 ## 配置个人的开发环境
