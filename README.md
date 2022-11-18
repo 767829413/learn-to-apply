@@ -10,6 +10,7 @@
 * [LINUX 常用命令](./docs/Productivity/linux-general-commands.md)
 * [golang简易编译打包工具使用](./docs/Productivity/compile-and-package.md)
 * [一款简易的php在线编辑工具](./docs/Productivity/php-online-edit.md)
+* [在win10和Linux上配置SSH免密登录](./docs/Productivity/windows-linux-ssh-nopassword.md)
 
 ---
 
