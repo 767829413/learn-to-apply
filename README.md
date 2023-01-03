@@ -67,6 +67,7 @@
 
 ## Golang
 
+* [一些性能调优思路的总结](./docs/Golang/pprof-think.md)
 * [简单看下异步编程的 Promise 方法论(Golang实现)](./docs/Golang/promise.md)
 * [浅尝golang之Mutex基础](./docs/Golang/mutex-base.md)
 * [浅尝golang之Mutex的扩展操作(重入,try lock,统计goroutine等待数)](./docs/Golang/mutex.md)
