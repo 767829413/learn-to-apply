@@ -121,6 +121,7 @@
 
 ## 杂七杂八
 
+* [稳定性八股文](./docs/A-bit-of-everything/stabilization-of-the-eight-essays.md)
 * [初识算法123](./docs/A-bit-of-everything/Introduction-to-algorithms/README.md)
 * [UML ??? 也许需要吧](./docs/A-bit-of-everything/who-wants-uml.md)
 * [中台玩啥呢??](./docs/A-bit-of-everything/what-center-stage.md)
