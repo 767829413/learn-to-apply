@@ -81,3 +81,22 @@ sed -i 's/book/books/g' file
 # 使用后缀 /g 标记会替换每一行中的所有匹配
 sed 's/book/books/g' file
 ```
+
+## shell 输出输入
+
+```bash
+#!/bin/bash
+
+EXE=./local
+LOG=./local.log
+PID=./local.pid
+
+if [ ! -f "$PID" ]; then
+    echo "$PID not exist,need create"
+    touch $PID
+fi
+
+cat $PID | xargs kill
+chmod +x $EXE
+nohup $EXE > $LOG 2>&1& echo $! > $PID
+```
