@@ -214,6 +214,16 @@ go env -w GO111MODULE=on
 go env -w  GOPROXY=https://goproxy.cn,https://proxy.golang.com.cn,https://mirrors.aliyun.com/goproxy/,direct
 ```
 
+### 利用gvm配置go多版本环境(可选)
+
+[在github有安装方法](https://github.com/moovweb/gvm)
+
+```bash
+export GOPATH=$HOME/go
+export GOBIN=$GOPATH/bin
+export PATH=${PATH}:$GOBIN:$GOROOT/bin
+```
+
 ### 配置php环境
 
 ```bash

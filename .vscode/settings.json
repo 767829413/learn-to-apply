@@ -107,5 +107,7 @@
     },
     "terminal.integrated.enableMultiLinePasteWarning": false,
     "search.followSymlinks": false,
-    "terminal.integrated.defaultProfile.linux": "bash"
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "chatgpt.emailAddress": "wojiushifangyuanlove@gmail.com",
+    "chatgpt.password": "6217512Fa!"
 }
