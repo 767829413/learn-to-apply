@@ -4,7 +4,7 @@
 
 ## 生产力工具
 
-* [WSL2 快速搭建开发环境](./docs/PrDFVF           oductivity/wsl2-dev.md)
+* [WSL2 快速搭建开发环境](./docs/PrDFVFoductivity/wsl2-dev.md)
 * [VS code快捷键](./docs/Productivity/vscode.md)
 * [Git Feature Branch Workflow](./docs/Productivity/github-workflow.md)
 * [LINUX Shell 随记](./docs/Productivity/linux-general-commands.md)
@@ -28,7 +28,7 @@
 
 ## leetcode
 
-* [配套练习册](htt   ps://github.com/767829413/go-algorithm)
+* [配套练习册](https://github.com/767829413/go-algorithm)
 * [数组](./docs/leetcode/array/README.md)
 * [top-apply](./docs/leetcode/top-apply/README.md)
 
@@ -39,15 +39,14 @@
 * [搭建dapr基于k8s的开发调试环境](./docs/Dapr/dapr-k8s-debug.md)
 
 ---
- 40
-0# Kubernetes相关
+ 
+ # Kubernetes相关
 
 * [深入理解声明式API-实践自定义控制器](./docs/Kubernetes/controller-crd.md)
 * [kubernetes二次开发](./docs/Kubernetes/kubernetes-secondary-development.md)
 * [Kind加载本地镜像失败](./docs/Kubernetes/kind-load-docker-image-failure.md)
 * [自己动手将谷歌k8s镜像同步到阿里云](./docs/Kubernetes/sync-docker-repo.md)
-* [Kubernetes集群的身份验证](./docs/Kubernetes/kuberne+
-iple-clusters.md)
+* [Kubernetes集群的身份验证](./docs/Kubernetes/kuberne+iple-clusters.md)
 * [在Ubuntu上安装Minikube](./docs/Kubernetes/minikube.md)
 * [Helm的安装和使用](./docs/Kubernetes/helm-quickstart.md)
 * [关于对 Kubernetes 原子调度单位Pod的思考](./docs/Kubernetes/k8s-atomic-Scheduling.md)
