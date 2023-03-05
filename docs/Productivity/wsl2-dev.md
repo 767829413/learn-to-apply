@@ -231,3 +231,15 @@ sudo apt-get -y install php7.4
 sudo apt-get -y install php7.4-cli php7.4-json php7.4-common php7.4-mysql php7.4-zip php7.4-gd php7.4-mbstring php7.4-curl php7.4-xml php7.4-bcmath
 sudo apt-get -y install composer
 ```
+
+### 配置docker ce
+
+[docker ce的安装教程](https://docs.docker.com/engine/install/ubuntu/)
+
+```bash
+vim .bashrc
+## 添加 alias dt='service docker start'
+source .bashrc
+dt
+ * Starting Docker: docker 
+```
