@@ -43,6 +43,7 @@
  
 ## Kubernetes相关
 
+* [在VMWare中部署你的K8S集群](./docs/Kubernetes/quick-start-k8s-cluster.md)
 * [深入理解声明式API-实践自定义控制器](./docs/Kubernetes/controller-crd.md)
 * [kubernetes二次开发](./docs/Kubernetes/kubernetes-secondary-development.md)
 * [Kind加载本地镜像失败](./docs/Kubernetes/kind-load-docker-image-failure.md)
