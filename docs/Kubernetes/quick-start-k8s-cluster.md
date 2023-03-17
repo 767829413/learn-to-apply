@@ -362,7 +362,7 @@ kubectl create secret generic kubernetes-dashboard-certs \
 ```
 
 ```bash
-kubectl apply -f kubernetes-dashboard.yaml
+kubectl apply -f dashboard.yaml.yaml
 ```
 
 #### kubeadm 部署
@@ -388,5 +388,5 @@ kubectl create secret generic kubernetes-dashboard-certs \
 ```
 
 ```bash
-kubectl apply -f kubernetes-dashboard.yaml
+kubectl apply -f dashboard.yaml.yaml
 ```
