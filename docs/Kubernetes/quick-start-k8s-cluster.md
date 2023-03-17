@@ -23,23 +23,23 @@ $ kubeadm join <Master节点的IP和端口 >
 - 禁止swap分区
 
 我个人的机器配置:
-| 配置 | 说明 |
-| --- | --- |
-| CPU | AMD Ryzen 9 5900X |
-| 内存 | 32G |
-| 硬盘 | KIOXIA-EXCERIA PLUS G2 SSD |
-| 虚拟化 | VMWare Pro 16.0.0 build-16894299 |
-| 操作系统镜像 | CentOS-7-x86_64-Minimal-1810.iso |
+
+- `CPU: AMD Ryzen 9 5900X`
+- `内存: 32G`
+- `硬盘: KIOXIA-EXCERIA PLUS G2 SSD`
+- `虚拟化: VMWare Pro 16.0.0 build-16894299`
+- `操作系统镜像: CentOS-7-x86_64-Minimal-1810.iso`
 
 搭建的K8S集群信息
-| 配置 | 说明 |
-| --- | --- |
-| Docker版本 | Docker version 18.06.1-ce, build e68fc7a |
-| K8S版本 | 1.18.0 |
-| 三个节点 | master、node1、node2（固定IP） |
-| 容器运行时 | 仍然使用Docker而非Containerd |
-| Pod网络 | 用Calico替换Flannel实现 Pod 互通，支持更大规模的集群； |
-| 集群构建工具 | Kubeadm |
+
+- `Docker版本: Docker version 18.06.1-ce, build e68fc7a`
+- `K8S版本: 1.18.0`
+- `三个节点: master、node1、node2（固定IP）`
+- `容器运行时: 仍然使用Docker而非Containerd`
+- `Pod网络: 用Calico替换Flannel实现 Pod 互通，支持更大规模的集群`
+- `集群构建工具: Kubeadm`
+
+大概的架构就是类似下面找的图这种:
 
  ![kubernete](https://blog-1252881505.cos.ap-beijing.myqcloud.com/k8s/single-master.jpg) 
 
