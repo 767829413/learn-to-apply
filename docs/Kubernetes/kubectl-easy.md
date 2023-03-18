@@ -130,7 +130,7 @@
         <td>在不同API版本之间转换对象定义</td>
     </tr>
     <tr>
-        <td rowspan="3">高级命令</td>
+        <td rowspan="3">设置命令</td>
         <td>label</td>
         <td>给资源设置、更新标签</td>
     </tr>
@@ -140,7 +140,11 @@
     </tr>
     <tr>
         <td>completion</td>
-        <td>kubectl工具自动补全 source /usr/share/bash-completion/bash_completion && source <(kubectl completion bash) (依赖软件包 bash-completion)</td>
+        <td>kubectl工具自动补全 yum install -y bash-completion && source /usr/share/bash-completion/bash_completion && source <(kubectl completion bash) (依赖软件包 bash-completion)</td>
+    </tr>
+    <tr>
+        <td>api-resources</td>
+        <td>查看所有支持的资源</td>
     </tr>
     <tr>
         <td rowspan="4">其他命令</td>
