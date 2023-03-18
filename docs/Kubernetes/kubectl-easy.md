@@ -140,7 +140,7 @@
     </tr>
     <tr>
         <td>completion</td>
-        <td>kubectl工具自动补全source <(kubectl completion bash) (依赖软件包 bash-completion)</td>
+        <td>kubectl工具自动补全 source /usr/share/bash-completion/bash_completion && source <(kubectl completion bash) (依赖软件包 bash-completion)</td>
     </tr>
     <tr>
         <td rowspan="4">其他命令</td>
