@@ -43,14 +43,16 @@
  
 ## Kubernetes相关
 
-* [在VMWare中部署你的K8S集群](./docs/Kubernetes/quick-start-k8s-cluster.md)
 * [深入理解声明式API-实践自定义控制器](./docs/Kubernetes/controller-crd.md)
 * [kubernetes二次开发](./docs/Kubernetes/kubernetes-secondary-development.md)
 * [Kind加载本地镜像失败](./docs/Kubernetes/kind-load-docker-image-failure.md)
 * [自己动手将谷歌k8s镜像同步到阿里云](./docs/Kubernetes/sync-docker-repo.md)
-* [Kubernetes集群的身份验证](./docs/Kubernetes/kubernetes-authentication.md)
-* [在Ubuntu上安装Minikube](./docs/Kubernetes/minikube.md)
 * [Helm的安装和使用](./docs/Kubernetes/helm-quickstart.md)
+* [Kubernetes集群的身份验证](./docs/Kubernetes/kubernetes-authentication.md)
+* [kubectl命令行管理工具](./docs/Kubernetes/kubectl-easy.md)
+* [在VMWare中部署你的K8S集群](./docs/Kubernetes/quick-start-k8s-cluster.md)
+* [在Ubuntu上安装Minikube](./docs/Kubernetes/minikube.md)
+* [CNI网络概述](./docs/Kubernetes/cni-network-overview.md)
 * [关于对 Kubernetes 原子调度单位Pod的思考](./docs/Kubernetes/k8s-atomic-Scheduling.md)
 * [Kubernetes 工作原理概述](./docs/Kubernetes/kubernetes-overview.md)
 

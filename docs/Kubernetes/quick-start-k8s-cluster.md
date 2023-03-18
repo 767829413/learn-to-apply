@@ -257,7 +257,7 @@ kubeadm token create --print-join-command
 
 ### Flannel
 
-```
+```bash
 wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 sed -i -r "s#quay.io/coreos/flannel:.*-amd64#lizhenliang/flannel:v0.11.0-amd64#g" kube-flannel.yml
 kubectl apply -f ./kube-flannel.yml
@@ -265,12 +265,20 @@ kubectl apply -f ./kube-flannel.yml
 
 修改国内镜像仓库。
 
+删除 Flannel 网络插件和对用数据
+
+```bash
+kubectl delete -f ./kube-flannel.yml
+ip link del cni0
+ip link del flannel.1
+```
+
 ### Calico
 
  <https://docs.projectcalico.org/getting-started/kubernetes/quickstart> 
 
-```
-kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+```bash
+kubectl apply -f https://docs.projectcalico.org/archive/v3.13/manifests/calico.yaml
 ```
 
 下载完后还需要修改里面配置项：
@@ -280,9 +288,9 @@ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 
 修改完后应用清单：
 
-```
-# kubectl apply -f calico.yaml
-# kubectl get pods -n kube-system
+```bash
+kubectl apply -f calico.yaml
+kubectl get pods -n kube-system
 ```
 
 ## 测试kubernetes集群
@@ -329,7 +337,7 @@ spec:
 
 创建service account并绑定默认cluster-admin管理员集群角色：
 
-```
+```bash
 kubectl create serviceaccount dashboard-admin -n kube-system
 kubectl create clusterrolebinding dashboard-admin --clusterrole=cluster-admin --serviceaccount=kube-system:dashboard-admin
 kubectl describe secrets -n kube-system $(kubectl -n kube-system get secret | awk '/dashboard-admin/{print $1}')
