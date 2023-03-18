@@ -130,7 +130,7 @@
         <td>在不同API版本之间转换对象定义</td>
     </tr>
     <tr>
-        <td rowspan="3">设置命令</td>
+        <td rowspan="4">设置命令</td>
         <td>label</td>
         <td>给资源设置、更新标签</td>
     </tr>
