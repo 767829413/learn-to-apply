@@ -28,9 +28,7 @@ kubectl get pods
 
 deployment 部署控制器,主要部署像api,网站,微服务
 
-replicasets 副本集,帮助 
-
-deployment 完成副本数管理,回滚
+replicasets 副本集,帮助 deployment 完成副本数管理,回滚
 
 pod 最小部署单元,容器的更高级抽象
 
