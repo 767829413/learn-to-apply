@@ -295,9 +295,9 @@ kubectl get pods -n kube-system
 
 ## 测试kubernetes集群
 
-- 验证Pod工作
-- 验证Pod网络通信
-- 验证DNS解析
+- 能不能正常部署应用: 验证Pod工作
+- 集群网络是否正常: 验证Pod网络通信
+- 集群内部dns解析是否正常: 验证DNS解析
 
 在Kubernetes集群中创建一个pod，验证是否正常运行：
 

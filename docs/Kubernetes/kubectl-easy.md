@@ -1,5 +1,45 @@
 # kubectl命令行管理工具
 
+1. `基础命令: 创建资源、更新资源、删除`
+2. `部署命令: 部署状态、发布记录、回滚，扩容/缩容`
+3. `集群管理命令: 查看资源利用、节点管理`
+
+```bash
+kubectl exec -it nginx-f89759699-xhxhi bash
+```
+
+4. `故障诊断和调试命令:查看资源信息、查看容器日志、进入容器、拷贝、端口映射`
+5. `高级命令:部署资源、更新资源`
+6. `设置命令: 资源类型相关信息查看,命令补全`
+
+```bash
+yum install -y bash-completion && source /usr/share/bash-completion/bash_completion && source <(kubectl completion bash)
+```
+
+7. `通用的命令选项`
+
+```bash
+# 尝试跑下资源,但不具体执行
+--dry-run
+# 输出的格式 例如 wide，yaml，json
+-o，--output=
+```
+
+kubectl get 通用的选项:
+
+```bash
+# 输出的格式
+-o，--output=
+# 所有命名空间
+-A，--all-namespaces=
+# 排序
+--sort-by= 
+# 查看标签
+--show-labels
+# 根据标签查询资源 -l app=naginx
+-l,--selector
+```
+
 <table>
     <tr>
         <th>类型</th><th>命令</th><th>描叙</th>
