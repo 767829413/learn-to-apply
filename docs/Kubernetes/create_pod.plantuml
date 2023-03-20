@@ -1,0 +1,57 @@
+@startuml
+actor User
+
+User -> API_Server: create Pod
+activate API_Server
+
+API_Server-> etcd: write
+activate etcd
+
+etcd->API_Server:
+deactivate
+
+API_Server --> User:
+deactivate
+
+API_Server-> Scheduler: watch(new pod)
+activate Scheduler
+
+Scheduler->API_Server: bind pod
+activate API_Server
+
+API_Server->etcd: write
+activate etcd
+
+etcd-->API_Server:
+deactivate etcd
+
+API_Server-->Scheduler:
+deactivate API_Server
+deactivate Scheduler
+
+API_Server->Kubelet: watch(bound pod)
+activate Kubelet
+
+Kubelet->Docker: docker run
+activate Docker
+
+Docker-->Kubelet:
+deactivate Docker
+
+Kubelet->API_Server: update pod status
+activate API_Server
+
+API_Server->etcd: 
+activate etcd
+
+etcd-->API_Server: 
+deactivate etcd
+
+API_Server-->Kubelet:
+deactivate Kubelet
+deactivate API_Server
+
+@enduml
+
+
+

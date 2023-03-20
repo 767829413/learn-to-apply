@@ -4,63 +4,6 @@
 
 ![11111111.png](https://s2.loli.net/2023/03/20/CUzLTAVhnNuJ26Y.png)
 
-```plantuml
-@startuml
-actor User
-
-User -> API_Server: create Pod
-activate API_Server
-
-API_Server-> etcd: write
-activate etcd
-
-etcd->API_Server:
-deactivate
-
-API_Server --> User:
-deactivate
-
-API_Server-> Scheduler: watch(new pod)
-activate Scheduler
-
-Scheduler->API_Server: bind pod
-activate API_Server
-
-API_Server->etcd: write
-activate etcd
-
-etcd-->API_Server:
-deactivate etcd
-
-API_Server-->Scheduler:
-deactivate API_Server
-deactivate Scheduler
-
-API_Server->Kubelet: watch(bound pod)
-activate Kubelet
-
-Kubelet->Docker: docker run
-activate Docker
-
-Docker-->Kubelet:
-deactivate Docker
-
-Kubelet->API_Server: update pod status
-activate API_Server
-
-API_Server->etcd: 
-activate etcd
-
-etcd-->API_Server: 
-deactivate etcd
-
-API_Server-->Kubelet:
-deactivate Kubelet
-deactivate API_Server
-
-@enduml
-```
-
 * node 上的所有组件( kubelet / kube-proxy )都是与 apiserver 通信
 
 * master 上两个组件( scheduler / controller-manager )都是与apiserver通信
@@ -71,9 +14,95 @@ deactivate API_Server
 
 ## 2. Pod中影响调度的主要属性
 
+```yaml
+spec:
+  containers:
+    - image: nginx
+      imagePullPolicy: Always
+      name: nginx
+      resources: {} # 资源限制影响节点分配
+  nodeName: node1 # 已经完成调度
+  nodeSelector: {} # 节点选择
+  affinity: {} # 节点亲和
+  schedulerName: default-scheduler # 默认调度器
+  tolerations: #对污点的容忍
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+```
+
 ## 3. 资源限制对Pod调度的影响
 
+```yaml
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
+```
+
+如果不配置 resources ,那 pod 可以使用宿主机所有资源,调度时不参考配额
+
+cpu配置写法: m单位, 1 = 1000m = 1c , 0.5 = 500m = 0.5c
+
+resources 资源限制
+
+* requests: 资源请求值,调度pod依据,
+* limits: 资源最大限制
+
 ## 4. nodeSelector & nodeAffinity
+
+```yaml
+spec:
+  nodeSelector:
+    disktype: hd
+```
+
+`nodeSelector`: 用于将Pod调度到匹配Label的node上
+
+给节点打标签
+
+```bash
+kubectl label nodes [node] key=value
+```
+
+```yaml
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: label-2
+            operator: In
+            values:
+            - linux
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1 # 1 ~ 100,值越大,pod调度到该标签节点可能性最大
+        preference:
+          matchExpressions:
+          - key: label-1
+            operator: In
+            values:
+            - key-1
+```
+
+`nodeAffinity`: 节点亲和类似于 `nodeSelector` ,可以根据节点上的标签来约束 Pod 可以调度到哪些节点
+
+相比 `nodeSelector` :
+
+* 匹配有更多的逻辑组合,不只是字符串的完全相等
+* 调度分为软策略和硬策略,而不是硬性要求
+  * 硬(required): 必须满足,字段 requiredDuringSchedulingIgnoredDuringExecution
+  * 软(preferred): 尝试满足,但不保证, 字段 preferredDuringSchedulingIgnoredDuringExecution
+* 操作符号: In, NotIn, Exists, DoesNotExist, Gt, Lt
 
 ## 5. Taints & Tolerations
 
