@@ -2,7 +2,7 @@
 
 ## 1. 创建一个Pod工作流程
 
-![11111111.png](https://s2.loli.net/2023/03/20/CUzLTAVhnNuJ26Y.png)
+![调度流程](https://s2.loli.net/2023/03/20/CUzLTAVhnNuJ26Y.png)
 
 * node 上的所有组件( kubelet / kube-proxy )都是与 apiserver 通信
 
