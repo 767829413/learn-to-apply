@@ -56,6 +56,7 @@ resources 资源限制
 
 * requests: 资源请求值,调度pod依据,
 * limits: 资源最大限制
+* requests的值必须小于limits
 
 ## 4. nodeSelector & nodeAffinity
 
@@ -67,10 +68,11 @@ spec:
 
 `nodeSelector`: 用于将Pod调度到匹配Label的node上
 
-给节点打标签
-
 ```bash
-kubectl label nodes [node] key=value
+# 给节点打标签
+kubectl label nodes [node] key1=value1 key2=value2
+# 给节点移除标签
+kubectl label nodes [node] key1- key2-
 ```
 
 ```yaml
@@ -106,8 +108,92 @@ spec:
 
 ## 5. Taints & Tolerations
 
+nodeSelector & nodeAffinity: 将pod分配到某些节点,pod属性
+
+Taints：避免Pod调度到特定Node上,节点属性
+
+应用场景：
+
+* 专用节点
+* 配备了特殊硬件的节点
+* 基于Taint的驱逐
+
+设置污点：
+
+```bash
+kubectl taint node [node] key=value:[effect] 
+```
+
+其中[effect] 可取值：
+
+* NoSchedule：一定不能被调度。
+* PreferNoSchedule：尽量不要调度。
+* NoExecute：不仅不会调度，还会驱逐Node上已有的Pod。
+
+去掉污点：
+
+```bash
+kubectl taint node [node] key:[effect]-
+```
+
+Tolerations：允许Pod调度到有特定Taints的Node上
+
+容忍污点: 不是强制性分配到具有污点的节点上,只是在调度时候忽略节点污点的影响
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-taints
+spec:
+  containers:
+  - name: pod-taints
+    image: busybox:latest
+  tolerations:
+  - key: "key"
+    operator: "Equal"
+    value: "value"
+    effect: "NoSchedule"
+```
+
 ## 6. nodeName 
+
+nodeName：用于将Pod调度到指定的Node上，不经过调度器
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-example
+  labels:
+    app: nginx
+spec:
+  nodeName: k8s-node2
+  containers:
+  - name: nginx
+    image: nginx:1.15
+```
 
 ## 7. DaemonSet控制器
 
+![结构示意](https://pic.imgdb.cn/item/641a70b3a682492fccd6441e.png)
+
+DaemonSet功能：
+
+* 在每一个Node上运行一个Pod
+* 新加入的Node也同样会自动运行一个Pod
+
+应用场景：网络插件、Agent
+
+* 监控: zabbix agent
+* 日志: filebeat
+* c/s架构
+
 ## 8. 调度失败原因分析
+
+```bash
+# 查看调度结果：
+kubectl get pod <NAME> -o wide
+# 查看调度失败原因：
+kubectl describe pod <NAME>
+```
