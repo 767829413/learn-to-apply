@@ -125,6 +125,19 @@ kube-proxy: 帮助service实现了相应的功能
 
 ## 5.Service DNS名称
 
+DNS服务监视Kubernetes API，为每一个Service创建DNS记录用于域名解析
+
+ClusterIP A记录格式：<service-name>.<namespace-name>.svc.cluster.local
+示例：my-svc.my-namespace.svc.cluster.local
+
+内部: pod -> coredns service -> coredns(service : clusterip记录) -> 响应A记录结果
+
+外部: pod -> coredns service -> dns(宿主机) -> 响应
+
+1. 采用NodePort对外暴露应用，前面加一个LB实现统一访问入口
+2. 优先使用IPVS代理模式
+3. 集群内应用采用DNS名称访问, 示例：my-svc.my-namespace.svc.cluster.local
+
 ## 6.Ingress为弥补NodePort不足而生
 
 ## 7.Pod与Ingress的关系
