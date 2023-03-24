@@ -29,7 +29,7 @@ pod多副本特点: 分布式,高可用
 
 * ClusterIP：集群内部使用,通过集群的内部 IP 暴露服务，选择该值时服务只能够在集群内部访问。 这也是你没有为服务显式指定 type 时使用的默认值。 你可以使用 Ingress 或者 Gateway API 向公众暴露服务。
 
-    ![1111111111147.png](https://s2.loli.net/2023/03/23/yvH4i3nlS6VZ1Fd.png)
+    ![ClusterIP](https://pic.imgdb.cn/item/641d11caa682492fcc0f2f5f.png)
 
 ```yaml
 apiVersion: v1
@@ -52,7 +52,7 @@ spec:
 
 * NodePort：对外暴露应用,通过每个节点上的 IP 和静态端口（NodePort）暴露服务。 为了让节点端口可用，Kubernetes 设置了集群 IP 地址，这等同于你请求 type: ClusterIP 的服务。
 
-    ![43434343444409.png](https://s2.loli.net/2023/03/23/lKpP9OWcyT4aosB.png)
+    ![NodePort](https://pic.imgdb.cn/item/641d11caa682492fcc0f2fc5.png)
 
 ```yaml
 spec:
@@ -70,7 +70,7 @@ spec:
 
 * LoadBalancer：对外暴露应用，适用公有云,使用云提供商的负载均衡器向外部暴露服务。 外部负载均衡器可以将流量路由到自动创建的 NodePort 服务和 ClusterIP 服务上。
 
-    ![eweeeeeeeee73025.png](https://s2.loli.net/2023/03/23/rUC7RcOLp9Bz4VF.png)
+    ![LoadBalancer](https://pic.imgdb.cn/item/641d11caa682492fcc0f2f7a.png)
 
 ```yaml
 spec:
@@ -140,8 +140,108 @@ ClusterIP A记录格式：<service-name>.<namespace-name>.svc.cluster.local
 
 ## 6.Ingress为弥补NodePort不足而生
 
+NodePort的不足:
+
+* 一个端口只能一个服务使用,端口需要提前规划
+* 只支持4层负载均衡
+
+4层: 只考虑ip和端口
+7层: 协议多,过滤转发规则多
+
 ## 7.Pod与Ingress的关系
+
+* 通过Service相关联
+* 通过Ingress Controller实现Pod的负载均衡
+  * 支持TCP/UDP 4层和HTTP 7层
+
+![关系图](https://pic.imgdb.cn/item/641d0feaa682492fcc0bcafd.png)
 
 ## 8.Ingress Controller
 
+![Ingress Controller](https://pic.imgdb.cn/item/641d1340a682492fcc118acf.png)
+
+1. 部署Ingress Controller
+2. 创建Ingress规则
+
+Ingress Controller有很多实现，我们这里采用官方维护的Nginx控制器
+
+Github：<https://github.com/kubernetes/ingress-nginx>
+
+```bash
+# 部署
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+```
+
+注意事项：
+
+* 建议直接宿主机网络暴露：hostNetwork: true
+
+  user -> nodeport -> [iptable | ipvs] -> ingress controller(pod) node:port -> [service] -> pod
+
+  user -> lb -> ingress controller(pod) node:port -> [service] -> pod
+
+其他主流控制器：
+
+Traefik： HTTP反向代理、负载均衡工具
+
+Istio：服务治理，控制入口流量
+
 ## 9.Ingress
+
+http:
+
+```yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+  - host: example.ctnrs.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: 80
+```
+
+https:
+
+1. 将证书保存到k8s secret里面
+kubectl create secret-tls blog-ctnrs-com --cert=blog.ctnrs.com.pem --key=blog.ctnrs.com-key.pem
+
+2. ingress规则里引用该secret
+
+```yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  tls: 
+  - hosts: 
+    - sslexample.ctnrs.com
+    secreName: secret-tls
+  rules:
+  - host: sslexample.ctnrs.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: 80
+```
+
+lb -> nodeport(30001,30002)
+lb -> ingress controller(80,443)
+
+解决高可用：
+
+1. 扩容副本数
+   * 提高并发能力
+   * 尽量让多个节点提供服务
+2. 把控制器固定到几台节点
+   * daemonset（与nodeport一样）
+   * nodeselector+污点
+    污点，即使加污点容忍也不会完全分配到专门几个节点
