@@ -52,3 +52,5 @@ kubectl config set-credentials cluster-admin \
  #切换集群环境
  kubectl config --kubeconfig={config} use-context {name}
 ```
+
+`--grace-period=0 --force 强制删除资源`

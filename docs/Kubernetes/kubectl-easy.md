@@ -40,6 +40,8 @@ kubectl get 通用的选项:
 -l,--selector
 ```
 
+`--grace-period=0 --force 强制删除资源`
+
 <table>
     <tr>
         <th>类型</th><th>命令</th><th>描叙</th>
