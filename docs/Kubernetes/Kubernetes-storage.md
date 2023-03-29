@@ -624,3 +624,9 @@ Pod使用configmap两种方式：
     ```
 
 ## 10. 敏感数据存储：Secret
+
+<https://kubernetes.io/zh-cn/docs/concepts/configuration/secret/>
+
+与ConfigMap类似，区别在于Secret主要存储敏感数据，所有的数据要经过编码。
+
+应用场景：凭据
