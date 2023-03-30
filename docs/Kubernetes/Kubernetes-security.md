@@ -200,4 +200,253 @@ RBAC（Role-Based Access Control，基于角色的访问控制），允许通过
 
 ## 5. 网络策略概述
 
+CNI插件: 
+
+flannel: 不支持网络策略
+calico: 支持
+
+网络策略（Network Policy），用于限制Pod出入流量，提供Pod级别和Namespace级别网络访问控制。
+
+一些应用场景：
+
+* 应用程序间的访问控制。例如微服务A允许访问微服务B，微服务C不能访问微服务A
+* 开发环境命名空间不能访问测试环境命名空间Pod
+* 当Pod暴露到外部时，需要做Pod白名单
+* 多租户网络环境隔离
+
+Pod网络入口方向隔离：
+
+* 基于Pod级网络隔离：只允许特定对象访问Pod（使用标签定义），允许白名单上的IP地址或者IP段访问Pod
+* 基于Namespace级网络隔离：多个命名空间，A和B命名空间Pod完全隔离。
+
+Pod网络出口方向隔离：
+
+* 拒绝某个Namespace上所有Pod访问外部
+* 基于目的IP的网络隔离：只允许Pod访问白名单上的IP地址或者IP段
+* 基于目标端口的网络隔离：只允许Pod访问白名单上的端口
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+  namespace: default
+spec:
+  # 策略应用的pod
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+    - Ingress
+    - Egress
+  # 进流量,控制谁来访问我
+  ingress:
+    - from:
+        - ipBlock:
+            cidr: 172.17.0.0/16
+            except:
+              - 172.17.1.0/24
+        - namespaceSelector:
+            matchLabels:
+              project: myproject
+        - podSelector:
+            matchLabels:
+              role: frontend
+      ports:
+        - protocol: TCP
+          port: 6379
+  # 出流量,控制我能访问谁
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/24
+      ports:
+        - protocol: TCP
+          port: 5978
+```
+
 ## 6. 案例：对项目Pod出入流量访问控制
+
+1. 需求1：将default命名空间携带run=web标签的Pod隔离，只允许default命名空间携带run=client1标签的Pod访问80端口。
+
+创建策略和受控pod, np.yaml
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: my-pod-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      run: web
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              project: myproject
+        - podSelector:
+            matchLabels:
+              run: client1
+      ports:
+        - protocol: TCP
+          port: 80
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels: 
+    run: web
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+```
+
+开始执行:
+
+```bash
+kubectl apply -f np.yaml
+k run -it client1 --rm --image=busybox --labels run=client1
+k run -it client2 --rm --image=busybox --labels run=client2
+```
+
+查看pod:
+
+```bash
+[root@master netpolicy]# k get pod -o wide --show-labels
+NAME                                      READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES   LABELS
+client1                                   1/1     Running   0          11m   10.244.166.144   node1   <none>           <none>            run=client1
+client2                                   1/1     Running   0          10m   10.244.104.57    node2   <none>           <none>            run=client2
+my-pod                                    1/1     Running   0          22m   10.244.104.56    node2   <none>           <none>            run=web
+```
+
+在 client1 中:
+
+```bash
+/ # ping 10.244.104.56
+PING 10.244.104.56 (10.244.104.56): 56 data bytes
+^C
+--- 10.244.104.56 ping statistics ---
+7 packets transmitted, 0 packets received, 100% packet loss
+/ # wget 10.244.104.56
+Connecting to 10.244.104.56 (10.244.104.56:80)
+saving to 'index.html'
+index.html           100% |********************************************************************************|    615  0:00:00 ETA
+'index.html' saved
+/ # cat index.html 
+<!DOCTYPE html>
+```
+
+在 client2 中:
+
+```bash
+/ # ping 10.244.104.56
+PING 10.244.104.56 (10.244.104.56): 56 data bytes
+^C
+--- 10.244.104.56 ping statistics ---
+2 packets transmitted, 0 packets received, 100% packet loss
+/ # wget 10.244.104.56
+Connecting to 10.244.104.56 (10.244.104.56:80)
+^C
+```
+
+2. 需求2：default命名空间下所有pod可以互相访问，也可以访问其他命名空间Pod，但其他命名空间不能访问default命名空间Pod。
+
+创建策略和受控pod, np2.yaml
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: my-pod-policy2
+  namespace: default
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+      - podSelector: {}
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels: 
+    run: web
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+```
+
+podSelector: {} 表示默认命名空间所有pod
+
+创建策略和对应实验pod
+
+```bash
+kubectl apply -f np2.yaml
+kubectl run -it client1 --rm --image=busybox sh -n kube-system
+kubectl run -it client2 --rm --image=busybox sh
+```
+
+查看所有指定pod
+
+```bash
+
+[root@master netpolicy]# k get po  -o wide -A | grep client
+default                client2                                      1/1     Running   0          92s     10.244.104.59    node2    <none>           <none>
+kube-system            client1
+[root@master netpolicy]# k get po my-pod  -o wide
+NAME     READY   STATUS    RESTARTS   AGE     IP               NODE    NOMINATED NODE   READINESS GATES
+my-pod   1/1     Running   0          3m38s   10.244.166.143   node1   <none>           <none>
+```
+
+在 client1 中访问 my-pod 10.244.166.143
+
+```bash
+/ # ping 10.244.166.143
+PING 10.244.166.143 (10.244.166.143): 56 data bytes
+^C
+--- 10.244.166.143 ping statistics ---
+3 packets transmitted, 0 packets received, 100% packet loss
+/ # wget 10.244.166.143
+Connecting to 10.244.166.143 (10.244.166.143:80)
+^C
+```
+
+在 client2 中访问 my-pod 10.244.166.143
+
+```bash
+/ # ping 10.244.166.143
+PING 10.244.166.143 (10.244.166.143): 56 data bytes
+64 bytes from 10.244.166.143: seq=1 ttl=62 time=0.379 ms
+^C
+--- 10.244.166.143 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.379/0.453/0.527 ms
+/ # wget 10.244.166.143
+Connecting to 10.244.166.143 (10.244.166.143:80)
+saving to 'index.html'
+index.html           100% |*******************************************************************************************************************************************************|   615  0:00:00 ETA
+'index.html' saved
+/ # cat index.html 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+```
