@@ -228,18 +228,18 @@ EOF
 注意填写:
 
 ```text
-ExecStart=/root/k8s/work/etcd/etcd
-  --cert-file=/root/k8s/work/etcd/cert/etcd.pem \\
-  --key-file=/root/k8s/work/etcd/cert/etcd-key.pem \\
-  --trusted-ca-file=/etc/kubernetes/cert/ca.pem \\
-  --peer-cert-file=/root/k8s/work/etcd/cert/etcd.pem \\
-  --peer-key-file=/root/k8s/work/etcd/cert/etcd-key.pem \\
-  --peer-trusted-ca-file=/etc/kubernetes/cert/ca.pem \\
-  --listen-peer-urls=https://192.168.148.65:2380 \\
-  --initial-advertise-peer-urls=https://192.168.148.65:2380 \\
-  --listen-client-urls=https://192.168.148.65:2379,http://127.0.0.1:2379 \\
-  --advertise-client-urls=https://192.168.148.65:2379 \\
-  --initial-cluster=etcd-192.168.148.65-service=https://192.168.148.65:2380
+ExecStart={your_path}/etcd
+  --cert-file={your_path}/etcd.pem \\
+  --key-file={your_path}/etcd-key.pem \\
+  --trusted-ca-file={your_path}/ca.pem \\
+  --peer-cert-file={your_path}/etcd.pem \\
+  --peer-key-file={your_path}/etcd-key.pem \\
+  --peer-trusted-ca-file={your_path}/ca.pem \\
+  --listen-peer-urls=https:/{your_ip}:2380 \\
+  --initial-advertise-peer-urls=https:/{your_ip}:2380 \\
+  --listen-client-urls=https:/{your_ip}:2379,http://127.0.0.1:2379 \\
+  --advertise-client-urls=https:/{your_ip}:2379 \\
+  --initial-cluster=etcd-192.168.148.65-service=https:/{your_ip}:2380
 ```
 
 ```bash
@@ -319,4 +319,15 @@ Mar 31 06:31:23 master etcd[28661]: set the initial cluster version to 3.4
 Mar 31 06:31:23 master etcd[28661]: enabled capabilities for version 3.4
 Mar 31 06:31:23 master etcd[28661]: serving client requests on 192.168.148.65:2379
 Mar 31 06:31:23 master systemd[1]: Started Etcd Server.
+```
+
+### 验证服务状态
+
+```bash
+/root/k8s/work/etcd/etcdctl \
+    --endpoints=https://192.168.148.65:2379 \
+    --cacert=/etc/kubernetes/cert/ca.pem \
+    --cert=/root/k8s/work/etcd/cert/etcd.pem \
+    --key=/root/k8s/work/etcd/cert/etcd-key.pem endpoint health
+https://192.168.148.65:2379 is healthy: successfully committed proposal: took = 5.097402ms
 ```
