@@ -1,4 +1,4 @@
-# 在VMWare中部署你的K8S(1.18.0)集群
+# 在VMWare中部署你的K8S(1.25.0)集群
 
 kubeadm是官方社区推出的一个用于快速部署kubernetes集群的工具。
 
