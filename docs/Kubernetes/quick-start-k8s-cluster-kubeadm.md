@@ -509,6 +509,26 @@ kubectl apply -f calico.yaml
 kubectl get pods -n kube-system
 ```
 
+`测试在k8s创建pod是否可以正常访问网络`
+
+```bash
+ kubectl run busybox --image busybox:1.28 --image-pull-policy=IfNotPresent --restart=Never --rm -it busybox -- sh
+ # 通过下面可以看到能访问网络，说明calico网络插件已经被正常安装了
+ / # ping www.baidu.com
+```
+
+`测试coredns是否正常`
+
+```bash
+kubectl run busybox --image busybox:1.28 --restart=Never --rm -it busybox -- sh
+/ # nslookup kubernetes.default.svc.cluster.local
+Server:    10.96.0.10
+Address 1: 10.96.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      kubernetes.default.svc.cluster.local
+Address 1: 10.96.0.1 kubernetes.default.svc.cluster.local
+```
+
 ## 测试kubernetes集群
 
 - 能不能正常部署应用: 验证Pod工作
