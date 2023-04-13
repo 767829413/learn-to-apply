@@ -58,6 +58,8 @@
 * [kubernetes监控与日志管理](./docs/Kubernetes/monitoring-logging-cluster.md)
 * [kubectl命令行:多集群管理](./docs/Kubernetes/kubectl-multi-cluster.md)
 * [kubectl命令行管理工具](./docs/Kubernetes/kubectl-easy.md)
+* [kubeadm初始化k8s证书过期解决方案](./docs/Kubernetes/kubeadm-certificate-expiry.md)
+* [在VMWare中部署一套完整的企业级K8S(1.25.0)集群-kubeadm](./docs/Kubernetes/quick-start-k8s-ha-cluster-kubeadm.md)
 * [在VMWare中部署你的K8S(1.25.0)集群-kubeadm](./docs/Kubernetes/quick-start-k8s-cluster-kubeadm.md)
 * [在Ubuntu上安装Minikube](./docs/Kubernetes/minikube.md)
 * [CNI网络概述](./docs/Kubernetes/cni-network-overview.md)

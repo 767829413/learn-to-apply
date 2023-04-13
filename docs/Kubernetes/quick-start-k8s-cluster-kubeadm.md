@@ -132,6 +132,8 @@ systemctl stop firewalld  && systemctl disable firewalld && systemctl status fir
 ```bash
 #修改 selinux 配置文件之后，重启机器，selinux 配置才能永久生效重启之后登录机器验证是否修改成功：
 #显示 Disabled 说明 selinux 已经关闭
+# 临时关闭
+setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config && getenforce
 ```
 
@@ -177,6 +179,7 @@ sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables ne
 `配置阿里云 repo 源：`
 
 ```bash
+yum install -y yum-utils
 yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 ```
 
@@ -219,8 +222,6 @@ EOF
 
 ## 所有节点安装Docker/kubeadm/kubelet/containerd
 
-Kubernetes默认CRI（容器运行时）为Docker，因此先安装Docker。
-
 ### 安装 containerd 及 docker 服务
 
 `安装containerd`
@@ -229,7 +230,7 @@ Kubernetes默认CRI（容器运行时）为Docker，因此先安装Docker。
 yum install containerd.io-1.6.6 -y
 ```
 
-`配置containerd配置`
+`containerd配置`
 
 ```bash
 mkdir -p /etc/containerd
@@ -264,7 +265,7 @@ systemctl restart containerd
 
 ```bash
 # 将config_path = ""修改成如下目录：config_path = "/etc/containerd/certs.d"
-vim /etc/containerd/config.toml文件
+vim /etc/containerd/config.toml
 mkdir /etc/containerd/certs.d/docker.io/ -p
 # 添加配置
 # [host."https://vh3bm52y.mirror.aliyuncs.com",host."https://registry.docker-cn.com"]
@@ -544,48 +545,6 @@ $ kubectl get pod,svc
 ```
 
 访问地址：<http://NodeIP:Port>  
-
-## kubeadm初始化k8s证书过期解决方案
-
-`查看证书有效时间：`
-
-```bash
-openssl x509 -in /etc/kubernetes/pki/ca.crt -noout -text  |grep Not
-            Not Before: Apr 10 04:53:39 2023 GMT
-            Not After : Apr  7 04:53:39 2033 GMT
-openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep Not
-            Not Before: Apr 10 04:53:39 2023 GMT
-            Not After : Apr  9 04:53:39 2024 GMT
-```
-
-`延长证书过期时间：`
-
-1. 把update-kubeadm-cert.sh文件上传到master1节点
-
-2. 给update-kubeadm-cert.sh证书授权可执行权限
-
-  ```bash
-  chmod +x update-kubeadm-cert.sh
-  ```
-
-3. 执行下面命令，修改证书过期时间，把时间延长到10年
-
-  ```bash
-  ./update-kubeadm-cert.sh all
-  ```
-
-4. 在master1节点查询pod是否正常,能查询出数据说明证书签发完成
-
-  ```bash
-  kubectl get pods -n kube-system
-  ```
-
-5. 再次查看证书有效期，可以看到会延长到10年
-
-  ```bash
-  openssl x509 -in /etc/kubernetes/pki/ca.crt -noout -text  |grep Not
-  openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text  |grep Not
-  ```
 
 ## 部署 Dashboard
 
