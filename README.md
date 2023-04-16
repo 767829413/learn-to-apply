@@ -48,6 +48,7 @@
 * [Kind加载本地镜像失败](./docs/Kubernetes/kind-load-docker-image-failure.md)
 * [自己动手将谷歌k8s镜像同步到阿里云](./docs/Kubernetes/sync-docker-repo.md)
 * [Helm的安装和使用](./docs/Kubernetes/helm-quickstart.md)
+* [Kubernetes安全运维思路导图](https://pic.imgdb.cn/item/643b748e0d2dde57775e4da2.jpg)
 * [Kubernetes集群的身份验证](./docs/Kubernetes/kubernetes-authentication.md)
 * [Kubernetes集群维护](./docs/Kubernetes/Kubernetes-cluster-maintenance.md)
 * [Kubernetes-RBAC](./docs/Kubernetes/Kubernetes-security-RBAC.md)
