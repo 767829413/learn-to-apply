@@ -182,7 +182,8 @@ kubectl get 通用的选项:
     </tr>
     <tr>
         <td>completion</td>
-        <td>kubectl工具自动补全 yum install -y bash-completion && source /usr/share/bash-completion/bash_completion && source <(kubectl completion bash) (依赖软件包 bash-completion)</td>
+        <td>kubectl工具自动补全(source /usr/share/bash-completion/bash_completion): https://kubernetes.io/zh-cn/docs/reference/kubectl/cheatsheet/
+         </td>
     </tr>
     <tr>
         <td>api-resources</td>
