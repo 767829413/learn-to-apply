@@ -143,7 +143,7 @@ ingress-control部署借鉴这个:
 kubectl apply -f https://github.com/dotNetCloudNative/eShopOnDapr/blob/main/deploy/k8s/nginx-ingress.yaml 
 ```
 
-**PS: 由于新版使用的是LoadBalancer可以把这个nginx-ingress.yaml中关于控制器的部分改成NodePort**
+**PS: 由于新版使用的是LoadBalancer,自己本地虚拟机搭建的可以把这个nginx-ingress.yaml中关于控制器的部分改成NodePort**
 
 ```yml
 apiVersion: v1
