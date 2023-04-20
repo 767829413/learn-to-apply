@@ -321,7 +321,7 @@ Etcd 是一个分布式键值存储系统，Kubernetes使用Etcd进行数据存�
 **cfssl是一个开源的证书管理工具，使用json文件生成证书，相比openssl更方便使用,找任意一台服务器操作，这里用 Master-1 节点**
 
 ```bash
-mkdir ~/cfssl && cd ~/cfssl
+mkdir ~/tools && cd ~/tools
 wget https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssl-certinfo_1.6.4_linux_amd64
 wget https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssljson_1.6.4_linux_amd64
 wget https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssl_1.6.4_linux_amd64
@@ -329,7 +329,7 @@ chmod +x ./*
 mv cfssl_1.6.4_linux_amd64 /usr/local/bin/cfssl
 mv cfssl-certinfo_1.6.4_linux_amd64 /usr/local/bin/cfssl-certinfo
 mv cfssljson_1.6.4_linux_amd64 /usr/bin/cfssljson
-cd ../ && rm -fr ~/cfssl
+cd ../ && rm -fr ~/tools
 ```
 
 ### 生成Etcd证书
