@@ -43,31 +43,11 @@
  
 ## Kubernetes相关
 
-* [深入理解声明式API-实践自定义控制器](./docs/Kubernetes/controller-crd.md)
-* [kubernetes二次开发](./docs/Kubernetes/kubernetes-secondary-development.md)
-* [Kind加载本地镜像失败](./docs/Kubernetes/kind-load-docker-image-failure.md)
-* [自己动手将谷歌k8s镜像同步到阿里云](./docs/Kubernetes/sync-docker-repo.md)
-* [Helm的安装和使用](./docs/Kubernetes/helm-quickstart.md)
-* [Ingress配置HTTPS证书安全通信](./docs/Kubernetes/ingress-https.md)
-* [CIS安全基准初探&&Kubernetes安全基准工具kube-bench](./docs/Kubernetes/kubernetes-frist-csi-kube-bench.md)
-* [Kubernetes安全运维思路导图](https://pic.imgdb.cn/item/643b748e0d2dde57775e4da2.jpg)
-* [Kubernetes集群的身份验证](./docs/Kubernetes/kubernetes-authentication.md)
-* [Kubernetes集群维护](./docs/Kubernetes/Kubernetes-cluster-maintenance.md)
-* [Kubernetes-RBAC](./docs/Kubernetes/Kubernetes-security-RBAC.md)
-* [Kubernetes存储](./docs/Kubernetes/Kubernetes-storage.md)
-* [Kubernetes网络](./docs/Kubernetes/Kubernetes-network.md)
-* [Kubernetes调度](./docs/Kubernetes/kubernetes-scheduling.md)
-* [应用生命周期管理](./docs/Kubernetes/application-lifecycle-management.md)
-* [kubernetes监控与日志管理](./docs/Kubernetes/monitoring-logging-cluster.md)
-* [kubectl命令行:多集群管理](./docs/Kubernetes/kubectl-multi-cluster.md)
-* [kubectl命令行管理工具](./docs/Kubernetes/kubectl-easy.md)
-* [kubeadm初始化k8s证书过期解决方案](./docs/Kubernetes/kubeadm-certificate-expiry.md)
-* [在VMWare中部署一套完整的企业级K8S(1.25.0)集群-kubeadm](./docs/Kubernetes/quick-start-k8s-ha-cluster-kubeadm.md)
-* [在VMWare中部署你的K8S(1.25.0)集群-kubeadm](./docs/Kubernetes/quick-start-k8s-cluster-kubeadm.md)
-* [在Ubuntu上安装Minikube](./docs/Kubernetes/minikube.md)
-* [CNI网络概述](./docs/Kubernetes/cni-network-overview.md)
-* [关于对 Kubernetes 原子调度单位Pod的思考](./docs/Kubernetes/k8s-atomic-Scheduling.md)
-* [Kubernetes 工作原理概述](./docs/Kubernetes/kubernetes-overview.md)
+* [Kubernetes开发](./docs/Kubernetes/problems/README.md)
+* [Kubernetes问题杂谈](./docs/Kubernetes/problems/README.md)
+* [Kubernetes安全](./docs/Kubernetes/security/README.md)
+* [Kubernetes基础](./docs/Kubernetes/base/README.md)
+* [Kubernetes集群搭建](./docs/Kubernetes/cluster-build/README.md)
 
 ---
 
