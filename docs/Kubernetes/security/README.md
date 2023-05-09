@@ -1,5 +1,6 @@
 # Kubernetes安全
 
+* [监控,审计和运行时安全](../../../docs/Kubernetes/security/monitoring-auditing-runtime-security.md)
 * [供应链安全](../../../docs/Kubernetes/security/supply-chain-security.md)
 * [最小化微服务漏洞](../../../docs/Kubernetes/security/minimizing-microservice-vulnerabilities.md)
 * [运行环境加固](../../../docs/Kubernetes/security/operation-environmental-reinforcement.md)
