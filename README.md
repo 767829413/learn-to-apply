@@ -43,7 +43,7 @@
  
 ## Kubernetes相关
 
-* [Kubernetes开发](./docs/Kubernetes/problems/README.md)
+* [Kubernetes开发](./docs/Kubernetes/developers/README.md)
 * [Kubernetes问题杂谈](./docs/Kubernetes/problems/README.md)
 * [Kubernetes安全](./docs/Kubernetes/security/README.md)
 * [Kubernetes基础](./docs/Kubernetes/base/README.md)
