@@ -63,7 +63,7 @@
 
 ## Golang
 
-* [深入的了解一下golang](https://github.com/767829413/advanced-go#readme)
+* [磨刀不误砍柴工](https://github.com/767829413/advanced-go#readme)
 * [一些性能调优思路的总结](./docs/Golang/pprof-think.md)
 * [简单看下异步编程的 Promise 方法论(Golang实现)](./docs/Golang/promise.md)
 * [浅尝golang之Mutex基础](./docs/Golang/mutex-base.md)
