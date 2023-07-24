@@ -70,9 +70,9 @@ Clash 这个端口 http 和 socks 通用
 ## 获取主机 IP
 ## 主机 IP 保存在 /etc/resolv.conf 中
 ## 建议写入.bashrc .profile 如果配置了zsh,建议写入 ~/.zshrc
-export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
+export hostip=$(cat /etc/resolv.conf | grep -oP '(?<=nameserver\ ).*')
 
-alias setp='export https_proxy="http://${hostip}:7890" && export http_proxy="http://${hostip}:7890" && export all_proxy="socks5://${hostip}:7890";'
+alias setp='export https_proxy="https://${hostip}:7890" && export http_proxy="http://${hostip}:7890" && export all_proxy="socks5://${hostip}:7890";'
 
 alias unsetp='unset all_proxy && unset https_proxy && unset http_proxy'
 ```
