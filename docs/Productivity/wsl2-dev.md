@@ -74,7 +74,7 @@ export hostip=$(cat /etc/resolv.conf |grep -oP '(?<=nameserver\ ).*')
 
 export proxy_port=33333
 
-alias setp='export https_proxy="https://${hostip}:${proxy_port}" && export http_proxy="http://${hostip}:${proxy_port}" && export all_proxy="socks5://${hostip}:${proxy_port}";'
+alias setp='export https_proxy="http://${hostip}:${proxy_port}" && export http_proxy="http://${hostip}:${proxy_port}" && export all_proxy="socks5://${hostip}:${proxy_port}";'
 
 alias unsetp='unset all_proxy && unset https_proxy && unset http_proxy'
 ```
