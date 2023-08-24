@@ -33,6 +33,13 @@
 * [配套练习册](https://github.com/767829413/go-algorithm)
 * [数组](./docs/leetcode/array/README.md)
 * [top-apply](./docs/leetcode/top-apply/README.md)
+* [初识算法123](./docs/A-bit-of-everything/Introduction-to-algorithms/README.md)
+
+---
+
+## Blockchain Related
+
+* [Blockchain Quickstart](https://github.com/767829413/fybq)
 
 ---
 
@@ -122,7 +129,6 @@
 ## 杂七杂八
 
 * [稳定性八股文](./docs/A-bit-of-everything/stabilization-of-the-eight-essays.md)
-* [初识算法123](./docs/A-bit-of-everything/Introduction-to-algorithms/README.md)
 * [UML ??? 也许需要吧](./docs/A-bit-of-everything/who-wants-uml.md)
 * [中台玩啥呢??](./docs/A-bit-of-everything/what-center-stage.md)
 * [简单写写面向对象、设计原则、设计模式、编程规范和代码重构](./docs/A-bit-of-everything/cursory-look-simple.md)
