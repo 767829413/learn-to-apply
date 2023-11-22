@@ -71,6 +71,7 @@
 
 ## Golang
 
+* [简单实现go-kratos固定本地服务发现](./docs/Golang/go-kratos-fix-disp.md)
 * [磨刀不误砍柴工](https://github.com/767829413/advanced-go#readme)
 * [一些性能调优思路的总结](./docs/Golang/pprof-think.md)
 * [简单看下异步编程的 Promise 方法论(Golang实现)](./docs/Golang/promise.md)
