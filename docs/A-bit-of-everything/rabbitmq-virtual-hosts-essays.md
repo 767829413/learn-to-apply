@@ -176,4 +176,5 @@ vhost1: Received message: vhost1: Hello, RabbitMQ---1!
 vhost3: Received message: vhost3: Hello, RabbitMQ---1!
 vhost2: Received message: vhost2: Hello, RabbitMQ---1!
 vhost4: Received message: vhost4: Hello, RabbitMQ---1!
+......
 ```
