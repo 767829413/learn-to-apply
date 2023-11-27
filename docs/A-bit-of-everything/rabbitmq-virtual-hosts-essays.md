@@ -21,10 +21,10 @@ docker run -d -p 5672:5672 -p 15672:15672 --hostname my-rabbit --name rabbit -e 
 2. 创建虚拟主机
 
 ```bash
-curl -u user:user -X PUT http://172.93.221.226:15672/api/vhosts/vhost1
-curl -u user:user -X PUT http://172.93.221.226:15672/api/vhosts/vhost2
-curl -u user:user -X PUT http://172.93.221.226:15672/api/vhosts/vhost3
-curl -u user:user -X PUT http://172.93.221.226:15672/api/vhosts/vhost4
+curl -u user:user -X PUT http://localhost:15672/api/vhosts/vhost1
+curl -u user:user -X PUT http://localhost:15672/api/vhosts/vhost2
+curl -u user:user -X PUT http://localhost:15672/api/vhosts/vhost3
+curl -u user:user -X PUT http://localhost:15672/api/vhosts/vhost4
 ```
 
 3. 通过代码验证一下
