@@ -162,7 +162,7 @@ func exec(c context.Context, url string, config amqp.Config) {
 }
 ```
 
-4. 通过代码验证一下
+4. 查看输出内容
 
 ```bash
 go run main.go
