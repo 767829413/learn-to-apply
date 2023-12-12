@@ -70,85 +70,244 @@ OAuth2广泛应用于多种场景，例如：
 
 ## 演示示例（Go语言）
 
-### 步骤：
+### 实现了一个简单的OAuth2授权服务器
 
-1. **创建 Auth0 应用**：
+```go
+package main
 
-   - 在 [Auth0 管理控制台](https://manage.auth0.com/) 中创建一个应用。
-   - 记下应用的客户端ID和客户端密钥。
-   - 设置应用的回调URL为 `http://localhost:8080/callback`。
+import (
+	"log"
+	"net/http"
 
-2. **创建 Golang Web 应用**：
+	"github.com/go-oauth2/oauth2/v4"
+	"github.com/go-oauth2/oauth2/v4/generates"
+	"github.com/go-oauth2/oauth2/v4/manage"
+	"github.com/go-oauth2/oauth2/v4/models"
+	"github.com/go-oauth2/oauth2/v4/server"
+	"github.com/go-oauth2/oauth2/v4/store"
+)
 
-   - 创建一个名为 `main.go` 的Golang文件，填入以下代码：
+func main() {
+	manager := manage.NewDefaultManager()
+	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
+	
+	// 设置客户端信息
+	clientStore := store.NewClientStore()
+	clientStore.Set("client_id", &models.Client{
+		ID:     "client_id",
+		Secret: "client_secret",
+		Domain: "http://localhost:8080",
+	})
+	manager.MapClientStorage(clientStore)
+	
+	// 设置授权码生成器
+	manager.MapAuthorizeGenerate(generates.NewAuthorizeGenerate())
+	
+	// 设置令牌生成器
+	manager.MapAccessGenerate(generates.NewAccessGenerate())
+	
+	// 设置授权码令牌存储
+	tokenStore,_ := store.NewMemoryTokenStore()
+	manager.MapTokenStorage(tokenStore)
+	
+	// 创建授权服务器
+	server := server.NewDefaultServer(manager)
+	server.SetAllowGetAccessRequest(true)
+	server.SetAllowedGrantType(oauth2.AuthorizationCode)
+	
+	http.HandleFunc("/authorize", func(w http.ResponseWriter, r *http.Request) {
+		err := server.HandleAuthorizeRequest(w, r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+	})
+	
+	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
+		err := server.HandleTokenRequest(w, r)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
+	
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+```
 
-     ```go
-     package main
+### 模拟OAuth2的四种授权模式
 
-     import (
-         "fmt"
-         "net/http"
-         "os"
+1. 授权码模式（Authorization Code Grant）：
 
-         "golang.org/x/oauth2"
-         "golang.org/x/oauth2/auth0"
-     )
+```go
+package main
 
-     var (
-         clientID     = "your-auth0-client-id"
-         clientSecret = "your-auth0-client-secret"
-         redirectURL  = "http://localhost:8080/callback"
-         auth0Domain  = "your-auth0-domain" // 例如：your-tenant.auth0.com
-     )
+import (
+	"fmt"
+	"log"
+	"net/http"
+	"net/url"
+)
 
-     var config = &oauth2.Config{
-         ClientID:     clientID,
-         ClientSecret: clientSecret,
-         RedirectURL:  redirectURL,
-         Endpoint:     auth0.Endpoint,
-         Scopes:       []string{"openid", "profile", "email"},
-     }
+func main() {
+	redirectURL := "http://localhost:8080/callback"
+	authURL := "http://localhost:8080/authorize"
+	tokenURL := "http://localhost:8080/token"
 
-     func main() {
-         http.HandleFunc("/", handleIndex)
-         http.HandleFunc("/login", handleLogin)
-         http.HandleFunc("/callback", handleCallback)
+	// 第一步：用户访问客户端应用程序，并请求授权访问受保护的资源
+	authParams := url.Values{}
+	authParams.Set("response_type", "code")
+	authParams.Set("client_id", "client_id")
+	authParams.Set("redirect_uri", redirectURL)
+	authParams.Set("scope", "read write")
 
-         fmt.Println("Listening on :8080...")
-         http.ListenAndServe(":8080", nil)
-     }
+	authURLWithParams := fmt.Sprintf("%s?%s", authURL, authParams.Encode())
 
-     func handleIndex(w http.ResponseWriter, r *http.Request) {
-         fmt.Fprint(w, "Visit /login to initiate the Auth0 OAuth2 flow.")
-     }
+	fmt.Printf("请在浏览器中访问以下URL进行授权:\n%s\n", authURLWithParams)
 
-     func handleLogin(w http.ResponseWriter, r *http.Request) {
-         url := config.AuthCodeURL("state", oauth2.AccessTypeOffline)
-         http.Redirect(w, r, url, http.StatusFound)
-     }
+	// 第二步：用户在授权页面上进行认证，并授权客户端应用程序访问受保护的资源
+	// 用户授权后，将被重定向到回调URL，并带上授权码
 
-     func handleCallback(w http.ResponseWriter, r *http.Request) {
-         token, err := config.Exchange(r.Context(), r.URL.Query().Get("code"))
-         if err != nil {
-             http.Error(w, fmt.Sprintf("Token exchange error: %v", err), http.StatusInternalServerError)
-             return
-         }
+	// 第三步：客户端应用程序使用授权码向授权服务器请求访问令牌
+	code := "" // 在回调URL中获取授权码
+	tokenParams := url.Values{}
+	tokenParams.Set("grant_type", "authorization_code")
+	tokenParams.Set("code", code)
+	tokenParams.Set("client_id", "client_id")
+	tokenParams.Set("client_secret", "client_secret")
+	tokenParams.Set("redirect_uri", redirectURL)
 
-         fmt.Fprintf(w, "Auth0 OAuth2 Token: %+v", token)
-     }
-     ```
+	resp, err := http.PostForm(tokenURL, tokenParams)
+	if err != nil {
+		log.Fatalf("无法请求访问令牌: %v", err)
+	}
+	defer resp.Body.Close()
 
-3. **运行 Golang 应用**：
+	// 处理访问令牌的响应
+	// 这里可以解析响应体中的访问令牌和其他信息
+	// 例如：
+	// var token oauth2.TokenResponse
+	// json.NewDecoder(resp.Body).Decode(&token)
+	// fmt.Printf("访问令牌：%s\n", token.AccessToken)
+}
+```
 
-   - 打开终端，切换到包含 `main.go` 的目录。
-   - 运行 `go run main.go`。
+2. 简化模式（Implicit Grant）：
 
-4. **测试流程**：
+```go
+package main
 
-   - 访问 `http://localhost:8080`，你将看到提示信息。
-   - 访问 `http://localhost:8080/login`，将跳转到 Auth0 的登录页面。
-   - 使用 Auth0 中的测试用户进行登录和授权。
-   - 将跳转回 `http://localhost:8080/callback`，并在页面上看到获取的访问令牌信息。
+import (
+	"fmt"
+	"log"
+	"net/url"
+)
+
+func main() {
+	authURL := "http://localhost:8080/authorize"
+
+	// 第一步：用户访问客户端应用程序，并请求授权访问受保护的资源
+	authParams := url.Values{}
+	authParams.Set("response_type", "token")
+	authParams.Set("client_id", "client_id")
+	authParams.Set("redirect_uri", "http://localhost:8080/callback")
+	authParams.Set("scope", "read write")
+
+	authURLWithParams := fmt.Sprintf("%s?%s", authURL, authParams.Encode())
+
+	fmt.Printf("请在浏览器中访问以下URL进行授权:\n%s\n", authURLWithParams)
+
+	// 第二步：用户在授权页面上进行认证，并授权客户端应用程序访问受保护的资源
+	// 用户授权后，将被重定向到回调URL，并带上访问令牌
+
+	// 第三步：在回调URL中获取访问令牌
+	// 这里可以解析回调URL中的访问令牌和其他信息
+	// 例如：
+	// accessToken := "" // 从回调URL中获取访问令牌
+	// fmt.Printf("访问令牌：%s\n", accessToken)
+}
+```
+
+3. 密码模式（Resource Owner Password Credentials Grant）：
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"net/url"
+	"strings"
+)
+
+func main() {
+	tokenURL := "http://localhost:8080/token"
+
+	// 第一步：用户将用户名和密码直接提供给客户端应用程序
+	username := "user"
+	password := "pass"
+
+	// 第二步：客户端应用程序使用用户名和密码向授权服务器请求访问令牌
+	tokenParams := url.Values{}
+	tokenParams.Set("grant_type", "password")
+	tokenParams.Set("username", username)
+	tokenParams.Set("password", password)
+	tokenParams.Set("client_id", "client_id")
+	tokenParams.Set("client_secret", "client_secret")
+	tokenParams.Set("scope", "read write")
+
+	resp, err := http.PostForm(tokenURL, tokenParams)
+	if err != nil {
+		log.Fatalf("无法请求访问令牌: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// 处理访问令牌的响应
+	// 这里可以解析响应体中的访问令牌和其他信息
+	// 例如：
+	// var token oauth2.TokenResponse
+	// json.NewDecoder(resp.Body).Decode(&token)
+	// fmt.Printf("访问令牌：%s\n", token.AccessToken)
+}
+```
+
+4. 客户端模式（Client Credentials Grant）：
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"net/url"
+)
+
+func main() {
+	tokenURL := "http://localhost:8080/token"
+
+	// 第一步：客户端应用程序使用自身的客户端凭证向授权服务器请求访问令牌
+	tokenParams := url.Values{}
+	tokenParams.Set("grant_type", "client_credentials")
+	tokenParams.Set("client_id", "client_id")
+	tokenParams.Set("client_secret", "client_secret")
+	tokenParams.Set("scope", "read write")
+
+	resp, err := http.PostForm(tokenURL, tokenParams)
+	if err != nil {
+		log.Fatalf("无法请求访问令牌: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// 处理访问令牌的响应
+	// 这里可以解析响应体中的访问令牌和其他信息
+	// 例如：
+	// var token oauth2.TokenResponse
+	// json.NewDecoder(resp.Body).Decode(&token)
+	// fmt.Printf("访问令牌：%s\n", token.AccessToken)
+}
+```
 
 ## 补充说明
 
