@@ -148,9 +148,9 @@ import (
 )
 
 func main() {
-	redirectURL := "http://localhost:8080/callback"
-	authURL := "http://localhost:8080/authorize"
-	tokenURL := "http://localhost:8080/token"
+	redirectURL := "http://127.0.0.1:8080/callback"
+	authURL := "http://127.0.0.1:8080/authorize"
+	tokenURL := "http://127.0.0.1:8080/token"
 
 	// 第一步：用户访问客户端应用程序，并请求授权访问受保护的资源
 	authParams := url.Values{}
@@ -197,18 +197,17 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/url"
 )
 
 func main() {
-	authURL := "http://localhost:8080/authorize"
+	authURL := "http://127.0.0.1:8080/authorize"
 
 	// 第一步：用户访问客户端应用程序，并请求授权访问受保护的资源
 	authParams := url.Values{}
 	authParams.Set("response_type", "token")
 	authParams.Set("client_id", "client_id")
-	authParams.Set("redirect_uri", "http://localhost:8080/callback")
+	authParams.Set("redirect_uri", "http://127.0.0.1:8080/callback")
 	authParams.Set("scope", "read write")
 
 	authURLWithParams := fmt.Sprintf("%s?%s", authURL, authParams.Encode())
@@ -221,8 +220,8 @@ func main() {
 	// 第三步：在回调URL中获取访问令牌
 	// 这里可以解析回调URL中的访问令牌和其他信息
 	// 例如：
-	// accessToken := "" // 从回调URL中获取访问令牌
-	// fmt.Printf("访问令牌：%s\n", accessToken)
+	accessToken := "" // 从回调URL中获取访问令牌
+	fmt.Printf("访问令牌：%s\n", accessToken)
 }
 ```
 
@@ -232,16 +231,14 @@ func main() {
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 func main() {
-	tokenURL := "http://localhost:8080/token"
+	tokenURL := "http://127.0.0.1:8080/token"
 
 	// 第一步：用户将用户名和密码直接提供给客户端应用程序
 	username := "user"
@@ -265,9 +262,7 @@ func main() {
 	// 处理访问令牌的响应
 	// 这里可以解析响应体中的访问令牌和其他信息
 	// 例如：
-	// var token oauth2.TokenResponse
-	// json.NewDecoder(resp.Body).Decode(&token)
-	// fmt.Printf("访问令牌：%s\n", token.AccessToken)
+	fmt.Printf("访问令牌：%s\n", resp.Body)
 }
 ```
 
@@ -277,7 +272,6 @@ func main() {
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -285,7 +279,7 @@ import (
 )
 
 func main() {
-	tokenURL := "http://localhost:8080/token"
+	tokenURL := "http://127.0.0.1:8080/token"
 
 	// 第一步：客户端应用程序使用自身的客户端凭证向授权服务器请求访问令牌
 	tokenParams := url.Values{}
@@ -303,9 +297,7 @@ func main() {
 	// 处理访问令牌的响应
 	// 这里可以解析响应体中的访问令牌和其他信息
 	// 例如：
-	// var token oauth2.TokenResponse
-	// json.NewDecoder(resp.Body).Decode(&token)
-	// fmt.Printf("访问令牌：%s\n", token.AccessToken)
+	fmt.Printf("访问令牌：%s\n", resp.Body)
 }
 ```
 
