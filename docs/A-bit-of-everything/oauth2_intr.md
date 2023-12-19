@@ -70,234 +70,230 @@ OAuth2广泛应用于多种场景，例如：
 
 ## 演示示例（Go语言）
 
-### 实现了一个简单的OAuth2授权服务器
+### 需要实现了一个简单的OAuth2授权服务器
 
-```go
-package main
+这里直接就是使用一个github上开源的[OAuth2授权服务器](https://github.com/767829413/tmp-exec/tree/main/oauth2-demo)
 
-import (
-	"log"
-	"net/http"
+运行OAuth2授权服务器
 
-	"github.com/go-oauth2/oauth2/v4"
-	"github.com/go-oauth2/oauth2/v4/generates"
-	"github.com/go-oauth2/oauth2/v4/manage"
-	"github.com/go-oauth2/oauth2/v4/models"
-	"github.com/go-oauth2/oauth2/v4/server"
-	"github.com/go-oauth2/oauth2/v4/store"
-)
+```bash
+go run ./main.go 
+2023/12/19 17:40:09 Dumping requests
+2023/12/19 17:40:09 Server is running at 9096 port.
+2023/12/19 17:40:09 Point your OAuth client Auth endpoint to http://localhost:9096/oauth/authorize
+2023/12/19 17:40:09 Point your OAuth client Token endpoint to http://localhost:9096/oauth/token
+```
 
-func main() {
-	manager := manage.NewDefaultManager()
-	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
-	
-	// 设置客户端信息
-	clientStore := store.NewClientStore()
-	clientStore.Set("client_id", &models.Client{
-		ID:     "client_id",
-		Secret: "client_secret",
-		Domain: "http://localhost:8080",
-	})
-	manager.MapClientStorage(clientStore)
-	
-	// 设置授权码生成器
-	manager.MapAuthorizeGenerate(generates.NewAuthorizeGenerate())
-	
-	// 设置令牌生成器
-	manager.MapAccessGenerate(generates.NewAccessGenerate())
-	
-	// 设置授权码令牌存储
-	tokenStore,_ := store.NewMemoryTokenStore()
-	manager.MapTokenStorage(tokenStore)
-	
-	// 创建授权服务器
-	server := server.NewDefaultServer(manager)
-	server.SetAllowGetAccessRequest(true)
-	server.SetAllowedGrantType(oauth2.AuthorizationCode)
-	
-	http.HandleFunc("/authorize", func(w http.ResponseWriter, r *http.Request) {
-		err := server.HandleAuthorizeRequest(w, r)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-		}
-	})
-	
-	http.HandleFunc("/token", func(w http.ResponseWriter, r *http.Request) {
-		err := server.HandleTokenRequest(w, r)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	})
-	
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
+运行一个客户端
+
+```bash
+go run ./main.go 
+2023/12/19 17:23:32 Client is running at 9094 port.Please open http://localhost:9094
 ```
 
 ### 模拟OAuth2的四种授权模式
 
-1. 授权码模式（Authorization Code Grant）：
+#### 授权码模式（Authorization Code Grant）：
+
+- 直接请求: http://localhost:9094
+
+client代码:
 
 ```go
-package main
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		u := config.AuthCodeURL("xyz",
+			oauth2.SetAuthURLParam("code_challenge", genCodeChallengeS256("s256example")),
+			oauth2.SetAuthURLParam("code_challenge_method", "S256"))
+		http.Redirect(w, r, u, http.StatusFound)
+	})
+```
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"net/url"
-)
+- ![显示登录](https://pic.imgdb.cn/item/6581656bc458853aeffec196.jpg)
 
-func main() {
-	redirectURL := "http://127.0.0.1:8080/callback"
-	authURL := "http://127.0.0.1:8080/authorize"
-	tokenURL := "http://127.0.0.1:8080/token"
+- 进行登录授权
 
-	// 第一步：用户访问客户端应用程序，并请求授权访问受保护的资源
-	authParams := url.Values{}
-	authParams.Set("response_type", "code")
-	authParams.Set("client_id", "client_id")
-	authParams.Set("redirect_uri", redirectURL)
-	authParams.Set("scope", "read write")
+- 进行回调
 
-	authURLWithParams := fmt.Sprintf("%s?%s", authURL, authParams.Encode())
+http://localhost:9094/oauth2?code=N2ZJYWE5ZTATZWRKNI0ZYZUWLTHMNTMTNMJKNTAWMTC4OWQ5&state=xyz
 
-	fmt.Printf("请在浏览器中访问以下URL进行授权:\n%s\n", authURLWithParams)
+client代码:
 
-	// 第二步：用户在授权页面上进行认证，并授权客户端应用程序访问受保护的资源
-	// 用户授权后，将被重定向到回调URL，并带上授权码
+```go
+	http.HandleFunc("/oauth2", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		state := r.Form.Get("state")
+		if state != "xyz" {
+			http.Error(w, "State invalid", http.StatusBadRequest)
+			return
+		}
+		code := r.Form.Get("code")
+		if code == "" {
+			http.Error(w, "Code not found", http.StatusBadRequest)
+			return
+		}
+		token, err := config.Exchange(context.Background(), code, oauth2.SetAuthURLParam("code_verifier", "s256example"))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		globalToken = token
 
-	// 第三步：客户端应用程序使用授权码向授权服务器请求访问令牌
-	code := "" // 在回调URL中获取授权码
-	tokenParams := url.Values{}
-	tokenParams.Set("grant_type", "authorization_code")
-	tokenParams.Set("code", code)
-	tokenParams.Set("client_id", "client_id")
-	tokenParams.Set("client_secret", "client_secret")
-	tokenParams.Set("redirect_uri", redirectURL)
+		e := json.NewEncoder(w)
+		e.SetIndent("", "  ")
+		e.Encode(token)
+	})
+```
 
-	resp, err := http.PostForm(tokenURL, tokenParams)
-	if err != nil {
-		log.Fatalf("无法请求访问令牌: %v", err)
-	}
-	defer resp.Body.Close()
+- 返回信息
 
-	// 处理访问令牌的响应
-	// 这里可以解析响应体中的访问令牌和其他信息
-	// 例如：
-	// var token oauth2.TokenResponse
-	// json.NewDecoder(resp.Body).Decode(&token)
-	// fmt.Printf("访问令牌：%s\n", token.AccessToken)
+```json
+{
+  "access_token": "MJHLODQ2OTUTNTJKNS0ZODQ1LTG3YZGTYMQ5NMZKYWQ4NZDK",
+  "token_type": "Bearer",
+  "refresh_token": "MZC3MMEYNJETNTU4ZI01MTHLLWFHYWETNGI2YMRJNDEXNZQ5",
+  "expiry": "2023-12-19T19:42:33.281686958+08:00"
 }
 ```
 
-2. 简化模式（Implicit Grant）：
+- 可以刷新token
+
+http://localhost:9094/refresh
+
+client代码:
 
 ```go
-package main
+	http.HandleFunc("/refresh", func(w http.ResponseWriter, r *http.Request) {
+		if globalToken == nil {
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
 
-import (
-	"fmt"
-	"net/url"
-)
+		globalToken.Expiry = time.Now()
+		token, err := config.TokenSource(context.Background(), globalToken).Token()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-func main() {
-	authURL := "http://127.0.0.1:8080/authorize"
+		globalToken = token
+		e := json.NewEncoder(w)
+		e.SetIndent("", "  ")
+		e.Encode(token)
+	})
+```
 
-	// 第一步：用户访问客户端应用程序，并请求授权访问受保护的资源
-	authParams := url.Values{}
-	authParams.Set("response_type", "token")
-	authParams.Set("client_id", "client_id")
-	authParams.Set("redirect_uri", "http://127.0.0.1:8080/callback")
-	authParams.Set("scope", "read write")
+返回:
 
-	authURLWithParams := fmt.Sprintf("%s?%s", authURL, authParams.Encode())
-
-	fmt.Printf("请在浏览器中访问以下URL进行授权:\n%s\n", authURLWithParams)
-
-	// 第二步：用户在授权页面上进行认证，并授权客户端应用程序访问受保护的资源
-	// 用户授权后，将被重定向到回调URL，并带上访问令牌
-
-	// 第三步：在回调URL中获取访问令牌
-	// 这里可以解析回调URL中的访问令牌和其他信息
-	// 例如：
-	accessToken := "" // 从回调URL中获取访问令牌
-	fmt.Printf("访问令牌：%s\n", accessToken)
+```json
+{
+  "access_token": "ZWY3YTMXY2QTNJGXMI0ZMMQZLTGWOGMTMJU5YJZKN2JKZTAW",
+  "token_type": "Bearer",
+  "refresh_token": "OTC2YMRHNMMTZJA1NY01ODNJLWIWY2ITN2I5YMYXMJI4NZE1",
+  "expiry": "2023-12-19T19:46:53.644729926+08:00"
 }
 ```
 
-3. 密码模式（Resource Owner Password Credentials Grant）：
+#### 隐式授权流程（Implicit Grant）：
+
+- 直接获取用户资源,比如用户id
+
+http://localhost:9094/try
+
+client代码:
 
 ```go
-package main
+	http.HandleFunc("/try", func(w http.ResponseWriter, r *http.Request) {
+		if globalToken == nil {
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"net/url"
-)
+		resp, err := http.Get(fmt.Sprintf("%s/test?access_token=%s", authServerURL, globalToken.AccessToken))
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		defer resp.Body.Close()
 
-func main() {
-	tokenURL := "http://127.0.0.1:8080/token"
+		io.Copy(w, resp.Body)
+	})
+```
 
-	// 第一步：用户将用户名和密码直接提供给客户端应用程序
-	username := "user"
-	password := "pass"
+返回:
 
-	// 第二步：客户端应用程序使用用户名和密码向授权服务器请求访问令牌
-	tokenParams := url.Values{}
-	tokenParams.Set("grant_type", "password")
-	tokenParams.Set("username", username)
-	tokenParams.Set("password", password)
-	tokenParams.Set("client_id", "client_id")
-	tokenParams.Set("client_secret", "client_secret")
-	tokenParams.Set("scope", "read write")
-
-	resp, err := http.PostForm(tokenURL, tokenParams)
-	if err != nil {
-		log.Fatalf("无法请求访问令牌: %v", err)
-	}
-	defer resp.Body.Close()
-
-	// 处理访问令牌的响应
-	// 这里可以解析响应体中的访问令牌和其他信息
-	// 例如：
-	fmt.Printf("访问令牌：%s\n", resp.Body)
+```json
+{
+  "client_id": "222222",
+  "expires_in": 7158,
+  "user_id": "test"
 }
 ```
 
-4. 客户端模式（Client Credentials Grant）：
+#### 密码模式（Resource Owner Password Credentials Grant）：
+
+- 直接请求client设置好的接口: http://localhost:9094/pwd
+
+client代码:
 
 ```go
-package main
+	http.HandleFunc("/pwd", func(w http.ResponseWriter, r *http.Request) {
+		token, err := config.PasswordCredentialsToken(context.Background(), "test", "test")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"net/url"
-)
+		globalToken = token
+		e := json.NewEncoder(w)
+		e.SetIndent("", "  ")
+		e.Encode(token)
+	})
+```
 
-func main() {
-	tokenURL := "http://127.0.0.1:8080/token"
+返回:
 
-	// 第一步：客户端应用程序使用自身的客户端凭证向授权服务器请求访问令牌
-	tokenParams := url.Values{}
-	tokenParams.Set("grant_type", "client_credentials")
-	tokenParams.Set("client_id", "client_id")
-	tokenParams.Set("client_secret", "client_secret")
-	tokenParams.Set("scope", "read write")
+```json
+{
+  "access_token": "MZJHYZEYYTITNTMYOS0ZOWE4LWJIM2QTYJKWZWI5NMYZYZU5",
+  "token_type": "Bearer",
+  "refresh_token": "ZDVLNJJKZWETZJI0ZI01MZA1LWI3NTATM2RLOWE2ZJKXOTEZ",
+  "expiry": "2023-12-19T19:48:41.6977701+08:00"
+}
+```
 
-	resp, err := http.PostForm(tokenURL, tokenParams)
-	if err != nil {
-		log.Fatalf("无法请求访问令牌: %v", err)
-	}
-	defer resp.Body.Close()
+#### 客户端模式（Client Credentials Grant）：
 
-	// 处理访问令牌的响应
-	// 这里可以解析响应体中的访问令牌和其他信息
-	// 例如：
-	fmt.Printf("访问令牌：%s\n", resp.Body)
+- 请求: http://localhost:9094/client
+
+client代码:
+
+```go
+	http.HandleFunc("/client", func(w http.ResponseWriter, r *http.Request) {
+		cfg := clientcredentials.Config{
+			ClientID:     config.ClientID,
+			ClientSecret: config.ClientSecret,
+			TokenURL:     config.Endpoint.TokenURL,
+		}
+
+		token, err := cfg.Token(context.Background())
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		e := json.NewEncoder(w)
+		e.SetIndent("", "  ")
+		e.Encode(token)
+	})
+```
+
+返回:
+
+```json
+{
+  "access_token": "OTNLNWM0MTGTNTDLNS0ZNWQYLTK3NZATZTMXMDVKMDFIZMI5",
+  "token_type": "Bearer",
+  "expiry": "2023-12-19T19:55:04.94925986+08:00"
 }
 ```
 
