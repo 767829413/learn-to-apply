@@ -34,6 +34,9 @@ OAuth2支持多种授权流程，以下是常见的几种：
 - 客户端凭证授权流程（Client Credentials Grant）
  	- ![客户端凭证授权流程](https://pic.imgdb.cn/item/6584398ec458853aefd02332.png)
 
+- 令牌使用流程
+ 	- ![令牌使用流程](https://pic.imgdb.cn/item/6584e040c458853aef45aace.png)
+
 ## 安全性考虑
 
 OAuth2的安全性考虑包括：
