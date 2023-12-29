@@ -129,6 +129,7 @@
 
 ## 杂七杂八
 
+* [REST API 身份验证方法](./docs/A-bit-of-everything/rest_api_authentication_methods.md)
 * [OAuth2介绍](./docs/A-bit-of-everything/oauth2_intr.md)
 * [rabbitmq Virtual Hosts 使用](./docs/A-bit-of-everything/rabbitmq-virtual-hosts-essays.md)
 * [稳定性八股文](./docs/A-bit-of-everything/stabilization-of-the-eight-essays.md)
