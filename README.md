@@ -129,6 +129,7 @@
 
 ## 杂七杂八
 
+* [elk快速搭建调试 grok filter](./docs/A-bit-of-everything/elk_logstash_grok_filter.md)
 * [REST API 身份验证方法](./docs/A-bit-of-everything/rest_api_authentication_methods.md)
 * [OAuth2介绍](./docs/A-bit-of-everything/oauth2_intr.md)
 * [rabbitmq Virtual Hosts 使用](./docs/A-bit-of-everything/rabbitmq-virtual-hosts-essays.md)
