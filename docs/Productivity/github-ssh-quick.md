@@ -20,6 +20,8 @@ Host github.com
  IdentityFile /xxx/.ssh/github_id_rsa
  User git
  Port 443
+ ## linux 
+ ## ProxyCommand nc -v -x 127.0.0.1:7890 %h %p
  ProxyCommand nc -v -x 127.0.0.1:7890 %h %p
 ```
 
