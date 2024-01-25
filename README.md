@@ -13,6 +13,7 @@
 * [一款简易的php在线编辑工具](./docs/Productivity/php-online-edit.md)
 * [在win10和Linux上配置SSH免密登录](./docs/Productivity/windows-linux-ssh-nopassword.md)
 * [GitHub 加速终极教程](./docs/Productivity/github-ssh-quick.md)
+* [简单小工具](./docs/Productivity/easy_tool.md)
 
 ---
 
