@@ -1,5 +1,17 @@
 # vs code 快捷键
 
+## 开发吐槽
+
+1. 如果有天你用vscode开发的时候发现ctrl + 鼠标左键无法跳转方法了可以试试这个方法
+    * 前提
+      * 你升级了golang版本
+
+```bash
+## 同时确保vscode这个配置这个
+## "go.useLanguageServer": true,
+go clean -modcache
+```
+
 ## 界面概览
 
 | 快捷键 | 描述 |

@@ -5,7 +5,7 @@
 ## 生产力工具
 
 * [WSL2 快速搭建开发环境](./docs/Productivity/wsl2-dev.md)
-* [VS code快捷键](./docs/Productivity/vscode.md)
+* [VS code相关](./docs/Productivity/vscode.md)
 * [正则表达式](./docs/Productivity/regxp.md)
 * [Git Feature Branch Workflow](./docs/Productivity/github-workflow.md)
 * [LINUX Shell 随记](./docs/Productivity/linux-general-commands.md)
