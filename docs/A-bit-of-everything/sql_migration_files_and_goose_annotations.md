@@ -278,9 +278,13 @@ goose -dir ./sql mysql "user:password@/db_name?charset=utf8mb4&parseTime=true&lo
     * 执行 `goose up-to 4` 没有任何作用，因为 4 已被显示迁移完成状态 `Thu Feb  1 17:21:09 2024`
     * 执行 `goose up-to 6` 应用迁移 5 和 6
 
+    ![up](https://pic.imgdb.cn/item/65bc3f65871b83018adad764.jpg)
+
 2. DOWN 操作
 
     * 执行 `goose down` 应用回滚迁移到版本 3
     * 执行 `goose down-to 4` 没有任何作用
     * 执行 `goose down-to 2` 应用执行回滚 4 3
     * 执行 `goose down-to 0` 全部回滚
+
+    ![down](https://pic.imgdb.cn/item/65bc3f65871b83018adad6fa.png)
