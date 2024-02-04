@@ -288,3 +288,33 @@ goose -dir ./sql mysql "user:password@/db_name?charset=utf8mb4&parseTime=true&lo
     * 执行 `goose down-to 0` 全部回滚
 
     ![down](https://pic.imgdb.cn/item/65bc3f65871b83018adad6fa.png)
+
+### 已有项目添加迭代方案
+
+1. 执行 `status` 命令查看迁移状态
+
+```bash
+goose -dir ./sql/migrations/ mysql "user:passwd@tcp(mysql.rongke-base:3306)/your_db?charset=utf8mb4&parseTime=true&loc=Local" status
+2024/02/04 17:50:09     Applied At                  Migration
+2024/02/04 17:50:09     =======================================
+2024/02/04 17:50:09     Pending                  -- 00002_1_29_alter_table.sql
+```
+
+2. 执行 `up-to 2` 命令进行sql迁移任务
+
+```bash
+goose -dir ./sql/migrations/ mysql "user:passwd@tcp(mysql.rongke-base:3306)/your_db?charset=utf8mb4&parseTime=true&loc=Local" up-to 2
+2024/02/04 17:50:47 OK   00002_1_29_alter_table.sql (951.85ms)
+2024/02/04 17:50:47 goose: successfully migrated database to version: 2
+```
+
+3. 再次执行 `status` 命令查看迁移状态
+
+```bash
+goose -dir ./sql/migrations/ mysql "user:passwd@tcp(mysql.rongke-base:3306)/your_db?charset=utf8mb4&parseTime=true&loc=Local" status
+2024/02/04 17:50:50     Applied At                  Migration
+2024/02/04 17:50:50     =======================================
+2024/02/04 17:50:50     Sun Feb  4 17:50:45 2024 -- 00002_1_29_alter_table.sql
+```
+
+此时所有版本迁移任务都已经执行完毕,可以随时使用 down 命令进行递进降版本,也可以直接使用 down-to 降到指定版本
