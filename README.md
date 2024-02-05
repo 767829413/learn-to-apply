@@ -88,6 +88,7 @@
 
 ## Rust
 
+* [rust 枯燥上手指南](https://github.com/767829413/rust_synchronous/tree/main)
 * [简单练手的socks5代理命令行工具](https://github.com/767829413/easysocks5proxy)
 * [快速学习 rust 入门](https://github.com/767829413/rust-hello-world)
 * [Rust语言圣经](https://course.rs/about-book.html)
