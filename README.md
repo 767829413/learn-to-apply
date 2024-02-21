@@ -119,7 +119,8 @@
 ## 看看数据库
 
 * [MySQL数据库设计规范](./docs/Databases/mysql-specification.md)
-* [MySQL索引介绍](./docs/Databases/mysql-index.md)
+* [MySQL索引](./docs/Databases/mysql-index.md)
+* [MySQL性能优化](./docs/Databases/mysql-improvement.md)
 * [关系数据库查询处理基础知识扫盲](./docs/Databases/rdbms-fundamental.md)
 * [TiDBCursor功能实现总结](./media/Pdf/cursor-summary.pdf)
 * [关于MySQL XA事务的隔离级别](./docs/Databases/mysql-xa.md)

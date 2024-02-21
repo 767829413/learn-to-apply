@@ -4,7 +4,7 @@
 >
 > 接下来将向你展示一系列创建高性能索引的策略，以及每条策略其背后的工作原理。但在此之前，先了解与索引相关的一些算法和数据结构，将有助于更好的理解后文的内容。
 
-![img](https://raw.githubusercontent.com/dunwu/images/master/snap/20200715172009.png)
+![img](https://pic.imgdb.cn/item/65d586529f345e8d03c96238.png)
 
 ## 索引简介
 
@@ -70,7 +70,7 @@ B 树是最常见的索引，按照顺序存储数据，所以 Mysql 可以用�
 
 **哈希表** 使用 **哈希函数** 组织数据，以支持快速插入和搜索的数据结构。哈希表的本质是一个数组，其思路是：使用 Hash 函数将 Key 转换为数组下标，利用数组的随机访问特性，使得我们能在 `O(1)` 的时间代价内完成检索。
 
-![img](https://raw.githubusercontent.com/dunwu/images/master/snap/20220320201844.png)
+![img](https://pic.imgdb.cn/item/65d5867d9f345e8d03c9d9eb.png)
 
 有两种不同类型的哈希表：**哈希集合** 和 **哈希映射**。
 
@@ -122,7 +122,7 @@ B+ 树索引适用于**全键值查找**、**键值范围查找**和**键前缀�
 - 第一，所有的关键字（可以理解为数据）都存储在叶子节点，非叶子节点并不存储真正的数据，所有记录节点都是按键值大小顺序存放在同一层叶子节点上。
 - 其次，所有的叶子节点由指针连接。如下图为简化了的`B+Tree`。
 
-![img](https://raw.githubusercontent.com/dunwu/images/master/snap/20200304235424.jpg)
+![img](https://pic.imgdb.cn/item/65d586999f345e8d03ca23d2.jpg)
 
 根据叶子节点的内容，索引类型分为主键索引和非主键索引。
 
