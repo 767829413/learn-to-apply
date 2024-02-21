@@ -4,7 +4,7 @@
 >
 > 接下来将向你展示一系列创建高性能索引的策略，以及每条策略其背后的工作原理。但在此之前，先了解与索引相关的一些算法和数据结构，将有助于更好的理解后文的内容。
 
-![img](https://pic.imgdb.cn/item/65d586529f345e8d03c96238.png)
+[MySql相关思维导图-索引](https://infi.cn/panel/?id=65d56348f7599f6978220968&moveToElementId=OV8xXzEz)
 
 ## 索引简介
 

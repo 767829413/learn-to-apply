@@ -1,5 +1,7 @@
 # Mysql 性能优化
 
+[MySql相关思维导图-性能优化](https://infi.cn/panel/?id=65d56348f7599f6978220968&moveToElementId=OV8xXzEz)
+
 ## 数据结构优化
 
 良好的逻辑设计和物理设计是高性能的基石。
