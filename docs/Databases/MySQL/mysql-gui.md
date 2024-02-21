@@ -4,7 +4,7 @@
 
 学习 Mysql，最好是先从宏观上了解 Mysql 工作原理。
 
-> 参考：[Mysql 工作流](https://github.com/767829413/learn-to-apply/blob/main/docs/Databases/mysql-workflow.md)
+> 参考：[Mysql 工作流](https://github.com/767829413/learn-to-apply/blob/main/docs/Databases/MySQL/mysql-workflow.md)
 
 ## 存储引擎
 
