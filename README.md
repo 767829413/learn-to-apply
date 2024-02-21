@@ -118,25 +118,10 @@
 
 ## 看看数据库
 
-* [MySQL数据库设计规范](./docs/Databases/mysql-specification.md)
-* [MySQL使用指南](./docs/Databases/mysql-gui.md)
-* [MySQL性能优化](./docs/Databases/mysql-improvement.md)
-* [MySQL工作流](./docs/Databases/mysql-workflow.md)
-* [MySQL事务](./docs/Databases/mysql-transaction.md)
-* [MySQL索引](./docs/Databases/mysql-index.md)
-* [MySQL锁](./docs/Databases/mysql-lock.md)
-* [MySQL配置](./docs/Databases/mysql-config.md)
-* [MySQL运维相关](./docs/Databases/mysql-operation-maintenance.md)
 * [关系数据库查询处理基础知识扫盲](./docs/Databases/rdbms-fundamental.md)
-* [TiDBCursor功能实现总结](./media/Pdf/cursor-summary.pdf)
-* [关于MySQL XA事务的隔离级别](./docs/Databases/mysql-xa.md)
-* [日常Mysql的小随记](./docs/Databases/simple-mysql-record.md)
 * [从RadonDB看新型数据库中间件的特性](./docs/Databases/radondb.md)
-* [TiDB基于代价优化（CBO）实现代码导读](./docs/Databases/cbo-guide.md)
-* [TiDB Insert 执行流程图](./docs/Databases/insert-overview.md)
-* [TiDB SQL Parser 的实现](./docs/Databases/sql-parser.md)
-* [利用docker compose在单机上玩转TiDB](./docs/Databases/tidb-docker-compose.md)
-* [TiDB初探](./docs/Databases/tidb-glance.md)
+* [MySQL相关](./docs/Databases/MySQL/README.md)
+* [TiDB相关](./docs/Databases/TiDB/README.md)
 
 ---
 
