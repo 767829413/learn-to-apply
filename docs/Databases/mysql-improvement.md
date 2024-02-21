@@ -54,7 +54,7 @@
 
 > 索引优化应该是查询性能优化的最有效手段。
 >
-> 如果想详细了解索引特性请参考：[Mysql 索引](../../docs/Databases/mysql-index.md)
+> 如果想详细了解索引特性请参考：[Mysql 索引](https://github.com/767829413/learn-to-apply/blob/main/docs/Databases/mysql-index.md)
 
 #### 何时使用索引
 
