@@ -4,7 +4,7 @@
 
 学习 Mysql，最好是先从宏观上了解 Mysql 工作原理。
 
-> 参考：[Mysql 工作流](02.MySQL工作流.md)
+> 参考：[Mysql 工作流](../../docs/Databases/mysql-workflow.md)
 
 ## 存储引擎
 
@@ -151,19 +151,19 @@ MySQL 提供了 FROM_UNIXTIME() 函数把 UNIX 时间戳转换为日期，并提
 
 ## 索引
 
-> 详见：[Mysql 索引](05.Mysql索引.md)
+> 详见：[Mysql 索引](../../docs/Databases/mysql-index.md)
 
 ## 锁
 
-> 详见：[Mysql 锁](04.Mysql锁.md)
+> 详见：[Mysql 锁](../../docs/Databases/mysql-lock.md)
 
 ## 事务
 
-> 详见：[Mysql 事务](03.Mysql事务.md)
+> 详见：[Mysql 事务](../../docs/Databases/mysql-transaction.md)
 
 ## 性能优化
 
-> 详见：[Mysql 性能优化](06.Mysql性能优化.md)
+> 详见：[Mysql 性能优化](../../docs/Databases/mysql-improvement.md)
 
 ## 复制
 
