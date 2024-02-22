@@ -96,3 +96,47 @@ git push -f origin myfeature
 在`Merge pull requests`过程中也可能产生冲突，可以在GitHub的界面上解决冲突，详细的操作轻参考[Addressing merge conflicts](https://help.github.com/articles/addressing-merge-conflicts/)。
 
 如果冲突较多，建议先在客户端执行rebase，按照上面的步骤解决完冲突，再进行`Merge pull requests`。
+
+## 合并提交
+
+合并提交，就是将多个 `commit` 合并为一个 `commit` 提交。建议你把新的 `commit` 合并到主干时，只保留 2~3 个 `commit` 记录。
+
+在 `Git` 中，我们主要使用 `git rebase` 命令来合并。
+
+```bash
+$ git checkout -b feature/user
+Switched to a new branch 'feature/user'
+
+$ git log --oneline
+7157e9e docs(docs): append test line 'update3' to README.md
+5a26aa2 docs(docs): append test line 'update2' to README.md
+55892fa docs(docs): append test line 'update1' to README.md
+89651d4 docs(doc): add README.md
+
+$ git log --oneline
+4ee51d6 docs(user): update user/README.md
+176ba5d docs(user): update user/README.md
+5e829f8 docs(user): add README.md for user
+f40929f feat(user): add delete user function
+fc70a21 feat(user): add create user function
+7157e9e docs(docs): append test line 'update3' to README.md
+5a26aa2 docs(docs): append test line 'update2' to README.md
+55892fa docs(docs): append test line 'update1' to README.md
+89651d4 docs(doc): add README.md
+
+$ git rebase -i 7157e9e
+```
+
+执行命令后，会进入到一个交互界面，在该界面中，可以将需要合并的 4 个 commit，都执行 squash 操作，如下图所示：
+
+![img](https://pic.imgdb.cn/item/65d6dc189f345e8d031dba2f.webp)
+
+修改完成后执行:wq 保存，会跳转到一个新的交互页面，在该页面，我们可以编辑 Commit Message，编辑后的内容如下图所示：
+
+![img](https://pic.imgdb.cn/item/65d6dc739f345e8d031ebe19.webp)
+
+**注意**
+
+* `git rebase -i` 这里的一定要是需要合并 `commit` 中最旧 `commit` 的父 `commit ID`。
+
+* 希望将 `feature/user` 分支的 5 个 `commit` 合并到一个 `commit`，在 `git rebase` 时，需要保证其中最新的一个 `commit` 是 `pick` 状态，这样我们才可以将其他 4 个 `commit` 合并进去。
