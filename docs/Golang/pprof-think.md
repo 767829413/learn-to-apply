@@ -16,7 +16,7 @@
     * 利用 slice 来替换 map 使用
     * 非指针(对象)替换指针(对象)
     * 小对象合并成一个大对象
-  * offheap(黑科技,有点不太好把控)
+  * [offheap](https://github.com/glycerine/offheap)(黑科技,有点不太好把控)
   * 降低 GC 频率
     * 修改 GOGC (建议谷歌)
     * make 全局大slice (具体谷歌)
