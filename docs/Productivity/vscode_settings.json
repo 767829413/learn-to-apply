@@ -1,0 +1,255 @@
+{
+    "explorer.confirmDelete": false,
+    "code-runner.ignoreSelection": true,
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.runInTerminal": true,
+    "editor.suggestSelection": "first",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "editor.fontSize": 20,
+    "workbench.colorTheme": "One Dark Pro Darker",
+    "editor.fontWeight": "bold",
+    "git.autofetch": true,
+    "extensions.ignoreRecommendations": false,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python",
+        "editor.formatOnType": true
+    },
+    "diffEditor.maxComputationTime": 0,
+    "json.maxItemsComputed": 50000000,
+    "go.useLanguageServer": true,
+    "go.goroot": "C:\\Program Files\\Go",
+    "go.gopath": "C:\\Users\\NUC\\go",
+    "go.delveConfig": {
+        "apiVersion": 2,
+        "showGlobalVariables": true
+    },
+    "go.testTimeout": "10s",
+    "go.testEnvVars": {},
+    "go.testFlags": [
+        "-v",
+        "-count=1"
+    ],
+    "go.lintTool": "golangci-lint",
+    "go.lintFlags": [
+        "--fast"
+    ],
+    "[go]": {
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "never"
+        }
+    },
+    "go.formatTool": "gofmt",
+    "gopls": {
+        "analyses": {
+            "S1000": false,
+            "SA9003": false,
+            "ST1006": false
+        },
+        "deepCompletion": true,
+        "completeUnimported": true,
+        "staticcheck": true,
+        "ui.semanticTokens": true
+    },
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.go$",
+                "cmd": "golines ${file} -w -m 100"
+            }
+        ]
+    },
+    "terminal.integrated.detectLocale": "off",
+    "terminal.explorerKind": "both",
+    "editor.wordWrap": "on",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "workbench.startupEditor": "none",
+    "explorer.confirmDragAndDrop": false,
+    "editor.autoClosingBrackets": "never",
+    "git.confirmSync": false,
+    "markdownlint.config": {
+        "MD001": false,
+        "MD005": false,
+        "MD009": false,
+        "MD014": false,
+        "MD037": false,
+        "MD051": false,
+        "MD052": false,
+        "MD041": false,
+        "MD046": false,
+        "MD003": false,
+        "MD036": false,
+        "MD010": false,
+        "MD033": false,
+        "MD040": false,
+        "MD047": false,
+        "MD049": false,
+        "MD024": false,
+        "MD025": false,
+        "MD026": false,
+        "MD034": false,
+        "MD022": false,
+        "MD029": false
+    },
+    "diffEditor.ignoreTrimWhitespace": false,
+    "notebook.editorOptionsCustomizations": {},
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "search.followSymlinks": false,
+    "redhat.telemetry.enabled": true,
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer"
+    },
+    "debug.allowBreakpointsEverywhere": true,
+    "editor.mouseWheelZoom": true,
+    "editor.accessibilitySupport": "off",
+    "[plantuml]": {},
+    "plantuml.commandArgs": [],
+    "plantuml.jarArgs": [
+        "-DPLANTUML_LIMIT_SIZE=102400"
+    ],
+    "editor.unicodeHighlight.allowedCharacters": {
+        "：": true,
+        "的": true
+    },
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "never",
+        "source.organizeImports": "never"
+    },
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "remote.SSH.remotePlatform": {
+        "xrb": "linux",
+        "myrz": "linux",
+        "blog": "linux",
+        "99_ali": "linux"
+    },
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.env.linux": {},
+    "remote.autoForwardPorts": false,
+    "remote.restoreForwardedPorts": false,
+    "remote.portsAttributes": {
+        "1-65000": {
+            "label": "Application",
+            "onAutoForward": "ignore"
+        }
+    },
+    "code-runner.executorMap": {
+        "javascript": "node",
+        "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "zig": "zig run",
+        "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "php": "php",
+        "python": "python -u",
+        "perl": "perl",
+        "perl6": "perl6",
+        "ruby": "ruby",
+        "go": "go run",
+        "lua": "lua",
+        "groovy": "groovy",
+        "powershell": "powershell -ExecutionPolicy ByPass -File",
+        "bat": "cmd /c",
+        "shellscript": "bash",
+        "fsharp": "fsi",
+        "csharp": "scriptcs",
+        "vbscript": "cscript //Nologo",
+        "typescript": "ts-node",
+        "coffeescript": "coffee",
+        "scala": "scala",
+        "swift": "swift",
+        "julia": "julia",
+        "crystal": "crystal",
+        "ocaml": "ocaml",
+        "r": "Rscript",
+        "applescript": "osascript",
+        "clojure": "lein exec",
+        "haxe": "haxe --cwd $dirWithoutTrailingSlash --run $fileNameWithoutExt",
+        "rust": "cd $dir && rustc $fileName && $dir$fileNameWithoutExt",
+        "racket": "racket",
+        "scheme": "csi -script",
+        "ahk": "autohotkey",
+        "autoit": "autoit3",
+        "dart": "dart",
+        "pascal": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",
+        "d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",
+        "haskell": "runghc",
+        "nim": "nim compile --verbosity:0 --hints:off --run",
+        "lisp": "sbcl --script",
+        "kit": "kitc --run",
+        "v": "v run",
+        "sass": "sass --style expanded",
+        "scss": "scss --style expanded",
+        "less": "cd $dir && lessc $fileName $fileNameWithoutExt.css",
+        "FortranFreeForm": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "fortran-modern": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "fortran_fixed-form": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "fortran": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "sml": "cd $dir && sml $fileName",
+        "mojo": "mojo run"
+    },
+    "git.ignoreRebaseWarning": true,
+    "window.openFilesInNewWindow": "on",
+    "rust-analyzer.cargo.buildScripts.invocationLocation": "root",
+    "rust-analyzer.debug.engine": "vadimcn.vscode-lldb",
+    "debug.console.closeOnEnd": true,
+    "terminal.integrated.profiles.osx": {
+        "bash": {
+            "path": "bash",
+            "args": [
+                "-l"
+            ],
+            "icon": "terminal-bash"
+        },
+        "zsh": {
+            "path": "zsh",
+            "args": [
+                "-l"
+            ]
+        },
+        "fish": {
+            "path": "fish",
+            "args": [
+                "-l"
+            ]
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.external.windowsExec": "D:\\Program Files\\Git\\git-bash.exe",
+    "workbench.editorAssociations": {
+        "git-rebase-todo": "default"
+    },
+    "remote.SSH.connectTimeout": 3600,
+    "lldb.dbgconfig": {},
+    "evenBetterToml.semanticTokens": true,
+    "rust-analyzer.semanticHighlighting.punctuation.enable": true,
+    "lldb.suppressUpdateNotifications": true,
+    "settingsSync.ignoredExtensions": [],
+    "gitlens.ai.experimental.openai.url": "",
+    "dev.containers.defaultFeatures": {},
+    "workbench.iconTheme": "material-icon-theme",
+    "sonarlint.connectedMode.connections.sonarqube": [
+        {
+            "serverUrl": "https://test-s.plaso.cn/sonar",
+            "connectionId": "https-test-s-plaso-cn-sonar",
+            "disableNotifications": true
+        }
+    ],
+    "go.toolsManagement.autoUpdate": true,
+    "tabnine.experimentalAutoImports": true,
+    "betterAlign.operatorPadding": "left"
+}
