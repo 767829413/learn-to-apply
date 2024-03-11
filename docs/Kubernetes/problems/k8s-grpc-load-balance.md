@@ -16,7 +16,7 @@ gRPC 在 HTTP/2 上工作, HTTP/2 上的 TCP 连接是长期存在的, 一个连
 
 对于在 Kubernetes 中使用 service 就相当于基于连接的负载均衡, 因为这种机制通过在网络层面上分配传入请求的连接，将流量均匀地分发到多个服务器上，以确保各服务器的负载较为均衡, 但是 HTTP/2 长连接这种机制导致 Kubernetes 的默认负载平衡不能与 gRPC 一起工作, 会导致 gRPC 请求粘连到固定的 pod 上.
 
-为了解决这种问题采用: grpc resolver dns 模式 + 无头服务 + gRPC服务端配置 [MaxConnectionAge](https://pkg.go.dev/google.golang.org/grpc/keepalive#ServerParameters) 
+为了解决这种问题采用: `grpc resolver dns` 模式 + 无头服务 + `gRPC`服务端配置 `MaxConnectionAge`
 
 ### grpc resolver dns
 
@@ -32,7 +32,7 @@ grpc 内置三种 resolver: `passthrough`, `manual` 和 `dns`, 具体可以查�
 
 ### 无头服务
 
-> [无头服务-Headless Services](https://kubernetes.io/zh-cn/docs/concepts/services-networking/service/#headless-services)
+> 无头服务-Headless Services: <https://kubernetes.io/zh-cn/docs/concepts/services-networking/service/#headless-services>
 
 Kubernetes 允许客户端通过 DNS 查找来发现 pod IP。在对服务执行 DNS 查找时，DNS 服务器会返回一个 IP(服务的集群 IP). 但是如果服务不需要集群 IP（可以通过 service.spec.clusterIP: None 来实现）. 
 
@@ -80,13 +80,19 @@ Addresses:  10.20.173.182
 
 可以看到解析出来的结果确实是: 普通 service 解析出 service ip, headless 解析出所有 pod 的 ip.
 
-### gRPC服务端配置 [MaxConnectionAge](https://pkg.go.dev/google.golang.org/grpc/keepalive#ServerParameters) 
+### gRPC服务端配置 MaxConnectionAge 
+
+关于具体配置: `MaxConnectionAge`: <https://pkg.go.dev/google.golang.org/grpc/keepalive#ServerParameters>
 
 在 client 一直连接的情况下 kill 一个 pod 触发重启, ip 发生变化时, 会发现新出现的 pod 不会收到任何请求, 断开 client 重新连接时, 又会正常.
 
-出现这种状况的原因是 grpc dns 解析会缓存解析结果, resolve 阶段之后每 30 分钟才会刷新一次, pod 下线时, grpc 会剔除掉不健康的地址, 但是新地址必须要在刷新之后或者重新连接时才能解析到. 细节查看 [grpc/grpc/issues/12295](https://github.com/grpc/grpc/issues/12295), 并且官方不认为这是个问题.
+出现这种状况的原因是 grpc dns 解析会缓存解析结果, resolve 阶段之后每 30 分钟才会刷新一次, pod 下线时, grpc 会剔除掉不健康的地址, 但是新地址必须要在刷新之后或者重新连接时才能解析到. 细节查看 grpc/grpc/issues/12295: <https://github.com/grpc/grpc/issues/12295>, 并且官方不认为这是个问题.
 
 微软的 <https://dapr.io> 项目也是在 k8s 服务发现和证书过期的问题上遇到过上述问题, 他们通过设置 `gRPC server` 端 `MaxConnectionAge` 来定时踢掉 `client` 连接. 这样就不会导致因为缓存而出现 POD 重启后无法解析 ip 的问题.
+
+### 总结
+
+实际上就是通过 Kubernetes 无头服务返回负载的多个 DNS 对应的 POD ip 地址,负载均衡机制通过在 gRPC 客户端使用 DNS 解析模式去获取目标服务 ip, gRPC 服务端通过设置 MaxConnectionAge 来清理不活跃的连接来更新 POD 的 ip
 
 ### 实际演示
 
@@ -120,4 +126,4 @@ Addresses:  10.20.173.182
 
 ## 参考资料
 
-* [gRPC load balancing on Kubernetes (using Headless Service)](https://techdozo.dev/grpc-load-balancing-on-kubernetes-using-headless-service/)
+* gRPC load balancing on Kubernetes (using Headless Service): <https://techdozo.dev/grpc-load-balancing-on-kubernetes-using-headless-service/>
