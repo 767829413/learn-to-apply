@@ -2,7 +2,7 @@
 
 ## 问题引申
 
-因为最近线上因为阿里云服务器的重启,导致部分k8s集群的服务异常重启
+因为最近线上阿里云服务器的重启,导致部分k8s集群的服务异常重启
 
 其中使用了 ETCD 作为服务端服务注册发现中间件,本身自建的 ETCD 在重启后还是导致服务间发现失败,后面通过去掉对 ETCD 的依赖,使用基础架构层的 Kubernetes 本身的 service 做服务的注册和发现, 服务端内部访问使用的是 gRPC,这里针对这种场景做了调研和方案处理
 
@@ -126,4 +126,8 @@ Addresses:  10.20.173.182
 
 ## 参考资料
 
+* gRPC Name Resolution & Load Balancing on Kubernetes: Everything you need to know (and probably a bit more): <https://itnext.io/grpc-name-resolution-load-balancing-everything-you-need-to-know-and-probably-a-bit-more-77fc0ae9cd6c>
+
 * gRPC load balancing on Kubernetes (using Headless Service): <https://techdozo.dev/grpc-load-balancing-on-kubernetes-using-headless-service/>
+
+* Load balancing gRPC in K8s without service mesh <https://nayak.io/posts/grpc_loadbalancing/>
