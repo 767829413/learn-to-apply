@@ -32,6 +32,6 @@ example
 ```bash
 go install github.com/tsliwowicz/go-wrk@latest
 
-## 
+## 一个测试案例
 go-wrk -c 80 -d 5 -M="POST" -H "Name1: Value1" -H "Name2: Value2" -H "Name3: Value3" -body '{"accountID":"1"}' http://localhost:1234/geInfo
 ```
