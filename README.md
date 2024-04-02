@@ -128,6 +128,7 @@
 
 ## 杂七杂八
 
+* [使用ELK采集数据库数据和展示](./docs/A-bit-of-everything/elk_harvest_mysql_data.md)
 * [使用goose进行SQL文件迁移](./docs/A-bit-of-everything/sql_migration_files_and_goose_annotations.md)
 * [elk快速搭建调试 grok filter](./docs/A-bit-of-everything/elk_logstash_grok_filter.md)
 * [REST API 身份验证方法](./docs/A-bit-of-everything/rest_api_authentication_methods.md)
