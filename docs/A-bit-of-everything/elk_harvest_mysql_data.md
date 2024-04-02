@@ -10,6 +10,8 @@ marp: true
 
 ## 首先配置 logstash/pipeline/logstash.conf 
 
+1. 针对 input 需要配置 mysql 采集参数
+
 ```conf
 input {
 	# 获取教研数量
@@ -37,36 +39,70 @@ input {
       # 指定类型
 	  type => "teach_activity_count"
     }
-
-	beats {
-		port => 5044
-	}
-
-	tcp {
-		port => 50000
-	}
 }
+```
 
-## Add your filters / logstash plugins configuration here
+---
 
+2. 针对 output 需要配置输出参数
+
+```conf
 output {
 	if[type] == "teach_activity_count" {
         elasticsearch {
-            # elasticsearch 的连接地址
             hosts => "elasticsearch:9200"
-            # 用户名称
 			user => "logstash_internal"
-            # 账号密码
 			password => "${LOGSTASH_INTERNAL_PASSWORD}"
-            # 设计的索引
             index => "teach_activity_count"
-            # 指定查询的数据作为文档id
             document_id => "%{org_id}"
         }
     }
-
 	stdout {}
 }
 ```
 
 ---
+
+## 配置 logstash 访问 elasticsearch 的账户权限 logstash_internal
+
+```json
+{
+  "cluster": [
+    "manage_index_templates",
+    "monitor",
+    "manage_ilm"
+  ],
+  "indices": [
+    {
+      "names": [
+        "logs-generic-default",
+        "logstash-*",
+        "ecs-logstash-*",
+        "teach_activity_count",
+      ],
+      "privileges": [
+        "write",
+        "create",
+        "create_index",
+        "manage",
+        "manage_ilm"
+      ]
+    },
+    {
+      "names": [
+        "logstash",
+        "ecs-logstash"
+      ],
+      "privileges": [
+        "create_doc",
+        "create",
+        "delete",
+        "index",
+        "write",
+        "all",
+        "manage"
+      ]
+    }
+  ]
+}
+```
