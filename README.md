@@ -30,6 +30,21 @@
 
 ---
 
+## Golang
+
+* [磨刀不误砍柴工](https://github.com/767829413/advanced-go#readme)
+* [Go 语言规范整理](./docs/Golang/go_language_specification.md)
+* [简单实现 go-kratos 固定本地服务发现](./docs/Golang/go-kratos-fix-disp.md)
+* [一些性能调优思路的总结](./docs/Golang/pprof-think.md)
+* [简单看下异步编程的 Promise 方法论(Golang实现)](./docs/Golang/promise.md)
+* [浅尝golang之Mutex基础](./docs/Golang/mutex-base.md)
+* [浅尝golang之Mutex的扩展操作(重入,try lock,统计goroutine等待数)](./docs/Golang/mutex.md)
+* [浅尝golang之Cond和Once](./docs/Golang/cond-once.md)
+* [Golang error处理实践](./docs/Golang/golang-error-handling.md)
+* [Go语言的引用类型](./docs/Golang/go-reference-types.md)
+
+---
+
 ## Algorithm
 
 * [算法基础](https://github.com/767829413/algorithm_basis)
@@ -69,21 +84,6 @@
 * [Docker单机网络模型动手实验](./docs/Docker/docker-network-bridge.md)
 * [Docker跨主机Overlay网络动手实验](./docs/Docker/docker-overlay-networks.md)
 * [Docker跨主机通信路由模式动手实验](./docs/Docker/docker-route-networks.md)
-
----
-
-## Golang
-
-* [磨刀不误砍柴工](https://github.com/767829413/advanced-go#readme)
-* [Go 语言规范整理](./docs/Golang/go_language_specification.md)
-* [简单实现 go-kratos 固定本地服务发现](./docs/Golang/go-kratos-fix-disp.md)
-* [一些性能调优思路的总结](./docs/Golang/pprof-think.md)
-* [简单看下异步编程的 Promise 方法论(Golang实现)](./docs/Golang/promise.md)
-* [浅尝golang之Mutex基础](./docs/Golang/mutex-base.md)
-* [浅尝golang之Mutex的扩展操作(重入,try lock,统计goroutine等待数)](./docs/Golang/mutex.md)
-* [浅尝golang之Cond和Once](./docs/Golang/cond-once.md)
-* [Golang error处理实践](./docs/Golang/golang-error-handling.md)
-* [Go语言的引用类型](./docs/Golang/go-reference-types.md)
 
 ---
 
