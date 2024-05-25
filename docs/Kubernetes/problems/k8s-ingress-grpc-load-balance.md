@@ -24,7 +24,7 @@ Ingress对我们来说其实应该并不陌生,尤其是服务端的研发同学
 
 Nginx Ingress Controller通过API Server获取Ingress资源的变化，动态地生成Load Balancer（例如Nginx）所需的配置文件（例如nginx.conf），然后重新加载Load Balancer（例如执行`nginx -s load`重新加载Nginx）来生成新的路由转发规则。
 
-![](https://tech.qimao.com/content/images/2022/09/nginx-ingress.png)
+![img](https://tech.qimao.com/content/images/2022/09/nginx-ingress.png)
 
 Nginx Ingress Controller可通过配置LoadBalancer类型的Service来创建SLB，因此可以从外部通过SLB访问到Kubernetes集群的内部服务。根据Nginx Ingress配置的不同规则来访问不同的服务。
 
@@ -54,7 +54,7 @@ Nginx Ingress Controller可通过配置LoadBalancer类型的Service来创建SLB�
 
 如果是使用阿里的ack集群,可直接在"运维管理"-"组件管理"-"核心组件"里选择该组件直接进行安装,默认且推荐安装在kube-system命名空间下
 
-![](https://tech.qimao.com/content/images/2022/09/1662014473468.png)
+![img](https://tech.qimao.com/content/images/2022/09/1662014473468.png)
 
 如果是自主搭建的K8s集群,可以去[GitHub](https://github.com/kubernetes/ingress-nginx)下载对应的插件版本,直接安装配置即可,这里就不展开了.
 
@@ -70,7 +70,7 @@ Nginx Ingress Controller可通过配置LoadBalancer类型的Service来创建SLB�
 
 第一种,可以通过web的方式创建,如阿里的ack里,可以在"网络"-"路由"里新建
 
-![](https://tech.qimao.com/content/images/2022/09/1662029793314.png)
+![img](https://tech.qimao.com/content/images/2022/09/1662029793314.png)
 
 ##### 通过yaml方式创建
 
@@ -334,15 +334,8 @@ conn, err := grpc.DialContext(ctx, target, dialOptions...)
 
 | 服务 | 优点 | 缺点 |
 | --- | --- | --- |
-| SLB | 1, 本质是一套转发规则,不占用实际物理资源  
-2, 仅需一个公网IP即可对外提供访问入口,成本很低 | 1, 对于长连接支持不够友好,无法较好的做到负载均衡.如新pod起来时,由于长连接未断开,会造成请求很少转发到新的pod  
-2, 对于滚动更新的响应不够及时.当服务滚动升级时,可能会由于SLB的endpoints列表没有及时更新,长连接未断开等原因导致无法平滑升级  
-3, 对外暴露IP和端口,不够直观,且安全性较低 |
-| Ingress | 1, 较好的负载均衡  
-2, 路由转发功能强大,一个Ingress可以替代多个service的功能  
-3, 人类友好的方式访问  
-4, 其他优点见前面提到的内容 | 1, 需要部署一套Ingress-controller,会占用物理资源,增加一些维护成本  
-2, 在高负载的场景下需要手动调优,对维护人员要求较高 |
+| SLB | 1, 本质是一套转发规则,不占用实际物理资源<br>2, 仅需一个公网IP即可对外提供访问入口,成本很低 | 1, 对于长连接支持不够友好,无法较好的做到负载均衡.如新pod起来时,由于长连接未断开,会造成请求很少转发到新的pod<br>2, 对于滚动更新的响应不够及时.当服务滚动升级时,可能会由于SLB的endpoints列表没有及时更新,长连接未断开等原因导致无法平滑升级<br>3, 对外暴露IP和端口,不够直观,且安全性较低 |
+| Ingress | 1, 较好的负载均衡<br>2, 路由转发功能强大,一个Ingress可以替代多个service的功能<br>3, 人类友好的方式访问<br>4, 其他优点见前面提到的内容 | 1, 需要部署一套Ingress-controller,会占用物理资源,增加一些维护成本<br>2, 在高负载的场景下需要手动调优,对维护人员要求较高 |
 
 ## **负载均衡对比**
 
@@ -352,15 +345,15 @@ conn, err := grpc.DialContext(ctx, target, dialOptions...)
 
 ### **SLB请求**
 
-![](https://tech.qimao.com/content/images/2022/09/1662346031745.png)
+![img](https://tech.qimao.com/content/images/2022/09/1662346031745.png)
 
 如图,由于client设置了长连接的活跃周期是60秒,在60秒内,请求只落在gateway-5bfbd6686f-c4vfg，一分钟后重新选择，又只落在gateway-5bfbd6686f-fvn2m上,虽然在连接数较多的时候也可能达到长连接的负载均衡，但是多次实验中,发现其在重连接时很可能会与先前的pod重新建立连接,另外由于我们的服务是对内的,实际的连接数并不多,所以这种负载均衡不能给我们带来很好的保障,如下图:
 
-![](https://tech.qimao.com/content/images/2022/09/1662347027937.png)
+![img](https://tech.qimao.com/content/images/2022/09/1662347027937.png)
 
 ### **Ingress请求**
 
-![](https://tech.qimao.com/content/images/2022/09/1662347107480.png)
+![img](https://tech.qimao.com/content/images/2022/09/1662347107480.png)
 
 替换成Ingress请求后,发现其始终是均匀的,所有的pod都可以做到雨露均沾.且经试验新增或者删除pod时,请求也能平滑过渡,而阿里的SLB会出现偶尔的请求不可用问题,这是由于其endpoints没有及时更新或与ipvs不同步导致的.
 
