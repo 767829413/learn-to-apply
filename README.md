@@ -79,6 +79,7 @@
 
 ## Docker随想
 
+* [Docker构建nextjs+pg+rust|golang后端](https://github.com/767829413/rust-go-nextjs)
 * [Docker镜像和容器的导入与导出及迁移](./docs/Docker/docker-container-import-export.md)
 * [容器技术创新漫谈](./docs/Docker/container-innovation.md)
 * [Docker单机网络模型动手实验](./docs/Docker/docker-network-bridge.md)
