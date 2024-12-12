@@ -4,7 +4,7 @@
 
 ## 生产力工具
 
-* [ubuntu24.04 使用指瞎](./docs/Productivity/ubuntu-24-04-joker.md)
+* [ubuntu 22.04 golang开发使用指瞎](./docs/Productivity/ubuntu-24-04-joker.md)
 * [WSL2 快速搭建开发环境](./docs/Productivity/wsl2-dev.md)
 * [VS code相关](./docs/Productivity/vscode.md)
 * [正则表达式](./docs/Productivity/regxp.md)
