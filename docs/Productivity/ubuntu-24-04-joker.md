@@ -1,5 +1,29 @@
 # ubuntu 22.04 golang开发使用指瞎
 
+## 系统
+
+### 微调 Ubuntu 24.04 内核以实现低延迟、吞吐量和能效(22.04也适用)
+
+<https://discourse.ubuntu.com/t/fine-tuning-the-ubuntu-24-04-kernel-for-low-latency-throughput-and-power-efficiency/44834>
+
+<https://www.reddit.com/r/Fedora/comments/158fy6x/ive_turned_preemptfull_on_and_it_solved_most_of/>
+
+<https://www.v2ex.com/t/1066445>
+
+
+### swappiness
+
+<https://askubuntu.com/questions/103915/how-do-i-configure-swappiness/103916#103916>
+
+```bash
+# 查看当前配置 （cat /proc/sys/vm/swappiness）
+sudo sysctl vm.swappiness
+vm.swappiness = 0
+
+# 可以设置为0（都使用桌面版了内存不会少吧）
+sudo sysctl vm.swappiness=0
+```
+
 ## 开发工具-vscode
 
 ### debug设置
