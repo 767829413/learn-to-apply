@@ -1,5 +1,34 @@
 # 木弓子的配置相关
 
+## clash-verge-rev
+
+> script
+
+```js
+// Define main function (script entry)
+
+// 规则
+const newRules = [
+  // 自定义规则
+  "DOMAIN-SUFFIX,xbiqugu.net,DIRECT",
+  "DOMAIN-SUFFIX,shuhaige.net,DIRECT",
+  "DOMAIN-SUFFIX,mcmssc.la,DIRECT",
+  ];
+
+
+ // 程序入口
+function main(config) {
+    let oldRules = config.rules;
+
+  // 将新的规则添加到现有的规则中
+  config.rules = newRules.concat(oldRules);
+
+  // 返回修改后的配置
+  return config;
+}
+
+```
+
 ## v2rayN-With-Core
 
 > config.json
