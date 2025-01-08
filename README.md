@@ -131,6 +131,7 @@
 
 ## 杂七杂八
 
+* [minio调研分享](./docs/A-bit-of-everything/minio_first_experience.md)
 * [公司多云多活架构小结](./docs/A-bit-of-everything/cloudy_and_active.md)
 * [使用ELK采集数据库数据和展示](./docs/A-bit-of-everything/elk_harvest_mysql_data.md)
 * [使用goose进行SQL文件迁移](./docs/A-bit-of-everything/sql_migration_files_and_goose_annotations.md)
