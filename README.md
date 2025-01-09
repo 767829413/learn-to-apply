@@ -22,6 +22,7 @@
 ## Play               
 
 * [下载小说的简单工具](https://github.com/767829413/fy-novel)
+* [ubuntu 22.04 窗口透明化指南](./docs/Play/ubuntu_window_transparency.md)
 * [Windows 上的 Hyperledger Fabric开发配置](./docs/Play/hyperledger-fabric-wsl.md)
 * [如何在自定义对象上训练YOLOv5](./docs/Play/train-yolov5-cuda-custom.md)
 * [构建深度学习环境](./docs/Play/python-cuda-opencv.md)
