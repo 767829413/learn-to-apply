@@ -1,5 +1,71 @@
 # LINUX 常用命令
 
+## 定时输出实时查看-n 1 选项设置更新间隔为1秒
+
+```bash
+watch -n 1 -t ls -lh /tmp
+```
+
+## snap 更新
+
+```bash
+sudo snap refresh
+```
+
+## snap-store 更新
+
+```bash
+sudo snap refresh snap-store
+snap-store --quit-on-close-for-update
+```
+
+## 解压缩
+
+```bash
+tar -xf archive.tar.xz
+```
+
+## 日志查看
+
+```bash
+# 基本
+journalctl -n 50
+journalctl --since "1 hour ago"
+journalctl --since "<start_time>" --until "<end_time>"
+# 获取从昨天到现在的日志
+journalctl --since "yesterday" --until "now"
+# 获取 nginx 服务的最新 100 行日志
+journalctl -u nginx.service -n 100
+# 获取错误级别及以上的最新 50 行日志
+journalctl -p err -n 50
+```
+
+# dns服务
+
+```bash
+sudo systemctl start systemd-resolved
+sudo resolvectl flush-caches
+sudo systemctl restart systemd-resolved
+sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+```
+
+# 代理
+
+```bash
+export http_proxy='http://127.0.0.1:7897'
+export https_proxy='http://127.0.0.1:7897'
+
+[Service]
+Environment="HTTP_PROXY=http://127.0.0.1:7897/"
+Environment="HTTPS_PROXY=http://127.0.0.1:7897/"
+```
+
+# pip 源头
+
+```text
+-i http://mirrors.tencent.com/pypi/simple --trusted-host mirrors.tencent.com
+```
+
 ## rz sz
 
 有时候在操作xshell需要上传本地文件的时候还需要打开ftp来上传,我感觉有点麻烦,Linux中的sz和rz就可以完美解决这个问题.
