@@ -16,6 +16,7 @@
 * [GitHub 加速终极教程](./docs/Productivity/github-ssh-quick.md)
 * [简单小工具](./docs/Productivity/easy_tool.md)
 * [木弓子的配置相关](./docs/Productivity/vpn_config.md)
+* [配置 pip install 国内镜像源加速](./docs/Productivity/pip_config.md)
 
 ---
 
