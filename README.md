@@ -7,15 +7,15 @@
 * [ubuntu 24.04 golang开发使用指瞎](./docs/Productivity/ubuntu-24-04-joker.md)
 * [WSL2 快速搭建开发环境](./docs/Productivity/wsl2-dev.md)
 * [VS code相关](./docs/Productivity/vscode.md)
-* [正则表达式](./docs/Productivity/regxp.md)
+* [配置 pip install 国内镜像源加速](./docs/Productivity/pip_config.md)
 * [Git Feature Branch Workflow](./docs/Productivity/github-workflow.md)
 * [LINUX Shell 随记](./docs/Productivity/linux-general-commands.md)
-* [golang简易编译打包工具使用](./docs/Productivity/compile-and-package.md)
 * [在win10和Linux上配置SSH免密登录](./docs/Productivity/windows-linux-ssh-nopassword.md)
 * [GitHub 加速终极教程](./docs/Productivity/github-ssh-quick.md)
-* [简单小工具](./docs/Productivity/easy_tool.md)
+* [简单小工具合集](./docs/Productivity/easy_tool.md)
 * [木弓子的配置相关](./docs/Productivity/vpn_config.md)
-* [配置 pip install 国内镜像源加速](./docs/Productivity/pip_config.md)
+* [golang简易编译打包工具使用](./docs/Productivity/compile-and-package.md)
+* [正则表达式](./docs/Productivity/regxp.md)
 
 ---
 
