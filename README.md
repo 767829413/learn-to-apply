@@ -19,6 +19,13 @@
 
 ---
 
+## 智能体开发的概念与实践
+
+* [MCP？啥啊](./docs/MCP/mcp-what.md)
+* [正则表达式](./docs/Productivity/regxp.md)
+
+---
+
 ## Play               
 
 * [下载小说的简单工具](https://github.com/767829413/fy-novel)
