@@ -22,6 +22,9 @@
 ## 智能体开发的概念与实践
 
 * [MCP？啥啊](./docs/MCP/mcp-what.md)
+* [构建高效 Agent](./docs/MCP/building-effective-agents.md)
+* [构建可用于生产的智能体系统](./docs/MCP/production-ready-agentic-systems.md)
+* [AI代理的上下文工程](./docs/MCP/context-engineering-building-manus-lessons.md)
 
 ---
 
