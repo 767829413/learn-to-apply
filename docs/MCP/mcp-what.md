@@ -1,5 +1,5 @@
 
-# 智能体开发系列：MCP 到底是个啥？
+# MCP 到底是个啥？
 
 这个建议看老外的文章: <https://norahsakal.com/blog/mcp-vs-api-model-context-protocol-explained/>
 
