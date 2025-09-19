@@ -51,7 +51,7 @@
 
 Agentic 系统的基础模块是经过增强的 LLM，具备检索、工具和记忆等能力。我们的模型可以主动使用这些能力——生成搜索查询、选择合适工具、决定保留哪些信息。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2Fd3083d3f40bb2b6f477901cc9a240738d3dd1371-2401x1000.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/d3083d3f40bb2b6f477901cc9a240738d3dd1371-2401x1000.png?w=3840&q=75)
 
 增强型 LLM
 
@@ -63,7 +63,7 @@ Agentic 系统的基础模块是经过增强的 LLM，具备检索、工具和�
 
 提示链将任务分解为一系列步骤，每次 LLM 调用处理上一步的输出。你可以在中间步骤加入程序化检查（如下图中的“gate”），确保流程正常。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F7418719e3dab222dccb379b8879e1dc08ad34c78-2401x1000.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/7418719e3dab222dccb379b8879e1dc08ad34c78-2401x1000.png?w=3840&q=75)
 
 提示链工作流
 
@@ -78,7 +78,7 @@ Agentic 系统的基础模块是经过增强的 LLM，具备检索、工具和�
 
 路由将输入分类，并分配到专门的后续任务。这样可以分离关注点，构建更专业的提示。否则，优化某类输入可能会影响其他输入的表现。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F5c0c0e9fe4def0b584c04d37849941da55e5e71c-2401x1000.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/5c0c0e9fe4def0b584c04d37849941da55e5e71c-2401x1000.png?w=3840&q=75)
 
 路由工作流
 
@@ -96,7 +96,7 @@ LLM 可同时处理任务的不同部分，输出可程序化聚合。并行化�
 * **分段**：任务拆分为独立子任务并行处理。
 * **投票**：同一任务多次运行，获得多样输出。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F406bb032ca007fd1624f261af717d70e6ca86286-2401x1000.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/406bb032ca007fd1624f261af717d70e6ca86286-2401x1000.png?w=3840&q=75)
 
 并行化工作流
 
@@ -115,7 +115,7 @@ LLM 可同时处理任务的不同部分，输出可程序化聚合。并行化�
 
 编排者-工作者模式下，中心 LLM 动态拆解任务，分配给工作者 LLM，并综合结果。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F8985fc683fae4780fb34eab1365ab78c7e51bc8e-2401x1000.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/8985fc683fae4780fb34eab1365ab78c7e51bc8e-2401x1000.png?w=3840&q=75)
 
 编排者-工作者工作流
 
@@ -130,7 +130,7 @@ LLM 可同时处理任务的不同部分，输出可程序化聚合。并行化�
 
 评估者-优化者模式下，一个 LLM 生成响应，另一个评估并反馈，循环迭代。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F14f51e6406ccb29e695da48b17017e899a6119c7-2401x1000.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/14f51e6406ccb29e695da48b17017e899a6119c7-2401x1000.png?w=3840&q=75)
 
 评估者-优化者工作流
 
@@ -147,7 +147,7 @@ LLM 可同时处理任务的不同部分，输出可程序化聚合。并行化�
 
 Agent 能处理复杂任务，但实现往往很简单，通常就是 LLM 在循环中根据环境反馈使用工具。因此，工具集及其文档设计至关重要。附录 2（“工具提示工程”）将详细介绍工具开发最佳实践。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F58d9f10c985c4eb5d53798dea315f7bb5ab6249e-2401x1000.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/58d9f10c985c4eb5d53798dea315f7bb5ab6249e-2401x1000.png?w=3840&q=75)
 
 自主 Agent
 
@@ -162,7 +162,7 @@ Agent 的自主性意味着更高成本和错误风险。建议在沙盒环境�
 * 解决 [SWE-bench 任务](https://www.anthropic.com/research/swe-bench-sonnet) 的编程 Agent，需根据任务描述修改多个文件；
 * 我们的 [“电脑操作”参考实现](https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo)，Claude 使用电脑完成任务。
 
-![](/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F4b9a1f4eb63d5962a6e1746ac26bbc857cf3474f-2400x1666.png&w=3840&q=75)
+![](https://www-cdn.anthropic.com/images/4zrzovbb/website/4b9a1f4eb63d5962a6e1746ac26bbc857cf3474f-2400x1666.png?w=3840&q=75)
 
 编程 Agent 的高层流程
 
