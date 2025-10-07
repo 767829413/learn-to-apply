@@ -21,10 +21,13 @@
 
 ## 智能体开发的概念与实践
 
-* [MCP？啥啊](./docs/MCP/mcp-what.md)
-* [构建高效 Agent](./docs/MCP/building-effective-agents.md)
-* [构建可用于生产的智能体系统](./docs/MCP/production-ready-agentic-systems.md)
-* [AI代理的上下文工程](./docs/MCP/context-engineering-building-manus-lessons.md)
+* [MCP？啥啊](./docs/AI/mcp-what.md)
+* [构建高效 Agent](./docs/AI/building-effective-agents.md)
+* [构建可用于生产的智能体系统](./docs/AI/production-ready-agentic-systems.md)
+* [AI代理的上下文工程](./docs/AI/context-engineering-building-manus-lessons.md)
+* [使用 Coding Agent 完成 DeepResearch 任务](./docs/AI/coding-agent-deepresearch.md)
+* [不同硬件和推理引擎模型输出的精度差异](./docs/AI/different-hardware-inference-engine-precision-diff.md)
+* [大语言模型（LLM）推理性能优化以及推理框架、后端的评测](./docs/AI/llm-inference-optimization-and-framework-benchmark.md)
 
 ---
 
