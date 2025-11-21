@@ -28,7 +28,7 @@
 * [使用 Coding Agent 完成 DeepResearch 任务](./docs/AI/coding-agent-deepresearch.md)
 * [不同硬件和推理引擎模型输出的精度差异](./docs/AI/different-hardware-inference-engine-precision-diff.md)
 * [大语言模型（LLM）推理性能优化以及推理框架、后端的评测](./docs/AI/llm-inference-optimization-and-framework-benchmark.md)
-* [ai编码的一些思考](./docs/AI/docs/AI/ai_engineering_thinking.md)
+* [ai编码的一些思考](./docs/AI/ai_engineering_thinking.md)
 
 ---
 
